@@ -2,11 +2,15 @@
 // The check digits are computed from the first 14 (mod 97), so a missing or misread digit can
 // almost always be detected without looking at the original.
 
-// Only banks whose name and code were verified on the original invoices in the dataset.
-// For the others, only the number is shown.
+// Bank codes (first three digits). Most were verified on the original invoices in the dataset;
+// 134, 141 and 154 come from EDO-SLAD (inv-003), which has no original, and were added from the
+// public list of BiH banks. Unknown codes show only the number.
 const BANKS: Record<string, string> = {
   '132': 'NLB Banka',
+  '134': 'ASA Banka',
   '140': 'Sberbank BH',
+  '141': 'Bosna Bank International',
+  '154': 'Intesa Sanpaolo Banka',
   '161': 'Raiffeisen Bank',
   '194': 'ProCredit Bank',
   '199': 'Sparkasse Bank',
@@ -15,10 +19,6 @@ const BANKS: Record<string, string> = {
   '555': 'Nova banka',
   '567': 'Sberbank Banja Luka',
   '571': 'Komercijalna banka',
-  '141': 'Bosna Bank International d.d. Sarajevo',
-  '134':' ASA Banka d.d. Sarajevo',
-  '154':' Intesa Sanpolo Banka DD BIH'
-
 }
 
 const clean = (s: string) => s.replace(/[\s-]/g, '').toUpperCase()
