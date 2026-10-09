@@ -137,7 +137,12 @@ export default function App() {
                 }}
                 onResolve={(keys) => review.resolve(selected.id, keys)}
                 onConfirm={confirmAndNext}
-                onReopen={() => review.reopen(selected.id)}
+                onReopen={() => {
+                  review.reopen(selected.id)
+                  // Reopened from "Potvrđeni" or "Odbačeni": follow the invoice to where it now
+                  // belongs, so it doesn't stay open on the right while missing from the list.
+                  if (statusFilter !== 'all') setStatusFilter('pending')
+                }}
                 onReject={rejectAndNext}
                 onResetInvoice={() => review.resetOne(selected.id)}
                 onOpenInvoice={(id) => {
