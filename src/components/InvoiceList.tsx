@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type FC } from 'react'
 import {
   Badge,
   Box,
@@ -17,9 +17,9 @@ import {
 import type { Invoice } from '../types/invoice'
 import { valueOf, type Issue } from '../lib/checks'
 import type { FieldKey } from '../lib/fields'
-import type { ReviewEntry } from '../lib/review'
+import type { ReviewEntry } from '../hooks/useReview'
 
-interface Props {
+export type Props = {
   invoices: Invoice[] // already filtered
   issues: Record<string, Issue[]>
   review: (id: string) => ReviewEntry
@@ -38,17 +38,37 @@ interface Props {
   onExport: () => void
 }
 
-export function InvoiceList(p: Props) {
+export const InvoiceList: FC<Props> = ({
+  invoices,
+  issues,
+  review,
+  selectedId,
+  onSelect,
+  clients,
+  clientFilter,
+  onClientFilter,
+  statusFilter,
+  onStatusFilter,
+  search,
+  onSearch,
+  total,
+  doneCount,
+  confirmedCount,
+  onExport,
+}) => {
   // null = dropdown closed, the input shows the selected client.
-  const [search, setSearch] = useState<string | null>(null)
+  const [clientSearch, setClientSearch] = useState<string | null>(null)
   const clientOptions = [
     { label: 'Svi klijenti', value: 'all' },
-    ...p.clients.map((c) => ({
-      label: c.pending > 0 ? `${c.name} · ${c.pending} za pregled` : `${c.name} · sve potvrđeno`,
-      value: c.id,
+    ...clients.map((client) => ({
+      label:
+        client.pending > 0
+          ? `${client.name} · ${client.pending} za pregled`
+          : `${client.name} · sve potvrđeno`,
+      value: client.id,
     })),
   ]
-  const selectedLabel = clientOptions.find((o) => o.value === p.clientFilter)?.label ?? ''
+  const selectedLabel = clientOptions.find((option) => option.value === clientFilter)?.label ?? ''
 
   return (
     <Stack gap={0} h="100%">
@@ -56,23 +76,23 @@ export function InvoiceList(p: Props) {
         <Group justify="space-between">
           <Text fw={600}>Ulazni računi</Text>
           <Text size="xs" c="dimmed">
-            {p.doneCount} od {p.total} obrađeno
+            {doneCount} od {total} obrađeno
           </Text>
         </Group>
         <Progress
-          value={(p.doneCount / Math.max(p.total, 1)) * 100}
+          value={(doneCount / Math.max(total, 1)) * 100}
           size="sm"
           aria-label="Napredak pregleda"
         />
         <TextInput
           size="xs"
           placeholder="Traži dobavljača, broj ili iznos"
-          value={p.search}
-          onChange={(e) => p.onSearch(e.currentTarget.value)}
+          value={search}
+          onChange={(event) => onSearch(event.currentTarget.value)}
           aria-label="Pretraga računa"
           rightSection={
-            p.search ? (
-              <CloseButton size="xs" onClick={() => p.onSearch('')} aria-label="Očisti pretragu" />
+            search ? (
+              <CloseButton size="xs" onClick={() => onSearch('')} aria-label="Očisti pretragu" />
             ) : null
           }
         />
@@ -83,21 +103,21 @@ export function InvoiceList(p: Props) {
           allowDeselect={false}
           selectFirstOptionOnChange
           nothingFoundMessage="Nema takvog klijenta"
-          value={p.clientFilter}
-          onChange={(v) => v && p.onClientFilter(v)}
+          value={clientFilter}
+          onChange={(clientId) => clientId && onClientFilter(clientId)}
           data={clientOptions}
           // Clear the input on open so typing starts fresh instead of after "Svi klijenti".
-          searchValue={search ?? selectedLabel}
-          onSearchChange={(s) => search !== null && setSearch(s)}
-          onDropdownOpen={() => setSearch('')}
-          onDropdownClose={() => setSearch(null)}
+          searchValue={clientSearch ?? selectedLabel}
+          onSearchChange={(text) => clientSearch !== null && setClientSearch(text)}
+          onDropdownOpen={() => setClientSearch('')}
+          onDropdownClose={() => setClientSearch(null)}
           aria-label="Klijent"
         />
         <SegmentedControl
           size="xs"
           fullWidth
-          value={p.statusFilter}
-          onChange={p.onStatusFilter}
+          value={statusFilter}
+          onChange={onStatusFilter}
           data={[
             { label: 'Sve', value: 'all' },
             { label: 'Za pregled', value: 'pending' },
@@ -107,15 +127,17 @@ export function InvoiceList(p: Props) {
         />
       </Stack>
       <ScrollArea style={{ flex: 1 }} bg="var(--mantine-color-gray-0)">
-        {p.invoices.map((inv) => {
-          const e = p.review(inv.id)
-          const open = (p.issues[inv.id] ?? []).filter((i) => !e.resolved.includes(i.key))
-          const hasError = open.some((i) => i.severity === 'error')
-          const confirmed = e.status === 'confirmed'
-          const rejected = e.status === 'rejected'
+        {invoices.map((invoice) => {
+          const entry = review(invoice.id)
+          const open = (issues[invoice.id] ?? []).filter(
+            (issue) => !entry.resolved.includes(issue.key),
+          )
+          const hasError = open.some((issue) => issue.severity === 'error')
+          const confirmed = entry.status === 'confirmed'
+          const rejected = entry.status === 'rejected'
           // Show the accountant's corrections, not what the reader originally returned.
-          const val = (k: FieldKey) => valueOf(inv, e.edits, k)
-          const total = val('totalAmount')
+          const valueFor = (key: FieldKey) => valueOf(invoice, entry.edits, key)
+          const amount = valueFor('totalAmount')
           // One colour per state, used for the stripe on the left edge so the list can be
           // scanned without reading the badges.
           const color = rejected
@@ -127,11 +149,11 @@ export function InvoiceList(p: Props) {
                   ? 'red'
                   : 'yellow'
                 : 'teal'
-          const selected = inv.id === p.selectedId
+          const selected = invoice.id === selectedId
           return (
             <UnstyledButton
-              key={inv.id}
-              onClick={() => p.onSelect(inv.id)}
+              key={invoice.id}
+              onClick={() => onSelect(invoice.id)}
               py="sm"
               pr="sm"
               pl={selected ? 'calc(var(--mantine-spacing-sm) - 2px)' : 'sm'}
@@ -145,7 +167,7 @@ export function InvoiceList(p: Props) {
             >
               <Group justify="space-between" wrap="nowrap" gap="xs">
                 <Text size="sm" fw={500} truncate>
-                  {String(val('vendorName') ?? '')}
+                  {String(valueFor('vendorName') ?? '')}
                 </Text>
                 {rejected ? (
                   <Badge color="gray" variant="light" size="sm" style={{ flexShrink: 0 }}>
@@ -173,20 +195,20 @@ export function InvoiceList(p: Props) {
               {/* The amount is what the accountant looks for, so it's bold and on the right. */}
               <Group justify="space-between" mt={4} wrap="nowrap" gap="xs">
                 <Text size="xs" c="dimmed" truncate>
-                  {String(val('invoiceNumber') ?? 'bez broja')}
-                  {p.clientFilter === 'all' ? ` · ${inv.client.id}` : ''}
+                  {String(valueFor('invoiceNumber') ?? 'bez broja')}
+                  {clientFilter === 'all' ? ` · ${invoice.client.id}` : ''}
                 </Text>
                 <Text size="sm" fw={600} style={{ flexShrink: 0 }}>
-                  {typeof total === 'number' ? total.toFixed(2) : '—'}{' '}
+                  {typeof amount === 'number' ? amount.toFixed(2) : '—'}{' '}
                   <Text span size="xs" c="dimmed" fw={400}>
-                    {String(val('currency') ?? '')}
+                    {String(valueFor('currency') ?? '')}
                   </Text>
                 </Text>
               </Group>
             </UnstyledButton>
           )
         })}
-        {p.invoices.length === 0 && (
+        {invoices.length === 0 && (
           <Box p="md">
             <Text size="sm" c="dimmed">
               Nema računa za ovaj filter.
@@ -200,10 +222,10 @@ export function InvoiceList(p: Props) {
           size="compact-sm"
           variant="light"
           fullWidth
-          disabled={p.confirmedCount === 0}
-          onClick={p.onExport}
+          disabled={confirmedCount === 0}
+          onClick={onExport}
         >
-          Izvezi potvrđene ({p.confirmedCount}) u CSV
+          Izvezi potvrđene ({confirmedCount}) u CSV
         </Button>
       </Box>
     </Stack>

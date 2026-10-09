@@ -5,19 +5,20 @@
 
 const WEIGHTS = [7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2]
 
-const clean = (s: string) => s.replace(/\s/g, '')
+const clean = (text: string) => text.replace(/\s/g, '')
 
 /** Check digit: weighted sum of the first 12 digits, mod 11. */
 export function isValidTaxId(raw: string): boolean {
-  const c = clean(raw)
-  if (!/^\d{13}$/.test(c)) return false
-  const r = WEIGHTS.reduce((s, w, i) => s + w * Number(c[i]), 0) % 11
-  return (r <= 1 ? 0 : 11 - r) === Number(c[12])
+  const digits = clean(raw)
+  if (!/^\d{13}$/.test(digits)) return false
+  const remainder =
+    WEIGHTS.reduce((sum, weight, index) => sum + weight * Number(digits[index]), 0) % 11
+  return (remainder <= 1 ? 0 : 11 - remainder) === Number(digits[12])
 }
 
 export function isValidVatId(raw: string): boolean {
-  const c = clean(raw)
-  return /^\d{12}$/.test(c) && isValidTaxId('4' + c)
+  const digits = clean(raw)
+  return /^\d{12}$/.test(digits) && isValidTaxId('4' + digits)
 }
 
 /** Same "company" part in both numbers, regardless of the business unit. */

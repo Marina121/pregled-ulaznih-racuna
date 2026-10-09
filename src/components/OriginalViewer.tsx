@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type FC } from 'react'
 import { Alert, Box, Button, Group, Text } from '@mantine/core'
 import type { Invoice } from '../types/invoice'
 
@@ -7,7 +7,10 @@ const MIN_ZOOM = 100
 const MAX_ZOOM = 400
 const ZOOM_STEP = 50
 
-export function OriginalViewer({ invoice }: { invoice: Invoice }) {
+export type Props = {
+  invoice: Invoice
+}
+export const OriginalViewer: FC<Props> = ({ invoice }) => {
   const [zoom, setZoom] = useState(MIN_ZOOM)
   // A zoomed image can be panned by dragging. Remembers where the drag started.
   const [drag, setDrag] = useState<{
@@ -16,9 +19,9 @@ export function OriginalViewer({ invoice }: { invoice: Invoice }) {
     left: number
     top: number
   } | null>(null)
-  const o = invoice.original
+  const original = invoice.original
 
-  if (!o) {
+  if (!original) {
     return (
       <Box p="md">
         <Alert color="yellow" title="Original nije priložen">
@@ -29,8 +32,8 @@ export function OriginalViewer({ invoice }: { invoice: Invoice }) {
     )
   }
 
-  const src = `/${o.path}`
-  const isPdf = o.mimeType === 'application/pdf'
+  const src = `/${original.path}`
+  const isPdf = original.mimeType === 'application/pdf'
 
   return (
     <Box h="100%" style={{ display: 'flex', flexDirection: 'column' }}>
@@ -40,7 +43,7 @@ export function OriginalViewer({ invoice }: { invoice: Invoice }) {
         style={{ borderBottom: '1px solid var(--mantine-color-gray-3)' }}
       >
         <Text size="xs" c="dimmed">
-          {invoice.originalFilename} · {o.pages} str. ·{' '}
+          {invoice.originalFilename} · {original.pages} str. ·{' '}
           {invoice.channel === 'mobile' ? 'fotografija' : 'e-pošta'}
         </Text>
         {!isPdf && (
@@ -56,7 +59,7 @@ export function OriginalViewer({ invoice }: { invoice: Invoice }) {
             <Button
               size="compact-xs"
               variant="default"
-              onClick={() => setZoom((z) => Math.max(MIN_ZOOM, z - ZOOM_STEP))}
+              onClick={() => setZoom((current) => Math.max(MIN_ZOOM, current - ZOOM_STEP))}
               disabled={zoom <= MIN_ZOOM}
               aria-label="Smanji"
             >
@@ -68,7 +71,7 @@ export function OriginalViewer({ invoice }: { invoice: Invoice }) {
             <Button
               size="compact-xs"
               variant="default"
-              onClick={() => setZoom((z) => Math.min(MAX_ZOOM, z + ZOOM_STEP))}
+              onClick={() => setZoom((current) => Math.min(MAX_ZOOM, current + ZOOM_STEP))}
               disabled={zoom >= MAX_ZOOM}
               aria-label="Povećaj"
             >
@@ -95,21 +98,21 @@ export function OriginalViewer({ invoice }: { invoice: Invoice }) {
           background: 'var(--mantine-color-gray-1)',
           cursor: !isPdf && zoom > MIN_ZOOM ? (drag ? 'grabbing' : 'grab') : undefined,
         }}
-        onPointerDown={(e) => {
+        onPointerDown={(event) => {
           if (isPdf || zoom === MIN_ZOOM) return
-          e.preventDefault() // otherwise the browser starts dragging the image as a file
+          event.preventDefault() // otherwise the browser starts dragging the image as a file
           setDrag({
-            x: e.clientX,
-            y: e.clientY,
-            left: e.currentTarget.scrollLeft,
-            top: e.currentTarget.scrollTop,
+            x: event.clientX,
+            y: event.clientY,
+            left: event.currentTarget.scrollLeft,
+            top: event.currentTarget.scrollTop,
           })
-          e.currentTarget.setPointerCapture(e.pointerId)
+          event.currentTarget.setPointerCapture(event.pointerId)
         }}
-        onPointerMove={(e) => {
+        onPointerMove={(event) => {
           if (!drag) return
-          e.currentTarget.scrollLeft = drag.left - (e.clientX - drag.x)
-          e.currentTarget.scrollTop = drag.top - (e.clientY - drag.y)
+          event.currentTarget.scrollLeft = drag.left - (event.clientX - drag.x)
+          event.currentTarget.scrollTop = drag.top - (event.clientY - drag.y)
         }}
         onPointerUp={() => setDrag(null)}
         onPointerCancel={() => setDrag(null)}

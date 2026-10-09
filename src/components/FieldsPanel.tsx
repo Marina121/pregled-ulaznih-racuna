@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type FC } from 'react'
 import {
   Accordion,
   Alert,
@@ -18,10 +18,10 @@ import type { Invoice } from '../types/invoice'
 import { FIELD_META } from '../lib/fields'
 import { lineCellUncertain, valueOf, type Issue } from '../lib/checks'
 import { changesOf } from '../lib/export'
-import type { ReviewEntry } from '../lib/review'
+import type { ReviewEntry } from '../hooks/useReview'
 import { FieldRow } from './FieldRow'
 
-interface Props {
+export type Props = {
   invoice: Invoice
   issues: Issue[]
   entry: ReviewEntry
@@ -36,26 +36,31 @@ interface Props {
 }
 
 // 2022-01-04 → 4. 1. 2022., as dates are written on Croatian/Bosnian invoices.
-const fmtDate = (v: unknown) => {
-  const m = typeof v === 'string' ? /^(\d{4})-(\d{2})-(\d{2})$/.exec(v) : null
-  return m ? `${Number(m[3])}. ${Number(m[2])}. ${m[1]}.` : v ? String(v) : '—'
+const formatDate = (value: unknown) => {
+  const match = typeof value === 'string' ? /^(\d{4})-(\d{2})-(\d{2})$/.exec(value) : null
+  return match
+    ? `${Number(match[3])}. ${Number(match[2])}. ${match[1]}.`
+    : value
+      ? String(value)
+      : '—'
 }
 
 // 9. 10. 2026. u 14:32
-const fmtDateTime = (iso: string) => {
-  const d = new Date(iso)
-  const hm = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
-  return `${d.getDate()}. ${d.getMonth() + 1}. ${d.getFullYear()}. u ${hm}`
+const formatDateTime = (iso: string) => {
+  const date = new Date(iso)
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  return `${date.getDate()}. ${date.getMonth() + 1}. ${date.getFullYear()}. u ${hours}:${minutes}`
 }
 
-const fmt = (v: unknown) =>
-  v === null || v === undefined
+const formatCell = (value: unknown) =>
+  value === null || value === undefined
     ? '—'
-    : typeof v === 'number'
-      ? v.toFixed(2).replace(/\.00$/, '')
-      : String(v)
+    : typeof value === 'number'
+      ? value.toFixed(2).replace(/\.00$/, '')
+      : String(value)
 
-export function FieldsPanel({
+export const FieldsPanel: FC<Props> = ({
   invoice,
   issues,
   entry,
@@ -67,9 +72,9 @@ export function FieldsPanel({
   onOpenInvoice,
   onReject,
   onResetInvoice,
-}: Props) {
+}) => {
   const [showRest, setShowRest] = useState(false)
-  const open = issues.filter((i) => !entry.resolved.includes(i.key))
+  const open = issues.filter((issue) => !entry.resolved.includes(issue.key))
   const confirmed = entry.status === 'confirmed'
   const rejected = entry.status === 'rejected'
   // A confirmed or rejected invoice is a decision already made: read-only until "Vrati na pregled".
@@ -80,49 +85,50 @@ export function FieldsPanel({
   const [resetArmed, setResetArmed] = useState(false)
   useEffect(() => {
     if (!resetArmed) return
-    const t = setTimeout(() => setResetArmed(false), 4000)
-    return () => clearTimeout(t)
+    const timer = setTimeout(() => setResetArmed(false), 4000)
+    return () => clearTimeout(timer)
   }, [resetArmed])
-  const docIssues = issues.filter((i) => i.fields.length === 0)
+  const docIssues = issues.filter((issue) => issue.fields.length === 0)
   const total = valueOf(invoice, entry.edits, 'totalAmount')
   const changes = changesOf(invoice, entry.edits)
-  const openFor = (k: string) => open.filter((i) => (i.fields as string[]).includes(k))
+  const openFor = (key: string) => open.filter((issue) => (issue.fields as string[]).includes(key))
   // A field never moves while it is on screen, or typing in it would lose focus:
   // - a flagged field stays at the top even after an edit fixes it;
   // - a newly flagged field moves up only while "ostala polja" are hidden (otherwise it is
   //   already visible, highlighted where it is). Collapsing the rest catches up.
   // The panel has key={invoice.id}, so this starts fresh for each invoice.
-  const openKeys: string[] = open.flatMap((i) => i.fields)
+  const openKeys: string[] = open.flatMap((issue) => issue.fields)
   const [flaggedKeys, setFlaggedKeys] = useState(() => new Set(openKeys))
-  if (!showRest && openKeys.some((k) => !flaggedKeys.has(k))) {
+  if (!showRest && openKeys.some((key) => !flaggedKeys.has(key))) {
     setFlaggedKeys(new Set([...flaggedKeys, ...openKeys]))
   }
-  const flaggedMeta = FIELD_META.filter((m) => flaggedKeys.has(m.key))
-  const restMeta = FIELD_META.filter((m) => !flaggedKeys.has(m.key))
+  const flaggedMeta = FIELD_META.filter((field) => flaggedKeys.has(field.key))
+  const restMeta = FIELD_META.filter((field) => !flaggedKeys.has(field.key))
 
   // An issue that spans several fields (e.g. two dates) is written only on the first one;
   // the other fields are just highlighted, so the same message isn't repeated two or three times.
-  const firstFieldOf = (i: Issue) => FIELD_META.find((m) => i.fields.includes(m.key))
-  const row = (m: (typeof FIELD_META)[number]) => {
-    const touching = issues.filter((i) => (i.fields as string[]).includes(m.key))
-    const own = openFor(m.key).filter((i) => firstFieldOf(i)?.key === m.key)
-    const linked = openFor(m.key)
-      .filter((i) => firstFieldOf(i)?.key !== m.key)
-      .map((i) => ({ issue: i, label: firstFieldOf(i)?.label ?? '' }))
+  const firstFieldOf = (issue: Issue) =>
+    FIELD_META.find((field) => issue.fields.includes(field.key))
+  const row = (field: (typeof FIELD_META)[number]) => {
+    const touching = issues.filter((issue) => (issue.fields as string[]).includes(field.key))
+    const own = openFor(field.key).filter((issue) => firstFieldOf(issue)?.key === field.key)
+    const linked = openFor(field.key)
+      .filter((issue) => firstFieldOf(issue)?.key !== field.key)
+      .map((issue) => ({ issue, label: firstFieldOf(issue)?.label ?? '' }))
     return (
       <FieldRow
-        key={m.key}
-        meta={m}
-        value={valueOf(invoice, entry.edits, m.key)}
-        confidence={invoice.fields[m.key].confidence}
-        edited={entry.edits[m.key] !== undefined}
+        key={field.key}
+        meta={field}
+        value={valueOf(invoice, entry.edits, field.key)}
+        confidence={invoice.fields[field.key].confidence}
+        edited={entry.edits[field.key] !== undefined}
         issues={own}
         linked={linked}
-        wasResolved={touching.some((i) => entry.resolved.includes(i.key))}
+        wasResolved={touching.some((issue) => entry.resolved.includes(issue.key))}
         locked={locked}
-        onChange={(v) => onEdit(m.key, v)}
-        onClear={() => onClearEdit(m.key)}
-        onResolve={() => onResolve(own.map((i) => i.key))}
+        onChange={(value) => onEdit(field.key, value)}
+        onClear={() => onClearEdit(field.key)}
+        onResolve={() => onResolve(own.map((issue) => issue.key))}
       />
     )
   }
@@ -172,8 +178,8 @@ export function FieldsPanel({
             <Alert color="gray" variant="light" p="xs">
               <Text size="xs">
                 {confirmed ? 'Račun je potvrđen' : 'Račun je odbačen'}
-                {entry.decidedAt ? ` ${fmtDateTime(entry.decidedAt)}` : ''} i zaključan. Za izmjene
-                klikni „Vrati na pregled”.
+                {entry.decidedAt ? ` ${formatDateTime(entry.decidedAt)}` : ''} i zaključan. Za
+                izmjene klikni „Vrati na pregled”.
               </Text>
             </Alert>
           )}
@@ -197,8 +203,8 @@ export function FieldsPanel({
                   {[
                     ['Dobavljač', valueOf(invoice, entry.edits, 'vendorName')],
                     ['Broj računa', valueOf(invoice, entry.edits, 'invoiceNumber')],
-                    ['Datum računa', fmtDate(valueOf(invoice, entry.edits, 'issueDate'))],
-                    ['Dospijeće', fmtDate(valueOf(invoice, entry.edits, 'dueDate'))],
+                    ['Datum računa', formatDate(valueOf(invoice, entry.edits, 'issueDate'))],
+                    ['Dospijeće', formatDate(valueOf(invoice, entry.edits, 'dueDate'))],
                   ].map(([label, val]) => (
                     <Group key={String(label)} justify="space-between" wrap="nowrap">
                       <Text size="xs" c="dimmed">
@@ -234,9 +240,9 @@ export function FieldsPanel({
                       <Text size="xs" c="dimmed">
                         Ispravljeno
                       </Text>
-                      {changes.map((c) => (
-                        <Text key={c.label} size="xs">
-                          <b>{c.label}:</b> {c.from} → {c.to}
+                      {changes.map((change) => (
+                        <Text key={change.label} size="xs">
+                          <b>{change.label}:</b> {change.from} → {change.to}
                         </Text>
                       ))}
                     </Stack>
@@ -246,19 +252,19 @@ export function FieldsPanel({
             </>
           )}
 
-          {docIssues.map((i) => {
-            const resolved = entry.resolved.includes(i.key)
+          {docIssues.map((issue) => {
+            const resolved = entry.resolved.includes(issue.key)
             return (
               <Alert
-                key={i.key}
-                color={resolved ? 'gray' : i.severity === 'error' ? 'red' : 'yellow'}
+                key={issue.key}
+                color={resolved ? 'gray' : issue.severity === 'error' ? 'red' : 'yellow'}
                 variant={resolved ? 'light' : 'filled'}
                 p="xs"
               >
                 <Group justify="space-between" wrap="nowrap" align="flex-start">
                   <Text size="xs" c={resolved ? 'dimmed' : undefined} style={{ flex: 1 }}>
-                    {i.message}
-                    {i.relatedId && (
+                    {issue.message}
+                    {issue.relatedId && (
                       <>
                         {' '}
                         <Anchor
@@ -267,9 +273,9 @@ export function FieldsPanel({
                           c="inherit"
                           fw={700}
                           underline="always"
-                          onClick={() => onOpenInvoice(i.relatedId!)}
+                          onClick={() => onOpenInvoice(issue.relatedId!)}
                         >
-                          Otvori {i.relatedId} →
+                          Otvori {issue.relatedId} →
                         </Anchor>
                       </>
                     )}
@@ -278,7 +284,7 @@ export function FieldsPanel({
                     <Text size="xs" c="green">
                       ✓
                     </Text>
-                  ) : locked ? null : i.relatedId ? (
+                  ) : locked ? null : issue.relatedId ? (
                     // For duplicates "checked" means nothing: the accountant must say whether it is
                     // one or not.
                     <Stack gap={4} style={{ flexShrink: 0 }}>
@@ -286,7 +292,7 @@ export function FieldsPanel({
                         size="compact-xs"
                         variant="white"
                         color="dark"
-                        onClick={() => onResolve([i.key])}
+                        onClick={() => onResolve([issue.key])}
                       >
                         Nije duplikat
                       </Button>
@@ -294,7 +300,7 @@ export function FieldsPanel({
                         size="compact-xs"
                         variant="white"
                         color="red"
-                        onClick={() => onReject(i.relatedId!)}
+                        onClick={() => onReject(issue.relatedId!)}
                       >
                         Duplikat je, odbaci
                       </Button>
@@ -304,7 +310,7 @@ export function FieldsPanel({
                       size="compact-xs"
                       variant="white"
                       color="dark"
-                      onClick={() => onResolve([i.key])}
+                      onClick={() => onResolve([issue.key])}
                       style={{ flexShrink: 0 }}
                     >
                       Provjereno
@@ -325,7 +331,7 @@ export function FieldsPanel({
           <Button
             variant="subtle"
             size="compact-sm"
-            onClick={() => setShowRest((s) => !s)}
+            onClick={() => setShowRest((shown) => !shown)}
             style={{ alignSelf: 'flex-start' }}
           >
             {showRest ? 'Sakrij' : 'Prikaži'} ostala polja ({restMeta.length})
@@ -349,8 +355,8 @@ export function FieldsPanel({
                         </Table.Tr>
                       </Table.Thead>
                       <Table.Tbody>
-                        {invoice.lineItems.map((l, idx) => (
-                          <Table.Tr key={idx}>
+                        {invoice.lineItems.map((line, index) => (
+                          <Table.Tr key={index}>
                             {(
                               [
                                 'description',
@@ -359,19 +365,22 @@ export function FieldsPanel({
                                 'vatRate',
                                 'lineTotal',
                               ] as const
-                            ).map((k) => (
+                            ).map((column) => (
                               <Table.Td
-                                key={k}
+                                key={column}
                                 bg={
                                   // After "Provjereno" the highlight goes away, like with the other
                                   // warnings.
-                                  !entry.resolved.includes('linesConf') && lineCellUncertain(l, k)
+                                  !entry.resolved.includes('linesConf') &&
+                                  lineCellUncertain(line, column)
                                     ? 'var(--mantine-color-yellow-1)'
                                     : undefined
                                 }
                               >
-                                {fmt(l[k].value)}
-                                {k === 'quantity' && l.unit.value ? ` ${l.unit.value}` : ''}
+                                {formatCell(line[column].value)}
+                                {column === 'quantity' && line.unit.value
+                                  ? ` ${line.unit.value}`
+                                  : ''}
                               </Table.Td>
                             ))}
                           </Table.Tr>

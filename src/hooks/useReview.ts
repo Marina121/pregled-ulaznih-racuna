@@ -1,7 +1,7 @@
 import { useLocalStorage } from '@mantine/hooks'
-import type { Edits } from './checks'
+import type { Edits } from '../lib/checks'
 
-export interface ReviewEntry {
+export type ReviewEntry = {
   // Rejected = a duplicate that is not booked. Never deleted, so the decision stays visible and
   // reversible.
   status: 'pending' | 'confirmed' | 'rejected'
@@ -19,15 +19,15 @@ export type ReviewState = Record<string, ReviewEntry>
 
 const EMPTY: ReviewEntry = { status: 'pending', edits: {}, resolved: [] }
 
-export function useReview() {
+export const useReview = () => {
   // No backend: review state lives in localStorage.
   const [state, setState] = useLocalStorage<ReviewState>({
     key: 'racuni-pregled-v1',
     defaultValue: {},
   })
 
-  const update = (id: string, fn: (e: ReviewEntry) => ReviewEntry) =>
-    setState((s) => ({ ...s, [id]: fn(s[id] ?? EMPTY) }))
+  const update = (id: string, change: (entry: ReviewEntry) => ReviewEntry) =>
+    setState((all) => ({ ...all, [id]: change(all[id] ?? EMPTY) }))
 
   return {
     state,
@@ -36,37 +36,48 @@ export function useReview() {
     // correction makes them disappear, a bad one keeps (or creates) them. Marking them checked
     // here used to hide the warning a mistyped amount had just caused.
     setEdit: (id: string, key: string, value: unknown) =>
-      update(id, (e) => ({ ...e, edits: { ...e.edits, [key]: value } })),
+      update(id, (entry) => ({ ...entry, edits: { ...entry.edits, [key]: value } })),
     // Undoing an edit also reopens the issues on that field. Otherwise a field reverted to empty
     // would stay marked as checked, and the invoice could be confirmed without it.
     clearEdit: (id: string, key: string, reopenKeys: string[]) =>
-      update(id, (e) => {
-        const edits = { ...e.edits }
+      update(id, (entry) => {
+        const edits = { ...entry.edits }
         delete edits[key]
-        return { ...e, edits, resolved: e.resolved.filter((k) => !reopenKeys.includes(k)) }
+        return {
+          ...entry,
+          edits,
+          resolved: entry.resolved.filter((resolvedKey) => !reopenKeys.includes(resolvedKey)),
+        }
       }),
     resolve: (id: string, keys: string[]) =>
-      update(id, (e) => ({ ...e, resolved: Array.from(new Set([...e.resolved, ...keys])) })),
+      update(id, (entry) => ({
+        ...entry,
+        resolved: Array.from(new Set([...entry.resolved, ...keys])),
+      })),
     confirm: (id: string) =>
-      update(id, (e) => ({ ...e, status: 'confirmed', decidedAt: new Date().toISOString() })),
+      update(id, (entry) => ({
+        ...entry,
+        status: 'confirmed',
+        decidedAt: new Date().toISOString(),
+      })),
     reject: (id: string, duplicateOf: string) =>
-      update(id, (e) => ({
-        ...e,
+      update(id, (entry) => ({
+        ...entry,
         status: 'rejected',
         duplicateOf,
         decidedAt: new Date().toISOString(),
       })),
     reopen: (id: string) =>
-      update(id, (e) => ({
-        ...e,
+      update(id, (entry) => ({
+        ...entry,
         status: 'pending',
         duplicateOf: undefined,
         decidedAt: undefined,
       })),
     // Back to how the system read it: no edits, nothing checked, pending.
     resetOne: (id: string) =>
-      setState((s) => {
-        const next = { ...s }
+      setState((all) => {
+        const next = { ...all }
         delete next[id]
         return next
       }),

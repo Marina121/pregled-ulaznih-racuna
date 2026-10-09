@@ -21,25 +21,25 @@ const BANKS: Record<string, string> = {
   '571': 'Komercijalna banka',
 }
 
-const clean = (s: string) => s.replace(/[\s-]/g, '').toUpperCase()
+const clean = (text: string) => text.replace(/[\s-]/g, '').toUpperCase()
 
 /** An IBAN (BA39…) contains the domestic account number, so the bank is read from it. */
-const domestic = (c: string) => (c.startsWith('BA') ? c.slice(4) : c)
+const domestic = (account: string) => (account.startsWith('BA') ? account.slice(4) : account)
 
 function mod97(digits: string): number {
   // The number is too long for Number, so the remainder is computed digit by digit.
-  return [...digits].reduce((r, d) => (r * 10 + Number(d)) % 97, 0)
+  return [...digits].reduce((remainder, digit) => (remainder * 10 + Number(digit)) % 97, 0)
 }
 
 export function isValidAccount(raw: string): boolean {
-  const c = clean(raw)
-  if (/^BA\d{18}$/.test(c)) {
+  const account = clean(raw)
+  if (/^BA\d{18}$/.test(account)) {
     // Standard IBAN check: move the first four characters to the end, letters to digits (B=11,
     // A=10).
-    return mod97(c.slice(4) + '1110' + c.slice(2, 4)) === 1
+    return mod97(account.slice(4) + '1110' + account.slice(2, 4)) === 1
   }
-  if (!/^\d{16}$/.test(c)) return false
-  return 98 - mod97(c.slice(0, 14) + '00') === Number(c.slice(14))
+  if (!/^\d{16}$/.test(account)) return false
+  return 98 - mod97(account.slice(0, 14) + '00') === Number(account.slice(14))
 }
 
 export function bankName(raw: string): string | null {
@@ -48,9 +48,9 @@ export function bankName(raw: string): string | null {
 
 /** 1610200055610004 → 161-020-00556100-04, as printed on invoices. */
 export function formatAccount(raw: string): string {
-  const c = clean(raw)
-  if (/^\d{16}$/.test(c))
-    return `${c.slice(0, 3)}-${c.slice(3, 6)}-${c.slice(6, 14)}-${c.slice(14)}`
-  if (/^BA\d{18}$/.test(c)) return c.replace(/(.{4})/g, '$1 ').trim()
+  const account = clean(raw)
+  if (/^\d{16}$/.test(account))
+    return `${account.slice(0, 3)}-${account.slice(3, 6)}-${account.slice(6, 14)}-${account.slice(14)}`
+  if (/^BA\d{18}$/.test(account)) return account.replace(/(.{4})/g, '$1 ').trim()
   return raw
 }

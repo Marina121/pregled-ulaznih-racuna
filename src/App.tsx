@@ -1,15 +1,15 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type FC } from 'react'
 import { Alert, AppShell, Box, Flex, Loader, Text } from '@mantine/core'
 import { useHotkeys } from '@mantine/hooks'
 import type { Invoice } from './types/invoice'
 import { computeIssues, valueOf } from './lib/checks'
 import { confirmedCsv } from './lib/export'
-import { useReview } from './lib/review'
+import { useReview } from './hooks/useReview'
 import { InvoiceList } from './components/InvoiceList'
 import { OriginalViewer } from './components/OriginalViewer'
 import { FieldsPanel } from './components/FieldsPanel'
 
-export default function App() {
+const App: FC = () => {
   const [invoices, setInvoices] = useState<Invoice[]>([])
   // 'loading' until invoices.json arrives; an error message if it can't be read.
   const [load, setLoad] = useState<'loading' | 'ok' | string>('loading')
@@ -21,27 +21,27 @@ export default function App() {
 
   useEffect(() => {
     fetch('/invoices.json')
-      .then((r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`)
-        return r.json()
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`)
+        return response.json()
       })
-      .then((d: { invoices: Invoice[] }) => {
-        setInvoices(d.invoices)
-        setSelectedId(d.invoices[0]?.id ?? null)
+      .then((data: { invoices: Invoice[] }) => {
+        setInvoices(data.invoices)
+        setSelectedId(data.invoices[0]?.id ?? null)
         setLoad('ok')
       })
-      .catch((e: Error) => setLoad(e.message))
+      .catch((error: Error) => setLoad(error.message))
   }, [])
 
   const edits = useMemo(
-    () => Object.fromEntries(Object.entries(review.state).map(([id, s]) => [id, s.edits])),
+    () => Object.fromEntries(Object.entries(review.state).map(([id, entry]) => [id, entry.edits])),
     [review.state],
   )
   const rejected = useMemo(
     () =>
       new Set(
         Object.entries(review.state)
-          .filter(([, s]) => s.status === 'rejected')
+          .filter(([, entry]) => entry.status === 'rejected')
           .map(([id]) => id),
       ),
     [review.state],
@@ -52,65 +52,66 @@ export default function App() {
   )
 
   const clients = useMemo(() => {
-    const m = new Map<string, { id: string; name: string; pending: number }>()
-    invoices.forEach((i) => {
-      const c = m.get(i.client.id) ?? {
-        id: i.client.id,
-        name: i.client.name,
+    const byId = new Map<string, { id: string; name: string; pending: number }>()
+    invoices.forEach((invoice) => {
+      const client = byId.get(invoice.client.id) ?? {
+        id: invoice.client.id,
+        name: invoice.client.name,
         pending: 0,
       }
-      if ((review.state[i.id]?.status ?? 'pending') === 'pending') c.pending++
-      m.set(i.client.id, c)
+      if ((review.state[invoice.id]?.status ?? 'pending') === 'pending') client.pending++
+      byId.set(invoice.client.id, client)
     })
-    return [...m.values()].sort((a, b) => a.name.localeCompare(b.name, 'hr'))
+    return [...byId.values()].sort((first, second) => first.name.localeCompare(second.name, 'hr'))
   }, [invoices, review.state])
 
   // Search by vendor, invoice number or amount ("495", "495,57"), using corrected values.
   // With hundreds of invoices a month this is how a specific one is found, e.g. when a client
   // calls.
   const query = search.trim().toLowerCase().replace(',', '.')
-  const matchesSearch = (i: Invoice) => {
+  const matchesSearch = (invoice: Invoice) => {
     if (!query) return true
-    const edits = review.get(i.id).edits
-    const total = valueOf(i, edits, 'totalAmount')
-    const haystack = [
-      valueOf(i, edits, 'vendorName'),
-      valueOf(i, edits, 'invoiceNumber'),
+    const edits = review.get(invoice.id).edits
+    const total = valueOf(invoice, edits, 'totalAmount')
+    const searchable = [
+      valueOf(invoice, edits, 'vendorName'),
+      valueOf(invoice, edits, 'invoiceNumber'),
       typeof total === 'number' ? total.toFixed(2) : '',
     ]
-    return haystack.some((x) =>
-      String(x ?? '')
+    return searchable.some((value) =>
+      String(value ?? '')
         .toLowerCase()
         .includes(query),
     )
   }
 
   const visible = invoices.filter(
-    (i) =>
-      (clientFilter === 'all' || i.client.id === clientFilter) &&
-      (statusFilter === 'all' || review.get(i.id).status === statusFilter) &&
-      matchesSearch(i),
+    (invoice) =>
+      (clientFilter === 'all' || invoice.client.id === clientFilter) &&
+      (statusFilter === 'all' || review.get(invoice.id).status === statusFilter) &&
+      matchesSearch(invoice),
   )
 
-  const selected = invoices.find((i) => i.id === selectedId)
+  const selected = invoices.find((invoice) => invoice.id === selectedId)
   const selectedIssues = selected ? (issues[selected.id] ?? []) : []
   const selectedEntry = selected ? review.get(selected.id) : null
   const canConfirm =
     !!selected &&
     selectedEntry!.status === 'pending' &&
-    selectedIssues.every((i) => selectedEntry!.resolved.includes(i.key))
+    selectedIssues.every((issue) => selectedEntry!.resolved.includes(issue.key))
 
   const move = (delta: number) => {
-    const idx = visible.findIndex((i) => i.id === selectedId)
-    const next = visible[idx + delta]
+    const index = visible.findIndex((invoice) => invoice.id === selectedId)
+    const next = visible[index + delta]
     if (next) setSelectedId(next.id)
   }
 
   // Next unprocessed invoice in the list; if there is none after the current one, wrap to the top.
   const goToNextPending = (fromId: string) => {
-    const idx = visible.findIndex((i) => i.id === fromId)
-    const pending = (i: Invoice) => i.id !== fromId && review.get(i.id).status === 'pending'
-    const next = visible.slice(idx + 1).find(pending) ?? visible.find(pending)
+    const index = visible.findIndex((invoice) => invoice.id === fromId)
+    const isPending = (invoice: Invoice) =>
+      invoice.id !== fromId && review.get(invoice.id).status === 'pending'
+    const next = visible.slice(index + 1).find(isPending) ?? visible.find(isPending)
     if (next) setSelectedId(next.id)
   }
 
@@ -119,11 +120,11 @@ export default function App() {
     const blob = new Blob([confirmedCsv(invoices, review.state)], {
       type: 'text/csv;charset=utf-8',
     })
-    const a = document.createElement('a')
-    a.href = URL.createObjectURL(blob)
-    a.download = `potvrdeni-racuni-${new Date().toISOString().slice(0, 10)}.csv`
-    a.click()
-    URL.revokeObjectURL(a.href)
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = `potvrdeni-racuni-${new Date().toISOString().slice(0, 10)}.csv`
+    link.click()
+    URL.revokeObjectURL(link.href)
   }
 
   const confirmAndNext = () => {
@@ -166,16 +167,16 @@ export default function App() {
           onSelect={setSelectedId}
           clients={clients}
           clientFilter={clientFilter}
-          onClientFilter={(c) => {
-            setClientFilter(c)
+          onClientFilter={(clientId) => {
+            setClientFilter(clientId)
             // Don't keep another client's invoice open on the right while the list shows a
             // different company. Open the client's first invoice that the other filters show.
-            if (c !== 'all' && selected?.client.id !== c) {
+            if (clientId !== 'all' && selected?.client.id !== clientId) {
               const first = invoices.find(
-                (i) =>
-                  i.client.id === c &&
-                  (statusFilter === 'all' || review.get(i.id).status === statusFilter) &&
-                  matchesSearch(i),
+                (invoice) =>
+                  invoice.client.id === clientId &&
+                  (statusFilter === 'all' || review.get(invoice.id).status === statusFilter) &&
+                  matchesSearch(invoice),
               )
               setSelectedId(first?.id ?? null)
             }
@@ -185,8 +186,12 @@ export default function App() {
           search={search}
           onSearch={setSearch}
           total={invoices.length}
-          doneCount={invoices.filter((i) => review.get(i.id).status !== 'pending').length}
-          confirmedCount={invoices.filter((i) => review.get(i.id).status === 'confirmed').length}
+          doneCount={
+            invoices.filter((invoice) => review.get(invoice.id).status !== 'pending').length
+          }
+          confirmedCount={
+            invoices.filter((invoice) => review.get(invoice.id).status === 'confirmed').length
+          }
           onExport={exportConfirmed}
         />
       </AppShell.Navbar>
@@ -208,23 +213,23 @@ export default function App() {
                 invoice={selected}
                 issues={selectedIssues}
                 entry={selectedEntry}
-                onEdit={(k, v) => review.setEdit(selected.id, k, v)}
-                onClearEdit={(k) => {
+                onEdit={(key, value) => review.setEdit(selected.id, key, value)}
+                onClearEdit={(key) => {
                   // Which issues will this field have once the edit is gone? Those become open
                   // again.
-                  const { [k]: _removed, ...withoutEdit } = selectedEntry.edits
+                  const { [key]: _removed, ...withoutEdit } = selectedEntry.edits
                   const after = computeIssues(
                     invoices,
                     { ...edits, [selected.id]: withoutEdit },
                     rejected,
                   )
-                  const reopen = after[selected.id].filter((i) =>
-                    (i.fields as string[]).includes(k),
+                  const reopen = after[selected.id].filter((issue) =>
+                    (issue.fields as string[]).includes(key),
                   )
                   review.clearEdit(
                     selected.id,
-                    k,
-                    reopen.map((i) => i.key),
+                    key,
+                    reopen.map((issue) => issue.key),
                   )
                 }}
                 onResolve={(keys) => review.resolve(selected.id, keys)}
@@ -240,7 +245,7 @@ export default function App() {
                 onOpenInvoice={(id) => {
                   // If the filters or the search hide that invoice, clear them so it also shows
                   // up in the list.
-                  if (!visible.some((i) => i.id === id)) {
+                  if (!visible.some((invoice) => invoice.id === id)) {
                     setClientFilter('all')
                     setStatusFilter('all')
                     setSearch('')
@@ -259,3 +264,5 @@ export default function App() {
     </AppShell>
   )
 }
+
+export default App

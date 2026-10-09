@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type FC } from 'react'
 import { Badge, Button, Group, NumberInput, Select, Stack, Text, TextInput } from '@mantine/core'
 import type { FieldMeta } from '../lib/fields'
 import type { Issue } from '../lib/checks'
@@ -6,7 +6,7 @@ import { LOW_CONFIDENCE } from '../lib/checks'
 import { bankName, formatAccount, isValidAccount } from '../lib/bankAccounts'
 import { isBranch } from '../lib/taxIds'
 
-interface Props {
+export type Props = {
   meta: FieldMeta
   value: unknown
   confidence: number
@@ -20,7 +20,7 @@ interface Props {
   locked: boolean // invoice confirmed or rejected: show values, allow no changes
 }
 
-export function FieldRow({
+export const FieldRow: FC<Props> = ({
   meta,
   value,
   confidence,
@@ -32,20 +32,20 @@ export function FieldRow({
   onClear,
   onResolve,
   locked,
-}: Props) {
-  const all = [...issues, ...linked.map((l) => l.issue)]
-  const flagged = all.length > 0
+}) => {
+  const allIssues = [...issues, ...linked.map((link) => link.issue)]
+  const flagged = allIssues.length > 0
   const hasValue = value !== null && value !== undefined && value !== ''
-  const color = all.some((i) => i.severity === 'error') ? 'red' : 'yellow'
+  const color = allIssues.some((issue) => issue.severity === 'error') ? 'red' : 'yellow'
 
   // A list (bank accounts) is typed as text separated by commas. The typed text is kept as is
   // while editing; turning it into a list and back on every keystroke would swallow the comma
   // and glue the next number onto the previous one. It's reset only when the value changes from
   // outside (e.g. the edit is undone).
-  const toList = (t: string) =>
-    t
+  const toList = (text: string) =>
+    text
       .split(',')
-      .map((x) => x.trim())
+      .map((part) => part.trim())
       .filter(Boolean)
   const listText = Array.isArray(value) ? value.join(', ') : ''
   const [draft, setDraft] = useState(listText)
@@ -58,8 +58,8 @@ export function FieldRow({
         data={meta.options}
         // A value the reader returned that isn't an option (e.g. "KM") is shown as empty here;
         // the check in checks.ts explains what was read.
-        value={meta.options?.some((o) => o.value === value) ? (value as string) : null}
-        onChange={(v) => onChange(v)}
+        value={meta.options?.some((option) => option.value === value) ? (value as string) : null}
+        onChange={(selected) => onChange(selected)}
         allowDeselect={false}
         placeholder="odaberi"
         data-field={meta.key}
@@ -72,7 +72,7 @@ export function FieldRow({
         decimalScale={2}
         decimalSeparator="."
         hideControls
-        onChange={(v) => onChange(v === '' ? null : Number(v))}
+        onChange={(number) => onChange(number === '' ? null : Number(number))}
         placeholder="nije pronađeno"
         data-field={meta.key}
         readOnly={locked}
@@ -81,13 +81,13 @@ export function FieldRow({
       <TextInput
         size="xs"
         value={meta.kind === 'list' ? draft : ((value as string | null) ?? '')}
-        onChange={(e) => {
-          const t = e.currentTarget.value
+        onChange={(event) => {
+          const typed = event.currentTarget.value
           if (meta.kind === 'list') {
-            setDraft(t)
-            onChange(toList(t))
+            setDraft(typed)
+            onChange(toList(typed))
           } else {
-            onChange(t === '' ? null : t)
+            onChange(typed === '' ? null : typed)
           }
         }}
         placeholder={meta.kind === 'date' ? 'GGGG-MM-DD' : 'nije pronađeno'}
@@ -149,28 +149,28 @@ export function FieldRow({
         // Raw digits are hard to compare with the original: group them as printed, with the bank
         // name.
         <Stack gap={2}>
-          {(value as string[]).map((a, idx) => {
-            const ok = isValidAccount(a)
+          {(value as string[]).map((account, index) => {
+            const valid = isValidAccount(account)
             return (
-              <Text key={idx} size="xs" c={ok ? 'dimmed' : 'red.8'} ff="monospace">
-                {ok ? '✓' : '✗'} {formatAccount(a)}
-                <Text span size="xs" ff="text" c={ok ? 'dimmed' : 'red.8'}>
+              <Text key={index} size="xs" c={valid ? 'dimmed' : 'red.8'} ff="monospace">
+                {valid ? '✓' : '✗'} {formatAccount(account)}
+                <Text span size="xs" ff="text" c={valid ? 'dimmed' : 'red.8'}>
                   {' · '}
-                  {bankName(a) ?? 'nepoznata banka'}
+                  {bankName(account) ?? 'nepoznata banka'}
                 </Text>
               </Text>
             )
           })}
         </Stack>
       )}
-      {issues.map((i) => (
-        <Text key={i.key} size="xs" c={i.severity === 'error' ? 'red.8' : 'yellow.9'}>
-          {i.message}
+      {issues.map((issue) => (
+        <Text key={issue.key} size="xs" c={issue.severity === 'error' ? 'red.8' : 'yellow.9'}>
+          {issue.message}
         </Text>
       ))}
-      {linked.map((l) => (
-        <Text key={l.issue.key} size="xs" c="dimmed">
-          ↑ Vidi upozorenje uz polje „{l.label}”.
+      {linked.map((link) => (
+        <Text key={link.issue.key} size="xs" c="dimmed">
+          ↑ Vidi upozorenje uz polje „{link.label}”.
         </Text>
       ))}
       {issues.length > 0 && !locked && (
