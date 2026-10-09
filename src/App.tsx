@@ -10,6 +10,7 @@ import { OriginalViewer } from './components/OriginalViewer'
 import { FieldsPanel } from './components/FieldsPanel'
 
 const App: FC = () => {
+  // --- State ---
   const [invoices, setInvoices] = useState<Invoice[]>([])
   // 'loading' until invoices.json arrives; an error message if it can't be read.
   const [load, setLoad] = useState<'loading' | 'ok' | string>('loading')
@@ -19,20 +20,7 @@ const App: FC = () => {
   const [search, setSearch] = useState('')
   const review = useReview()
 
-  useEffect(() => {
-    fetch('/invoices.json')
-      .then((response) => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`)
-        return response.json()
-      })
-      .then((data: { invoices: Invoice[] }) => {
-        setInvoices(data.invoices)
-        setSelectedId(data.invoices[0]?.id ?? null)
-        setLoad('ok')
-      })
-      .catch((error: Error) => setLoad(error.message))
-  }, [])
-
+  // --- Derived values ---
   const edits = useMemo(
     () => Object.fromEntries(Object.entries(review.state).map(([id, entry]) => [id, entry.edits])),
     [review.state],
@@ -100,6 +88,7 @@ const App: FC = () => {
     selectedEntry!.status === 'pending' &&
     selectedIssues.every((issue) => selectedEntry!.resolved.includes(issue.key))
 
+  // --- Functions ---
   const move = (delta: number) => {
     const index = visible.findIndex((invoice) => invoice.id === selectedId)
     const next = visible[index + delta]
@@ -138,6 +127,22 @@ const App: FC = () => {
     review.reject(selected.id, duplicateOf)
     goToNextPending(selected.id)
   }
+
+  // --- Effects (they run after rendering) ---
+  // Load the invoices once, when the app opens.
+  useEffect(() => {
+    fetch('/invoices.json')
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`)
+        return response.json()
+      })
+      .then((data: { invoices: Invoice[] }) => {
+        setInvoices(data.invoices)
+        setSelectedId(data.invoices[0]?.id ?? null)
+        setLoad('ok')
+      })
+      .catch((error: Error) => setLoad(error.message))
+  }, [])
 
   // j/k navigation is ignored while typing in a field; Ctrl+Enter works from inside a field too.
   useHotkeys([

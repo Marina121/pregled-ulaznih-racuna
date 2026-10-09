@@ -37,6 +37,11 @@ data is deliberately messy.
 - Comments explain why, not what.
 - Components: `export type Props = { ... }` and `export const Name: FC<Props> = ({ a, b }) => {`,
   with props destructured in the parameter. Local state must not reuse a prop's name.
+- Inside a component, in this order, marked with `// --- State ---`, `// --- Derived values ---`,
+  `// --- Functions ---`, `// --- Effects ---` in the larger ones: state (useState, custom hooks),
+  derived values (useMemo, plain consts), functions, effects (useEffect, useHotkeys), early
+  returns, JSX. All hooks stay above any early return. State whose initial value depends on a
+  derived value comes right after it, with a comment saying so.
 - Small commits with clear messages. Never squash or rewrite pushed history.
 - Don't add libraries without asking.
 - The README is written by the developer in her own words. Don't write or rewrite it.

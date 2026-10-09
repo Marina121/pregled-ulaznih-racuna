@@ -57,21 +57,19 @@ export const FieldsPanel: FC<Props> = ({
   onReject,
   onResetInvoice,
 }) => {
+  // --- State ---
   const [showRest, setShowRest] = useState(false)
+  // Undoing all changes on an invoice can't itself be undone, so it asks for a second click:
+  // the first click arms it, and it disarms by itself after a few seconds (see the effect below).
+  const [resetArmed, setResetArmed] = useState(false)
+
+  // --- Derived values ---
   const open = issues.filter((issue) => !entry.resolved.includes(issue.key))
   const confirmed = entry.status === 'confirmed'
   const rejected = entry.status === 'rejected'
   // A confirmed or rejected invoice is a decision already made: read-only until "Vrati na pregled".
   const locked = entry.status !== 'pending'
   const hasChanges = Object.keys(entry.edits).length > 0 || entry.resolved.length > 0
-  // Undoing all changes on an invoice can't itself be undone, so it asks for a second click:
-  // the first click arms it, and it disarms by itself after a few seconds.
-  const [resetArmed, setResetArmed] = useState(false)
-  useEffect(() => {
-    if (!resetArmed) return
-    const timer = setTimeout(() => setResetArmed(false), CONFIRM_SECOND_CLICK_MS)
-    return () => clearTimeout(timer)
-  }, [resetArmed])
   const docIssues = issues.filter((issue) => issue.fields.length === 0)
   const total = valueOf(invoice, entry.edits, 'totalAmount')
   const changes = changesOf(invoice, entry.edits)
@@ -81,6 +79,7 @@ export const FieldsPanel: FC<Props> = ({
   // - a newly flagged field moves up only while "ostala polja" are hidden (otherwise it is
   //   already visible, highlighted where it is). Collapsing the rest catches up.
   // The panel has key={invoice.id}, so this starts fresh for each invoice.
+  // This state starts from the open issues, so it comes after them rather than under "State".
   const openKeys: string[] = open.flatMap((issue) => issue.fields)
   const [flaggedKeys, setFlaggedKeys] = useState(() => new Set(openKeys))
   if (!showRest && openKeys.some((key) => !flaggedKeys.has(key))) {
@@ -88,11 +87,12 @@ export const FieldsPanel: FC<Props> = ({
   }
   const flaggedMeta = FIELD_META.filter((field) => flaggedKeys.has(field.key))
   const restMeta = FIELD_META.filter((field) => !flaggedKeys.has(field.key))
-
   // An issue that spans several fields (e.g. two dates) is written only on the first one;
   // the other fields are just highlighted, so the same message isn't repeated two or three times.
   const firstFieldOf = (issue: Issue) =>
     FIELD_META.find((field) => issue.fields.includes(field.key))
+
+  // --- Functions ---
   const row = (field: (typeof FIELD_META)[number]) => {
     const touching = issues.filter((issue) => (issue.fields as string[]).includes(field.key))
     const own = openFor(field.key).filter((issue) => firstFieldOf(issue)?.key === field.key)
@@ -116,6 +116,13 @@ export const FieldsPanel: FC<Props> = ({
       />
     )
   }
+
+  // --- Effects (they run after rendering) ---
+  useEffect(() => {
+    if (!resetArmed) return
+    const timer = setTimeout(() => setResetArmed(false), CONFIRM_SECOND_CLICK_MS)
+    return () => clearTimeout(timer)
+  }, [resetArmed])
 
   return (
     <Box h="100%" style={{ display: 'flex', flexDirection: 'column' }}>

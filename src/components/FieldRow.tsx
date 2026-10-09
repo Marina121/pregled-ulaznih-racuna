@@ -20,6 +20,13 @@ export type Props = {
   locked: boolean // invoice confirmed or rejected: show values, allow no changes
 }
 
+// "111, 222, " -> ["111", "222"]
+const toList = (text: string) =>
+  text
+    .split(',')
+    .map((part) => part.trim())
+    .filter(Boolean)
+
 export const FieldRow: FC<Props> = ({
   meta,
   value,
@@ -33,23 +40,20 @@ export const FieldRow: FC<Props> = ({
   onResolve,
   locked,
 }) => {
-  const allIssues = [...issues, ...linked.map((link) => link.issue)]
-  const flagged = allIssues.length > 0
-  const hasValue = value !== null && value !== undefined && value !== ''
-  const color = allIssues.some((issue) => issue.severity === 'error') ? 'red' : 'yellow'
-
+  // --- State ---
   // A list (bank accounts) is typed as text separated by commas. The typed text is kept as is
   // while editing; turning it into a list and back on every keystroke would swallow the comma
   // and glue the next number onto the previous one. It's reset only when the value changes from
   // outside (e.g. the edit is undone).
-  const toList = (text: string) =>
-    text
-      .split(',')
-      .map((part) => part.trim())
-      .filter(Boolean)
   const listText = Array.isArray(value) ? value.join(', ') : ''
   const [draft, setDraft] = useState(listText)
   if (meta.kind === 'list' && toList(draft).join(', ') !== listText) setDraft(listText)
+
+  // --- Derived values ---
+  const allIssues = [...issues, ...linked.map((link) => link.issue)]
+  const flagged = allIssues.length > 0
+  const hasValue = value !== null && value !== undefined && value !== ''
+  const color = allIssues.some((issue) => issue.severity === 'error') ? 'red' : 'yellow'
 
   const input =
     meta.kind === 'select' ? (
