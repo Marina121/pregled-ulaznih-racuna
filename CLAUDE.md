@@ -51,8 +51,9 @@ data is deliberately messy.
   the system's confidence score. Fewer false warnings: if there are too many, the accountant
   learns to click through them.
 - A warning (yellow) can be marked "Provjereno". A reading error (red: date or currency format,
-  check digit, bank account) must be corrected. A red issue where the invoice itself can be like
-  that (missing field, doesn't add up, other buyer) needs an explicit "Takvo je na originalu",
+  check digit, bank account) must be corrected. So must a missing vendor, issue date, currency or
+  amount: it can't be booked without them. A red issue where the invoice itself can be like
+  that (missing invoice number or buyer, doesn't add up, other buyer) needs an explicit "Takvo je na originalu",
   which is listed in the CSV export.
 - Nothing is deleted. A duplicate is rejected, kept and reversible.
 - No "are you sure?" dialogs. Everything can be undone instead, and confirmation is locked until

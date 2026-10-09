@@ -111,7 +111,7 @@ function checkInvoice(
       if (field.required)
         issues.push({
           key: `missing:${field.key}`,
-          dismiss: 'original',
+          dismiss: field.mustHaveValue ? undefined : 'original',
           severity: 'error',
           fields: [field.key],
           message: 'Polje nije pročitano.',

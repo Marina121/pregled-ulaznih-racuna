@@ -12,23 +12,40 @@ export type FieldMeta = {
   // Missing optional fields (e.g. payment reference) are NOT a warning:
   // confidence 0 with null means "not on the invoice", not "the system is unsure".
   required: boolean
+  // Can't be booked without it, so a missing value must be typed in from the original. Other
+  // required fields can really be missing (inv-023 has no invoice number) and allow "Takvo je na
+  // originalu".
+  mustHaveValue?: boolean
   /** For kind 'select': the only accepted values. Booking expects exact codes, so free text
    * like "bAM" or "KM" must not get through. */
   options?: { value: string; label: string }[]
 }
 
 export const FIELD_META: FieldMeta[] = [
-  { key: 'vendorName', label: 'Dobavljač', kind: 'text', required: true },
+  { key: 'vendorName', label: 'Dobavljač', kind: 'text', required: true, mustHaveValue: true },
   { key: 'vendorTaxId', label: 'ID broj dobavljača', kind: 'text', required: false },
   { key: 'vendorVatId', label: 'PDV broj dobavljača', kind: 'text', required: false },
   { key: 'invoiceNumber', label: 'Broj računa', kind: 'text', required: true },
-  { key: 'issueDate', label: 'Datum računa', kind: 'date', required: true },
+  { key: 'issueDate', label: 'Datum računa', kind: 'date', required: true, mustHaveValue: true },
   { key: 'supplyDate', label: 'Datum isporuke', kind: 'date', required: false },
   { key: 'dueDate', label: 'Datum dospijeća', kind: 'date', required: false },
-  { key: 'currency', label: 'Valuta', kind: 'select', required: true, options: CURRENCIES },
-  { key: 'netAmount', label: 'Osnovica (neto)', kind: 'number', required: true },
-  { key: 'vatAmount', label: 'PDV', kind: 'number', required: true },
-  { key: 'totalAmount', label: 'Ukupno', kind: 'number', required: true },
+  {
+    key: 'currency',
+    label: 'Valuta',
+    kind: 'select',
+    required: true,
+    mustHaveValue: true,
+    options: CURRENCIES,
+  },
+  {
+    key: 'netAmount',
+    label: 'Osnovica (neto)',
+    kind: 'number',
+    required: true,
+    mustHaveValue: true,
+  },
+  { key: 'vatAmount', label: 'PDV', kind: 'number', required: true, mustHaveValue: true },
+  { key: 'totalAmount', label: 'Ukupno', kind: 'number', required: true, mustHaveValue: true },
   { key: 'buyerName', label: 'Kupac', kind: 'text', required: true },
   { key: 'buyerTaxId', label: 'ID broj kupca', kind: 'text', required: true },
   { key: 'paymentReference', label: 'Poziv na broj', kind: 'text', required: false },
