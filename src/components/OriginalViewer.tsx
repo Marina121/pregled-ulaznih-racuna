@@ -1,4 +1,4 @@
-import { useState, type FC } from 'react'
+import { useState, type FC, type PointerEvent } from 'react'
 import { Alert, Box, Button, Group, Text } from '@mantine/core'
 import type { Invoice } from '../types/invoice'
 import { MAX_ZOOM, MIN_ZOOM, ZOOM_STEP } from '../config'
@@ -7,15 +7,35 @@ export type Props = {
   invoice: Invoice
 }
 
+// Where a drag started: pointer position and how far the image was scrolled at that moment.
+type DragStart = { x: number; y: number; left: number; top: number }
+
 export const OriginalViewer: FC<Props> = ({ invoice }) => {
   const [zoom, setZoom] = useState(MIN_ZOOM)
-  const [drag, setDrag] = useState<{
-    x: number
-    y: number
-    left: number
-    top: number
-  } | null>(null)
+  const [drag, setDrag] = useState<DragStart | null>(null)
+
   const original = invoice.original
+  const isPdf = original?.mimeType === 'application/pdf'
+
+  const startDrag = (event: PointerEvent<HTMLDivElement>) => {
+    if (isPdf || zoom === MIN_ZOOM) return
+    event.preventDefault()
+    setDrag({
+      x: event.clientX,
+      y: event.clientY,
+      left: event.currentTarget.scrollLeft,
+      top: event.currentTarget.scrollTop,
+    })
+    event.currentTarget.setPointerCapture(event.pointerId)
+  }
+
+  const moveDrag = (event: PointerEvent<HTMLDivElement>) => {
+    if (!drag) return
+    event.currentTarget.scrollLeft = drag.left - (event.clientX - drag.x)
+    event.currentTarget.scrollTop = drag.top - (event.clientY - drag.y)
+  }
+
+  const stopDrag = () => setDrag(null)
 
   if (!original) {
     return (
@@ -29,7 +49,6 @@ export const OriginalViewer: FC<Props> = ({ invoice }) => {
   }
 
   const src = `/${original.path}`
-  const isPdf = original.mimeType === 'application/pdf'
 
   return (
     <Box h="100%" style={{ display: 'flex', flexDirection: 'column' }}>
@@ -93,24 +112,10 @@ export const OriginalViewer: FC<Props> = ({ invoice }) => {
           background: 'var(--mantine-color-gray-1)',
           cursor: !isPdf && zoom > MIN_ZOOM ? (drag ? 'grabbing' : 'grab') : undefined,
         }}
-        onPointerDown={(event) => {
-          if (isPdf || zoom === MIN_ZOOM) return
-          event.preventDefault() // otherwise the browser drags the image as a file
-          setDrag({
-            x: event.clientX,
-            y: event.clientY,
-            left: event.currentTarget.scrollLeft,
-            top: event.currentTarget.scrollTop,
-          })
-          event.currentTarget.setPointerCapture(event.pointerId)
-        }}
-        onPointerMove={(event) => {
-          if (!drag) return
-          event.currentTarget.scrollLeft = drag.left - (event.clientX - drag.x)
-          event.currentTarget.scrollTop = drag.top - (event.clientY - drag.y)
-        }}
-        onPointerUp={() => setDrag(null)}
-        onPointerCancel={() => setDrag(null)}
+        onPointerDown={startDrag}
+        onPointerMove={moveDrag}
+        onPointerUp={stopDrag}
+        onPointerCancel={stopDrag}
       >
         {isPdf ? (
           <iframe
