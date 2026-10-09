@@ -48,6 +48,8 @@ export const FieldRow: FC<Props> = ({
   const flagged = allIssues.length > 0
   const hasValue = value !== null && value !== undefined && value !== ''
   const color = allIssues.some((issue) => issue.severity === 'error') ? 'red' : 'yellow'
+  const dismissable = issues.filter((issue) => issue.dismiss)
+  const mustFix = issues.some((issue) => !issue.dismiss)
 
   const input =
     meta.kind === 'select' ? (
@@ -169,7 +171,12 @@ export const FieldRow: FC<Props> = ({
           Vidi upozorenje uz polje „{link.label}”.
         </Text>
       ))}
-      {issues.length > 0 && !locked && (
+      {mustFix && !locked && (
+        <Text size="xs" c="dimmed">
+          Ispravi vrijednost u polju.
+        </Text>
+      )}
+      {dismissable.length > 0 && !locked && (
         <Button
           size="compact-xs"
           variant="light"
@@ -177,7 +184,9 @@ export const FieldRow: FC<Props> = ({
           onClick={onResolve}
           style={{ alignSelf: 'flex-start' }}
         >
-          Provjereno, u redu je
+          {dismissable.some((issue) => issue.dismiss === 'original')
+            ? 'Takvo je na originalu'
+            : 'Provjereno, u redu je'}
         </Button>
       )}
     </Stack>

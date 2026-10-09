@@ -107,7 +107,7 @@ export const FieldsPanel: FC<Props> = ({
         locked={locked}
         onChange={(value) => onEdit(field.key, value)}
         onClear={() => onClearEdit(field.key)}
-        onResolve={() => onResolve(own.map((issue) => issue.key))}
+        onResolve={() => onResolve(own.filter((issue) => issue.dismiss).map((issue) => issue.key))}
       />
     )
   }

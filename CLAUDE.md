@@ -44,14 +44,16 @@ data is deliberately messy.
   above any early return. No section-marker comments.
 - Small commits with clear messages. Never squash or rewrite pushed history.
 - Don't add libraries without asking.
-- The README was drafted with AI and edited by the developer. Change it only when she asks, and
-  keep it plain and addressed to the reader.
 
 ## Product decisions to keep
 
 - Prefer something that can be computed (check digits, net + VAT = total, quantity x price) over
   the system's confidence score. Fewer false warnings: if there are too many, the accountant
   learns to click through them.
+- A warning (yellow) can be marked "Provjereno". A reading error (red: date or currency format,
+  check digit, bank account) must be corrected. A red issue where the invoice itself can be like
+  that (missing field, doesn't add up, other buyer) needs an explicit "Takvo je na originalu",
+  which is listed in the CSV export.
 - Nothing is deleted. A duplicate is rejected, kept and reversible.
 - No "are you sure?" dialogs. Everything can be undone instead, and confirmation is locked until
   every issue has been reviewed.

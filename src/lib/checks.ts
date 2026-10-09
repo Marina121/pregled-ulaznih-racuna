@@ -21,6 +21,12 @@ export type Issue = {
   message: string
   /** The other invoice the issue refers to (possible duplicate), so it opens in one click. */
   relatedId?: string
+  /**
+   * How it can be cleared without an edit. 'checked': a warning the accountant looked at.
+   * 'original': the invoice itself is like that (doesn't add up, has no number); recorded in the
+   * export. None: a reading error that must be corrected.
+   */
+  dismiss?: 'checked' | 'original'
 }
 
 // Line item numbers can be verified by arithmetic: quantity × price gives the total, with or
@@ -105,6 +111,7 @@ function checkInvoice(
       if (field.required)
         issues.push({
           key: `missing:${field.key}`,
+          dismiss: 'original',
           severity: 'error',
           fields: [field.key],
           message: 'Polje nije pročitano.',
@@ -112,6 +119,7 @@ function checkInvoice(
     } else if (!edited && read.confidence < LOW_CONFIDENCE && !checkDigitOk(field.key)) {
       issues.push({
         key: `conf:${field.key}`,
+        dismiss: 'checked',
         severity: 'warn',
         fields: [field.key],
         message: `Niska pouzdanost čitanja (${Math.round(read.confidence * 100)}%).`,
@@ -144,6 +152,7 @@ function checkInvoice(
   ) {
     issues.push({
       key: `math:${net}+${vat}=${total}`,
+      dismiss: 'original',
       severity: 'error',
       fields: ['netAmount', 'vatAmount', 'totalAmount'],
       message: `Osnovica + PDV = ${(net + vat).toFixed(2)}, a ukupno je ${total.toFixed(2)}.`,
@@ -165,6 +174,7 @@ function checkInvoice(
   ) {
     issues.push({
       key: `linesSum:${lineSum.toFixed(2)}:${net}:${total}`,
+      dismiss: 'checked',
       severity: 'warn',
       fields: [],
       message: `Zbroj stavki (${lineSum.toFixed(2)}) ne odgovara ni osnovici ni ukupnom iznosu. Ako račun ima rabat, to može biti u redu.`,
@@ -177,6 +187,7 @@ function checkInvoice(
   if (uncertainLineCells > 0) {
     issues.push({
       key: 'linesConf',
+      dismiss: 'checked',
       severity: 'warn',
       fields: [],
       message:
@@ -207,6 +218,7 @@ function checkInvoice(
   if (issueDate && supplyDate && supplyDate > issueDate) {
     issues.push({
       key: `dates:supply:${issueDate}:${supplyDate}`,
+      dismiss: 'checked',
       severity: 'warn',
       fields: ['supplyDate', 'issueDate'],
       message: 'Datum isporuke je nakon datuma računa.',
@@ -215,6 +227,7 @@ function checkInvoice(
   if (issueDate && dueDate && dueDate < issueDate) {
     issues.push({
       key: `dates:due:${issueDate}:${dueDate}`,
+      dismiss: 'checked',
       severity: 'warn',
       fields: ['dueDate', 'issueDate'],
       message: 'Datum dospijeća je prije datuma računa.',
@@ -227,6 +240,7 @@ function checkInvoice(
   if (buyerTaxId && buyerTaxId.replace(/\s/g, '') !== invoice.client.taxId) {
     issues.push({
       key: `buyer:${buyerTaxId}`,
+      dismiss: 'original',
       severity: 'error',
       fields: ['buyerTaxId', 'buyerName'],
       message: `ID broj kupca se razlikuje od klijenta (${invoice.client.name}). Je li račun u pravoj mapi?`,
@@ -257,6 +271,7 @@ function checkInvoice(
   ) {
     issues.push({
       key: `vat-tax:${vendorTaxId}:${vendorVatId}`,
+      dismiss: 'checked',
       severity: 'warn',
       fields: ['vendorTaxId', 'vendorVatId'],
       message: 'ID broj i PDV broj su ispravni, ali pripadaju različitim firmama.',

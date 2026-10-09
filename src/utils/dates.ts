@@ -22,3 +22,11 @@ export const formatDateTime = (iso: string) => {
   const minutes = String(date.getMinutes()).padStart(2, '0')
   return `${date.getDate()}. ${date.getMonth() + 1}. ${date.getFullYear()}. u ${hours}:${minutes}`
 }
+
+/** An ISO timestamp in local time, sortable: 2026-10-09 14:32 */
+export const toLocalDateTime = (iso: string) => {
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return iso
+  const pad = (part: number) => String(part).padStart(2, '0')
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`
+}

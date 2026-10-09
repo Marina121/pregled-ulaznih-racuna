@@ -1,8 +1,9 @@
 import type { Invoice } from '../types/invoice'
-import { valueOf, type Edits } from './checks'
+import { computeIssues, valueOf, type Edits } from './checks'
 import { FIELD_META, type FieldKey } from './fields'
 import type { ReviewState } from '../hooks/useReview'
 import { isEmpty } from '../utils/values'
+import { toLocalDateTime } from '../utils/dates'
 
 /** A field value as the accountant reads it: lists joined, nothing shown as "prazno". */
 export const showValue = (value: unknown) =>
@@ -47,13 +48,11 @@ const COLUMNS: FieldKey[] = [
 // One CSV cell. Amounts always with two decimals. A value containing the separator, a quote or a
 // line break is quoted, with quotes doubled, so it can't shift the columns.
 const cell = (value: unknown) => {
-  const text = isEmpty(value)
-    ? ''
-    : Array.isArray(value)
-      ? value.join(', ')
-      : typeof value === 'number'
-        ? value.toFixed(2)
-        : String(value)
+  // Decimal comma, like the ";" separator: what Excel set to Croatian/Bosnian expects.
+  if (typeof value === 'number') return value.toFixed(2).replace('.', ',')
+  let text = isEmpty(value) ? '' : Array.isArray(value) ? value.join(', ') : String(value)
+  // A cell starting with = + - @ would run as a formula in Excel (CSV injection).
+  if (/^[=+\-@]/.test(text)) text = `'${text}`
   return /[";\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text
 }
 
@@ -64,7 +63,22 @@ const cell = (value: unknown) => {
  */
 export function confirmedCsv(invoices: Invoice[], state: ReviewState): string {
   const label = (key: FieldKey) => FIELD_META.find((field) => field.key === key)?.label ?? key
-  const header = ['Račun', 'Klijent', ...COLUMNS.map(label), 'Potvrđeno', 'Ispravljeno']
+  const edits = Object.fromEntries(Object.entries(state).map(([id, entry]) => [id, entry.edits]))
+  const rejected = new Set(
+    Object.entries(state)
+      .filter(([, entry]) => entry.status === 'rejected')
+      .map(([id]) => id),
+  )
+  const issues = computeIssues(invoices, edits, rejected)
+  const header = [
+    'Račun',
+    'Klijent',
+    'ID broj klijenta',
+    ...COLUMNS.map(label),
+    'Potvrđeno',
+    'Ispravljeno',
+    'Takvo na originalu',
+  ]
   const rows = invoices
     .filter((invoice) => state[invoice.id]?.status === 'confirmed')
     .map((invoice) => {
@@ -72,12 +86,20 @@ export function confirmedCsv(invoices: Invoice[], state: ReviewState): string {
       const changes = changesOf(invoice, entry.edits).map(
         (change) => `${change.label} (${change.from} → ${change.to})`,
       )
+      // Errors the accountant confirmed as "takvo je na originalu": booking should know.
+      const asOnOriginal = issues[invoice.id]
+        .filter((issue) => issue.dismiss === 'original' && entry.resolved.includes(issue.key))
+        .map((issue) =>
+          issue.fields[0] ? `${label(issue.fields[0])}: ${issue.message}` : issue.message,
+        )
       return [
         invoice.id,
         invoice.client.name,
+        invoice.client.taxId,
         ...COLUMNS.map((key) => valueOf(invoice, entry.edits, key)),
-        entry.decidedAt ?? '',
+        entry.decidedAt ? toLocalDateTime(entry.decidedAt) : '',
         changes.join(', '),
+        asOnOriginal.join(' '),
       ]
     })
   return BOM + [header, ...rows].map((row) => row.map(cell).join(';')).join('\r\n')
