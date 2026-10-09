@@ -19,6 +19,7 @@ import { FIELD_META } from '../lib/fields'
 import { lineCellUncertain, valueOf, type Issue } from '../lib/checks'
 import { changesOf } from '../lib/export'
 import { formatDate, formatDateTime } from '../utils/dates'
+import { CONFIRM_SECOND_CLICK_MS } from '../config'
 import type { ReviewEntry } from '../hooks/useReview'
 import { FieldRow } from './FieldRow'
 
@@ -68,7 +69,7 @@ export const FieldsPanel: FC<Props> = ({
   const [resetArmed, setResetArmed] = useState(false)
   useEffect(() => {
     if (!resetArmed) return
-    const timer = setTimeout(() => setResetArmed(false), 4000)
+    const timer = setTimeout(() => setResetArmed(false), CONFIRM_SECOND_CLICK_MS)
     return () => clearTimeout(timer)
   }, [resetArmed])
   const docIssues = issues.filter((issue) => issue.fields.length === 0)

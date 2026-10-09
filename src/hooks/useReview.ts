@@ -1,5 +1,6 @@
 import { useLocalStorage } from '@mantine/hooks'
 import type { Edits } from '../lib/checks'
+import { STORAGE_KEY } from '../config'
 
 export type ReviewEntry = {
   // Rejected = a duplicate that is not booked. Never deleted, so the decision stays visible and
@@ -22,7 +23,7 @@ const EMPTY: ReviewEntry = { status: 'pending', edits: {}, resolved: [] }
 export const useReview = () => {
   // No backend: review state lives in localStorage.
   const [state, setState] = useLocalStorage<ReviewState>({
-    key: 'racuni-pregled-v1',
+    key: STORAGE_KEY,
     defaultValue: {},
   })
 

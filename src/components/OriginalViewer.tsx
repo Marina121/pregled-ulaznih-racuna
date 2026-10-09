@@ -1,15 +1,12 @@
 import { useState, type FC } from 'react'
 import { Alert, Box, Button, Group, Text } from '@mantine/core'
 import type { Invoice } from '../types/invoice'
-
-// 100% = image fits the frame width. Phone photos have small print, so zoom goes up to 400%.
-const MIN_ZOOM = 100
-const MAX_ZOOM = 400
-const ZOOM_STEP = 50
+import { MAX_ZOOM, MIN_ZOOM, ZOOM_STEP } from '../config'
 
 export type Props = {
   invoice: Invoice
 }
+
 export const OriginalViewer: FC<Props> = ({ invoice }) => {
   const [zoom, setZoom] = useState(MIN_ZOOM)
   // A zoomed image can be panned by dragging. Remembers where the drag started.

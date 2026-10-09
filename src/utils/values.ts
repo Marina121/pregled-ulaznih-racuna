@@ -1,5 +1,3 @@
-// General helpers for values of unknown type. They know nothing about invoices.
-
 /** The value as text, or null if it isn't text or is only whitespace. */
 export const asText = (value: unknown): string | null =>
   typeof value === 'string' && value.trim() !== '' ? value : null

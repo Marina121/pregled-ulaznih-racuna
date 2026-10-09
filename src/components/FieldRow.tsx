@@ -2,7 +2,7 @@ import { useState, type FC } from 'react'
 import { Badge, Button, Group, NumberInput, Select, Stack, Text, TextInput } from '@mantine/core'
 import type { FieldMeta } from '../lib/fields'
 import type { Issue } from '../lib/checks'
-import { LOW_CONFIDENCE } from '../lib/checks'
+import { LOW_CONFIDENCE } from '../config'
 import { bankName, formatAccount, isValidAccount } from '../lib/bankAccounts'
 import { isBranch } from '../lib/taxIds'
 

@@ -1,4 +1,5 @@
 import type { InvoiceFields } from '../types/invoice'
+import { CURRENCIES } from '../config'
 
 export type FieldKey = keyof InvoiceFields
 export type FieldKind = 'text' | 'date' | 'number' | 'list' | 'select'
@@ -15,13 +16,6 @@ export interface FieldMeta {
    * like "bAM" or "KM" must not get through. */
   options?: { value: string; label: string }[]
 }
-
-// Currencies the booking system accepts. Invoices in BiH often print "KM" for BAM.
-export const CURRENCIES = [
-  { value: 'BAM', label: 'BAM (KM)' },
-  { value: 'EUR', label: 'EUR' },
-  { value: 'USD', label: 'USD' },
-]
 
 export const FIELD_META: FieldMeta[] = [
   { key: 'vendorName', label: 'Dobavljač', kind: 'text', required: true },

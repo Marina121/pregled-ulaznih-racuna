@@ -4,6 +4,7 @@ import { isValidAccount } from './bankAccounts'
 import { isValidTaxId, isValidVatId, sameCompany } from './taxIds'
 import { asNumber, asText, isEmpty, normalize } from '../utils/values'
 import { isIsoDate } from '../utils/dates'
+import { AMOUNT_TOLERANCE, LOW_CONFIDENCE, SAME_AMOUNT_TOLERANCE } from '../config'
 
 export type Severity = 'error' | 'warn'
 export type Edits = Record<string, unknown>
@@ -22,9 +23,6 @@ export interface Issue {
   relatedId?: string
 }
 
-export const LOW_CONFIDENCE = 0.8
-const TOLERANCE = 0.02
-
 // Line item numbers can be verified by arithmetic: quantity × price gives the total, with or
 // without VAT. If they match, they were read correctly, however unsure the system was.
 function lineMathOk(line: LineItem): boolean {
@@ -35,8 +33,8 @@ function lineMathOk(line: LineItem): boolean {
   if (quantity === null || unitPrice === null || lineTotal === null) return false
   const withoutVat = quantity * unitPrice
   return (
-    Math.abs(withoutVat - lineTotal) <= TOLERANCE ||
-    (vatRate !== null && Math.abs(withoutVat * (1 + vatRate / 100) - lineTotal) <= TOLERANCE)
+    Math.abs(withoutVat - lineTotal) <= AMOUNT_TOLERANCE ||
+    (vatRate !== null && Math.abs(withoutVat * (1 + vatRate / 100) - lineTotal) <= AMOUNT_TOLERANCE)
   )
 }
 
@@ -130,7 +128,12 @@ function checkInvoice(
   const net = asNumber(current('netAmount')),
     vat = asNumber(current('vatAmount')),
     total = asNumber(current('totalAmount'))
-  if (net !== null && vat !== null && total !== null && Math.abs(net + vat - total) > TOLERANCE) {
+  if (
+    net !== null &&
+    vat !== null &&
+    total !== null &&
+    Math.abs(net + vat - total) > AMOUNT_TOLERANCE
+  ) {
     issues.push({
       key: `math:${net}+${vat}=${total}`,
       severity: 'error',
@@ -149,8 +152,8 @@ function checkInvoice(
     invoice.lineItems.length > 0 &&
     net !== null &&
     total !== null &&
-    Math.abs(lineSum - net) > TOLERANCE &&
-    Math.abs(lineSum - total) > TOLERANCE
+    Math.abs(lineSum - net) > AMOUNT_TOLERANCE &&
+    Math.abs(lineSum - total) > AMOUNT_TOLERANCE
   ) {
     issues.push({
       key: `linesSum:${lineSum.toFixed(2)}:${net}:${total}`,
@@ -291,7 +294,7 @@ function checkInvoice(
     } else if (
       total !== null &&
       otherTotal !== null &&
-      Math.abs(total - otherTotal) < 0.005 &&
+      Math.abs(total - otherTotal) < SAME_AMOUNT_TOLERANCE &&
       // Same amount on a different date is a regular delivery (e.g. the same goods every two weeks,
       // inv-001 and inv-012), not a duplicate. Only suspicious if the date matches too: the number
       // may have been misread.
