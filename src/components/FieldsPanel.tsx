@@ -122,7 +122,6 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
 
       <ScrollArea style={{ flex: 1 }} p="sm">
         <Stack gap="sm" p="sm">
-          {/* Nothing left to check: instead of an empty panel, show what is being confirmed. */}
           {locked && (
             <Alert color="gray" variant="light" p="xs">
               <Text size="xs">
@@ -132,6 +131,7 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
             </Alert>
           )}
 
+          {/* Nothing left to check: instead of an empty panel, show what is being confirmed. */}
           {open.length === 0 && (
             <>
               {entry.status === 'pending' && (
