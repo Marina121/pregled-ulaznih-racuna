@@ -18,6 +18,7 @@ import type { Invoice } from '../types/invoice'
 import { FIELD_META } from '../lib/fields'
 import { lineCellUncertain, valueOf, type Issue } from '../lib/checks'
 import { changesOf } from '../lib/export'
+import { formatDate, formatDateTime } from '../utils/dates'
 import type { ReviewEntry } from '../hooks/useReview'
 import { FieldRow } from './FieldRow'
 
@@ -33,24 +34,6 @@ export type Props = {
   onOpenInvoice: (id: string) => void
   onReject: (duplicateOf: string) => void
   onResetInvoice: () => void
-}
-
-// 2022-01-04 → 4. 1. 2022., as dates are written on Croatian/Bosnian invoices.
-const formatDate = (value: unknown) => {
-  const match = typeof value === 'string' ? /^(\d{4})-(\d{2})-(\d{2})$/.exec(value) : null
-  return match
-    ? `${Number(match[3])}. ${Number(match[2])}. ${match[1]}.`
-    : value
-      ? String(value)
-      : '—'
-}
-
-// 9. 10. 2026. u 14:32
-const formatDateTime = (iso: string) => {
-  const date = new Date(iso)
-  const hours = String(date.getHours()).padStart(2, '0')
-  const minutes = String(date.getMinutes()).padStart(2, '0')
-  return `${date.getDate()}. ${date.getMonth() + 1}. ${date.getFullYear()}. u ${hours}:${minutes}`
 }
 
 const formatCell = (value: unknown) =>

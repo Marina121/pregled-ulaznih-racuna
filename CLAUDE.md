@@ -22,8 +22,10 @@ data is deliberately messy.
 - `src/hooks/useReview.ts`: review state (pending / confirmed / rejected, edits, reviewed issues).
 - `src/components/`: list, original viewer, fields panel.
 
-`src/lib/` holds plain functions with no React, so they can be used anywhere. React hooks go in
-`src/hooks/`, one per file, named after the hook.
+- `src/lib/`: the business rules (checks, check digits, fields, export). Plain functions, no React.
+- `src/utils/`: general helpers that know nothing about invoices (`values.ts`, `dates.ts`). Reuse
+  them instead of writing another local copy.
+- `src/hooks/`: React hooks, one per file, named after the hook.
 
 ## Conventions
 

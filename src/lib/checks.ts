@@ -2,6 +2,8 @@ import type { Invoice, LineItem } from '../types/invoice'
 import { FIELD_META, type FieldKey } from './fields'
 import { isValidAccount } from './bankAccounts'
 import { isValidTaxId, isValidVatId, sameCompany } from './taxIds'
+import { asNumber, asText, isEmpty, normalize } from '../utils/values'
+import { isIsoDate } from '../utils/dates'
 
 export type Severity = 'error' | 'warn'
 export type Edits = Record<string, unknown>
@@ -22,24 +24,6 @@ export interface Issue {
 
 export const LOW_CONFIDENCE = 0.8
 const TOLERANCE = 0.02
-
-const asText = (value: unknown): string | null =>
-  typeof value === 'string' && value.trim() !== '' ? value : null
-const asNumber = (value: unknown): number | null =>
-  typeof value === 'number' && Number.isFinite(value) ? value : null
-const isEmpty = (value: unknown) =>
-  value === null ||
-  value === undefined ||
-  value === '' ||
-  (Array.isArray(value) && value.length === 0)
-const normalize = (text: string | null) => (text ?? '').toLowerCase().replace(/\s+/g, '')
-// A real date in YYYY-MM-DD form. 2022-02-30 is rejected (Date would roll it over to March),
-// and so is 2022-13-01 (an invalid Date, whose toISOString would throw).
-const isIsoDate = (text: string) => {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) return false
-  const date = new Date(`${text}T00:00:00Z`)
-  return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(text)
-}
 
 // Line item numbers can be verified by arithmetic: quantity × price gives the total, with or
 // without VAT. If they match, they were read correctly, however unsure the system was.

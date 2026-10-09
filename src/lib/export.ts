@@ -2,16 +2,11 @@ import type { Invoice } from '../types/invoice'
 import { valueOf, type Edits } from './checks'
 import { FIELD_META, type FieldKey } from './fields'
 import type { ReviewState } from '../hooks/useReview'
-
-const isBlank = (value: unknown) =>
-  value === null ||
-  value === undefined ||
-  value === '' ||
-  (Array.isArray(value) && value.length === 0)
+import { isEmpty } from '../utils/values'
 
 /** A field value as the accountant reads it: lists joined, nothing shown as "prazno". */
 export const showValue = (value: unknown) =>
-  isBlank(value) ? 'prazno' : Array.isArray(value) ? value.join(', ') : String(value)
+  isEmpty(value) ? 'prazno' : Array.isArray(value) ? value.join(', ') : String(value)
 
 /**
  * What the accountant changed on an invoice: field, value as read, value now. An edit that ends
@@ -52,7 +47,7 @@ const COLUMNS: FieldKey[] = [
 // One CSV cell. Amounts always with two decimals. A value containing the separator, a quote or a
 // line break is quoted, with quotes doubled, so it can't shift the columns.
 const cell = (value: unknown) => {
-  const text = isBlank(value)
+  const text = isEmpty(value)
     ? ''
     : Array.isArray(value)
       ? value.join(', ')
