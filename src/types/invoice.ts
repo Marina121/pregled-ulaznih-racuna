@@ -1,9 +1,9 @@
-export interface Extracted<T> {
+export type Extracted<T> = {
   value: T | null
   confidence: number // 0..1; 0 with value=null means "field not on the invoice", not "unsure"
 }
 
-export interface InvoiceFields {
+export type InvoiceFields = {
   vendorName: Extracted<string>
   vendorTaxId: Extracted<string>
   vendorVatId: Extracted<string>
@@ -21,7 +21,7 @@ export interface InvoiceFields {
   bankAccounts: Extracted<string[]>
 }
 
-export interface LineItem {
+export type LineItem = {
   description: Extracted<string>
   quantity: Extracted<number>
   unit: Extracted<string>
@@ -30,7 +30,7 @@ export interface LineItem {
   lineTotal: Extracted<number>
 }
 
-export interface Invoice {
+export type Invoice = {
   id: string
   client: { id: string; name: string; taxId: string }
   receivedAt: string

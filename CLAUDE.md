@@ -34,14 +34,14 @@ data is deliberately messy.
 
 - UI text is Croatian (the user is an accountant in BiH). Code comments and commit messages are
   English.
-- Comments explain why, not what.
+- Comments explain why, not what, and only where the code would look wrong or get "simplified"
+  back into a bug without them. Keep them to one line where possible.
 - Components: `export type Props = { ... }` and `export const Name: FC<Props> = ({ a, b }) => {`,
   with props destructured in the parameter. Local state must not reuse a prop's name.
-- Inside a component, in this order, marked with `// --- State ---`, `// --- Derived values ---`,
-  `// --- Functions ---`, `// --- Effects ---` in the larger ones: state (useState, custom hooks),
-  derived values (useMemo, plain consts), functions, effects (useEffect, useHotkeys), early
-  returns, JSX. All hooks stay above any early return. State whose initial value depends on a
-  derived value comes right after it, with a comment saying so.
+- Object shapes are declared with `type`, not `interface`.
+- Inside a component, in this order: state (useState, custom hooks), derived values (useMemo,
+  plain consts), functions, effects (useEffect, useHotkeys), early returns, JSX. All hooks stay
+  above any early return. No section-marker comments.
 - Small commits with clear messages. Never squash or rewrite pushed history.
 - Don't add libraries without asking.
 - The README is written by the developer in her own words. Don't write or rewrite it.

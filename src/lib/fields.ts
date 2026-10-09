@@ -4,7 +4,7 @@ import { CURRENCIES } from '../config'
 export type FieldKey = keyof InvoiceFields
 export type FieldKind = 'text' | 'date' | 'number' | 'list' | 'select'
 
-export interface FieldMeta {
+export type FieldMeta = {
   key: FieldKey
   label: string
   kind: FieldKind

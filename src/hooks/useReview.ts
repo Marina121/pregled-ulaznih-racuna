@@ -3,16 +3,10 @@ import type { Edits } from '../lib/checks'
 import { STORAGE_KEY } from '../config'
 
 export type ReviewEntry = {
-  // Rejected = a duplicate that is not booked. Never deleted, so the decision stays visible and
-  // reversible.
   status: 'pending' | 'confirmed' | 'rejected'
-  /** For a rejected invoice: which invoice is the original. */
   duplicateOf?: string
-  /** When the invoice was confirmed or rejected (ISO time). With a backend this would also
-   * record who; without one, a login would only be for show. */
   decidedAt?: string
   edits: Edits
-  /** Keys of the issues the accountant has reviewed. */
   resolved: string[]
 }
 
@@ -21,7 +15,6 @@ export type ReviewState = Record<string, ReviewEntry>
 const EMPTY: ReviewEntry = { status: 'pending', edits: {}, resolved: [] }
 
 export const useReview = () => {
-  // No backend: review state lives in localStorage.
   const [state, setState] = useLocalStorage<ReviewState>({
     key: STORAGE_KEY,
     defaultValue: {},
@@ -33,13 +26,10 @@ export const useReview = () => {
   return {
     state,
     get: (id: string): ReviewEntry => state[id] ?? EMPTY,
-    // An edit doesn't mark anything as checked. Issues are recomputed from the new value: a good
-    // correction makes them disappear, a bad one keeps (or creates) them. Marking them checked
-    // here used to hide the warning a mistyped amount had just caused.
+    // Doesn't mark as checked: otherwise a mistyped amount would hide its own warning.
     setEdit: (id: string, key: string, value: unknown) =>
       update(id, (entry) => ({ ...entry, edits: { ...entry.edits, [key]: value } })),
-    // Undoing an edit also reopens the issues on that field. Otherwise a field reverted to empty
-    // would stay marked as checked, and the invoice could be confirmed without it.
+    // Reopens the field's issues, or an emptied field would stay checked.
     clearEdit: (id: string, key: string, reopenKeys: string[]) =>
       update(id, (entry) => {
         const edits = { ...entry.edits }
@@ -75,7 +65,6 @@ export const useReview = () => {
         duplicateOf: undefined,
         decidedAt: undefined,
       })),
-    // Back to how the system read it: no edits, nothing checked, pending.
     resetOne: (id: string) =>
       setState((all) => {
         const next = { ...all }

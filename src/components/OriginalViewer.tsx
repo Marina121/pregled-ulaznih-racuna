@@ -9,7 +9,6 @@ export type Props = {
 
 export const OriginalViewer: FC<Props> = ({ invoice }) => {
   const [zoom, setZoom] = useState(MIN_ZOOM)
-  // A zoomed image can be panned by dragging. Remembers where the drag started.
   const [drag, setDrag] = useState<{
     x: number
     y: number
@@ -74,7 +73,6 @@ export const OriginalViewer: FC<Props> = ({ invoice }) => {
             >
               +
             </Button>
-            {/* For tiny print beyond 400%: the browser has its own zoom and shows full resolution. */}
             <Button
               size="compact-xs"
               variant="subtle"
@@ -97,7 +95,7 @@ export const OriginalViewer: FC<Props> = ({ invoice }) => {
         }}
         onPointerDown={(event) => {
           if (isPdf || zoom === MIN_ZOOM) return
-          event.preventDefault() // otherwise the browser starts dragging the image as a file
+          event.preventDefault() // otherwise the browser drags the image as a file
           setDrag({
             x: event.clientX,
             y: event.clientY,

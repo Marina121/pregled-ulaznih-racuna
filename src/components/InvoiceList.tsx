@@ -56,7 +56,6 @@ export const InvoiceList: FC<Props> = ({
   confirmedCount,
   onExport,
 }) => {
-  // null = dropdown closed, the input shows the selected client.
   const [clientSearch, setClientSearch] = useState<string | null>(null)
   const clientOptions = [
     { label: 'Svi klijenti', value: 'all' },
@@ -96,7 +95,6 @@ export const InvoiceList: FC<Props> = ({
             ) : null
           }
         />
-        {/* The accountant handles ~40 companies, so a searchable dropdown instead of buttons. */}
         <Select
           size="xs"
           searchable
@@ -106,7 +104,6 @@ export const InvoiceList: FC<Props> = ({
           value={clientFilter}
           onChange={(clientId) => clientId && onClientFilter(clientId)}
           data={clientOptions}
-          // Clear the input on open so typing starts fresh instead of after "Svi klijenti".
           searchValue={clientSearch ?? selectedLabel}
           onSearchChange={(text) => clientSearch !== null && setClientSearch(text)}
           onDropdownOpen={() => setClientSearch('')}
@@ -135,11 +132,9 @@ export const InvoiceList: FC<Props> = ({
           const hasError = open.some((issue) => issue.severity === 'error')
           const confirmed = entry.status === 'confirmed'
           const rejected = entry.status === 'rejected'
-          // Show the accountant's corrections, not what the reader originally returned.
           const valueFor = (key: FieldKey) => valueOf(invoice, entry.edits, key)
           const amount = valueFor('totalAmount')
-          // One colour per state, used for the stripe on the left edge so the list can be
-          // scanned without reading the badges.
+
           const color = rejected
             ? 'gray'
             : confirmed
@@ -192,7 +187,6 @@ export const InvoiceList: FC<Props> = ({
                   </Badge>
                 )}
               </Group>
-              {/* The amount is what the accountant looks for, so it's bold and on the right. */}
               <Group justify="space-between" mt={4} wrap="nowrap" gap="xs">
                 <Text size="xs" c="dimmed" truncate>
                   {String(valueFor('invoiceNumber') ?? 'bez broja')}
@@ -216,7 +210,6 @@ export const InvoiceList: FC<Props> = ({
           </Box>
         )}
       </ScrollArea>
-      {/* After the review: the confirmed invoices, with corrections, as they'd go to booking. */}
       <Box p="xs" style={{ borderTop: '1px solid var(--mantine-color-gray-3)' }}>
         <Button
           size="compact-sm"

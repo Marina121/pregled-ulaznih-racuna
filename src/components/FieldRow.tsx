@@ -40,16 +40,11 @@ export const FieldRow: FC<Props> = ({
   onResolve,
   locked,
 }) => {
-  // --- State ---
-  // A list (bank accounts) is typed as text separated by commas. The typed text is kept as is
-  // while editing; turning it into a list and back on every keystroke would swallow the comma
-  // and glue the next number onto the previous one. It's reset only when the value changes from
-  // outside (e.g. the edit is undone).
+  // Keeps the typed text, or the comma would be swallowed.
   const listText = Array.isArray(value) ? value.join(', ') : ''
   const [draft, setDraft] = useState(listText)
   if (meta.kind === 'list' && toList(draft).join(', ') !== listText) setDraft(listText)
 
-  // --- Derived values ---
   const allIssues = [...issues, ...linked.map((link) => link.issue)]
   const flagged = allIssues.length > 0
   const hasValue = value !== null && value !== undefined && value !== ''
@@ -60,8 +55,6 @@ export const FieldRow: FC<Props> = ({
       <Select
         size="xs"
         data={meta.options}
-        // A value the reader returned that isn't an option (e.g. "KM") is shown as empty here;
-        // the check in checks.ts explains what was read.
         value={meta.options?.some((option) => option.value === value) ? (value as string) : null}
         onChange={(selected) => onChange(selected)}
         allowDeselect={false}
@@ -150,8 +143,6 @@ export const FieldRow: FC<Props> = ({
         </Text>
       )}
       {meta.key === 'bankAccounts' && Array.isArray(value) && value.length > 0 && (
-        // Raw digits are hard to compare with the original: group them as printed, with the bank
-        // name.
         <Stack gap={2}>
           {(value as string[]).map((account, index) => {
             const valid = isValidAccount(account)

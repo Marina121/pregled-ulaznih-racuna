@@ -9,7 +9,7 @@ import { AMOUNT_TOLERANCE, LOW_CONFIDENCE, SAME_AMOUNT_TOLERANCE } from '../conf
 export type Severity = 'error' | 'warn'
 export type Edits = Record<string, unknown>
 
-export interface Issue {
+export type Issue = {
   /**
    * Stable key, so "checked" survives recomputation. It includes the values the issue is about:
    * if they change (e.g. the total is edited again), it's a new issue and needs checking again.

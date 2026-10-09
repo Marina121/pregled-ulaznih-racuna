@@ -1,5 +1,3 @@
-// General date helpers. Dates in the data are text in YYYY-MM-DD form.
-
 /**
  * A real date in YYYY-MM-DD form. 2022-02-30 is rejected (Date would roll it over to March), and
  * so is 2022-13-01 (an invalid Date, whose toISOString would throw).
