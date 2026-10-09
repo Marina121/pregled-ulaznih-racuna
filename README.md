@@ -23,6 +23,17 @@ prođe duplikat ili krivi iznos. Radi za stolom, na velikom ekranu, i često ga 
 Zato aplikacija prvo pokaže samo ono što je sumnjivo, čiste račune pusti da brzo potvrdi, a sve
 odluke ostaju spremljene pa može nastaviti gdje je stao.
 
+## Što aplikacija radi
+
+- Popis računa s obojenom trakom po stanju (greška, upozorenje, spreman, potvrđen, duplikat),
+  pretragom po dobavljaču, broju ili iznosu i izbornikom klijenata.
+- Original računa uz izvučene podatke, sa zumom do 400 % i pomicanjem mišem.
+- Automatske provjere: obavezna polja, osnovica + PDV = ukupno, zbroj stavki, datumi (i njihov
+  oblik), kupac je pravi klijent, kontrolne znamenke žiro-računa, ID i PDV brojeva, duplikati.
+- Ispravak polja, oznaka "Provjereno", odluka o duplikatu, potvrda i vraćanje na pregled.
+- U sažetku računa vidi se što je ispravljeno ("Valuta: prazno → BAM").
+- Izvoz potvrđenih računa u CSV, s ispravljenim vrijednostima, vremenom potvrde i popisom ispravaka.
+
 ## Odluke
 
 **1. Prvo samo ono sumnjivo, a potvrda je zaključana dok se to ne pogleda.**
@@ -77,8 +88,10 @@ Isti računovođa, isti paket računa, jednom na stari način, jednom u aplikaci
 - Za 2000+ računa: provjera duplikata uspoređuje svaki račun sa svakim. Izmjerila sam 0,2 ms za
   25 računa i oko 400 ms za 2000. Usporedila bih samo račune istog dobavljača.
 - Backend umjesto spremanja u preglednik, jer na istim računima radi više ljudi.
-- Slanje potvrđenih računa u knjigovodstveni program, s ispravljenim vrijednostima i podatkom tko
-  je i kada potvrdio. Ispravci bi mogli služiti i za poboljšanje čitanja.
+- Umjesto CSV-a, slanje potvrđenih računa izravno u knjigovodstveni program, uz ime korisnika
+  koji je potvrdio. Ispravci bi mogli služiti i za poboljšanje čitanja.
+- Na slici originala označiti gdje je program pročitao polje. Za to bi trebale koordinate, kojih u
+  podacima nema.
 
 ## AI
 
