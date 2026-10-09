@@ -1,0 +1,6537 @@
+{
+  "invoices": [
+    {
+      "id": "inv-001",
+      "client": {
+        "id": "bili-brig",
+        "name": "BILI BRIG d.o.o. Grude",
+        "taxId": "4272080450006"
+      },
+      "receivedAt": "2022-01-05T08:47:00+01:00",
+      "channel": "mobile",
+      "originalFilename": "IMG_0479.JPG",
+      "original": {
+        "path": "originals/inv-001.jpg",
+        "mimeType": "image/jpeg",
+        "pages": 1,
+        "width": 1950,
+        "height": 2600
+      },
+      "fields": {
+        "vendorName": {
+          "value": "FARMA KOKA \"ČERIGAJKA\"",
+          "confidence": 0.93
+        },
+        "vendorTaxId": {
+          "value": "4372322200004",
+          "confidence": 0.88
+        },
+        "vendorVatId": {
+          "value": "372322200004",
+          "confidence": 0.87
+        },
+        "buyerName": {
+          "value": "BILI BRIG d.o.o.",
+          "confidence": 0.94
+        },
+        "buyerTaxId": {
+          "value": "4272080450006",
+          "confidence": 0.9
+        },
+        "invoiceNumber": {
+          "value": "1-5/2022",
+          "confidence": 0.89
+        },
+        "issueDate": {
+          "value": "2022-01-04",
+          "confidence": 0.96
+        },
+        "supplyDate": {
+          "value": "2022-01-04",
+          "confidence": 0.92
+        },
+        "dueDate": {
+          "value": "2022-01-04",
+          "confidence": 0.91
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.92
+        },
+        "netAmount": {
+          "value": 307.68,
+          "confidence": 0.9
+        },
+        "vatAmount": {
+          "value": 52.31,
+          "confidence": 0.87
+        },
+        "totalAmount": {
+          "value": 359.99,
+          "confidence": 0.92
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "1610200055610004"
+          ],
+          "confidence": 0.86
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "Jaja \"L\" 10/1",
+            "confidence": 0.88
+          },
+          "quantity": {
+            "value": 4.0,
+            "confidence": 0.85
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.83
+          },
+          "unitPrice": {
+            "value": 76.92,
+            "confidence": 0.88
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 359.99,
+            "confidence": 0.82
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-002",
+      "client": {
+        "id": "bili-brig",
+        "name": "BILI BRIG d.o.o. Grude",
+        "taxId": "4272080450006"
+      },
+      "receivedAt": "2022-01-08T10:15:00+01:00",
+      "channel": "mobile",
+      "originalFilename": "IMG_0477.JPG",
+      "original": {
+        "path": "originals/inv-002.jpg",
+        "mimeType": "image/jpeg",
+        "pages": 1,
+        "width": 1950,
+        "height": 2600
+      },
+      "fields": {
+        "vendorName": {
+          "value": "Franck d.o.o. Sarajevo",
+          "confidence": 0.89
+        },
+        "vendorTaxId": {
+          "value": null,
+          "confidence": 0
+        },
+        "vendorVatId": {
+          "value": "200521980005",
+          "confidence": 0.89
+        },
+        "buyerName": {
+          "value": "BILI BRIG d.o.o. Grude",
+          "confidence": 0.99
+        },
+        "buyerTaxId": {
+          "value": "4272080450006",
+          "confidence": 0.9
+        },
+        "invoiceNumber": {
+          "value": "221010584",
+          "confidence": 0.98
+        },
+        "issueDate": {
+          "value": "2022-01-07",
+          "confidence": 0.91
+        },
+        "supplyDate": {
+          "value": null,
+          "confidence": 0
+        },
+        "dueDate": {
+          "value": null,
+          "confidence": 0
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.93
+        },
+        "netAmount": {
+          "value": 449.01,
+          "confidence": 0.91
+        },
+        "vatAmount": {
+          "value": 76.33,
+          "confidence": 0.92
+        },
+        "totalAmount": {
+          "value": 525.34,
+          "confidence": 0.91
+        },
+        "paymentReference": {
+          "value": "01-221010584",
+          "confidence": 0.92
+        },
+        "bankAccounts": {
+          "value": [
+            "3383202250488376"
+          ],
+          "confidence": 0.9
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "CHIO CHIPS CRVENA PAPRIKA 90g",
+            "confidence": 0.8
+          },
+          "quantity": {
+            "value": 24.0,
+            "confidence": 0.94
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.85
+          },
+          "unitPrice": {
+            "value": 1.48,
+            "confidence": 0.85
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.91
+          },
+          "lineTotal": {
+            "value": 31.97,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "CHIO CHIPS KETCHUP 140g (18)",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 18.0,
+            "confidence": 0.88
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.92
+          },
+          "unitPrice": {
+            "value": 2.62,
+            "confidence": 0.93
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 42.44,
+            "confidence": 0.84
+          }
+        },
+        {
+          "description": {
+            "value": "CHIO CHIPS RED PAPRIKA 160g(18) (20g EXT)",
+            "confidence": 0.96
+          },
+          "quantity": {
+            "value": 18.0,
+            "confidence": 0.94
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 2.62,
+            "confidence": 0.91
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 42.44,
+            "confidence": 0.94
+          }
+        },
+        {
+          "description": {
+            "value": "CHIO TACCOS TEXAS ROŠTILJ 65g",
+            "confidence": 0.86
+          },
+          "quantity": {
+            "value": 15.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.92
+          },
+          "unitPrice": {
+            "value": 1.52,
+            "confidence": 0.88
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.8
+          },
+          "lineTotal": {
+            "value": 20.52,
+            "confidence": 0.89
+          }
+        },
+        {
+          "description": {
+            "value": "ČIPI ČIPS PAPRIKA V.130g (18)",
+            "confidence": 0.96
+          },
+          "quantity": {
+            "value": 18.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.9
+          },
+          "unitPrice": {
+            "value": 2.09,
+            "confidence": 0.94
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.9
+          },
+          "lineTotal": {
+            "value": 33.86,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "ČIPI ČIPS PAPRIKA V.65g  (25)",
+            "confidence": 0.85
+          },
+          "quantity": {
+            "value": 25.0,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.91
+          },
+          "unitPrice": {
+            "value": 1.1,
+            "confidence": 0.88
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.84
+          },
+          "lineTotal": {
+            "value": 24.75,
+            "confidence": 0.88
+          }
+        },
+        {
+          "description": {
+            "value": "ČIPI ČIPS V.70g (25)",
+            "confidence": 0.9
+          },
+          "quantity": {
+            "value": 25.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 1.1,
+            "confidence": 0.89
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.89
+          },
+          "lineTotal": {
+            "value": 24.75,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "FRANCK ČAJ BOROVNICA K.55g OMOT",
+            "confidence": 0.85
+          },
+          "quantity": {
+            "value": 10.0,
+            "confidence": 0.88
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 2.42,
+            "confidence": 0.93
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.86
+          },
+          "lineTotal": {
+            "value": 21.78,
+            "confidence": 0.93
+          }
+        },
+        {
+          "description": {
+            "value": "FRANCK ČAJ BRUSNICA K.110g MAXI",
+            "confidence": 0.85
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.87
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 3.99,
+            "confidence": 0.84
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.85
+          },
+          "lineTotal": {
+            "value": 43.09,
+            "confidence": 0.86
+          }
+        },
+        {
+          "description": {
+            "value": "FRANCK ČAJ JABUKA-CIMET K.60g OMOT",
+            "confidence": 0.88
+          },
+          "quantity": {
+            "value": 10.0,
+            "confidence": 0.91
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 2.42,
+            "confidence": 0.89
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.89
+          },
+          "lineTotal": {
+            "value": 21.78,
+            "confidence": 0.91
+          }
+        },
+        {
+          "description": {
+            "value": "FRANCK ČAJ JAGODA VANILIJA K.55g OMOT",
+            "confidence": 0.94
+          },
+          "quantity": {
+            "value": 10.0,
+            "confidence": 0.93
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.87
+          },
+          "unitPrice": {
+            "value": 2.42,
+            "confidence": 0.9
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 21.78,
+            "confidence": 0.84
+          }
+        },
+        {
+          "description": {
+            "value": "FRANCK ČAJ KAMILICA ĐUMBIR MED 40g OMOT",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 10.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.86
+          },
+          "unitPrice": {
+            "value": 2.42,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.92
+          },
+          "lineTotal": {
+            "value": 21.78,
+            "confidence": 0.88
+          }
+        },
+        {
+          "description": {
+            "value": "FRANCK ČAJ KOPRIVA K.30g OMOT",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 10.0,
+            "confidence": 0.96
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.96
+          },
+          "unitPrice": {
+            "value": 2.26,
+            "confidence": 0.91
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.9
+          },
+          "lineTotal": {
+            "value": 20.34,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "FRANCK ČAJ ŠUMSKO VOĆE K.55g OMOT",
+            "confidence": 0.89
+          },
+          "quantity": {
+            "value": 10.0,
+            "confidence": 0.88
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.84
+          },
+          "unitPrice": {
+            "value": 2.42,
+            "confidence": 0.86
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.86
+          },
+          "lineTotal": {
+            "value": 21.78,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "POM-BAR KETCHUP 14x50g",
+            "confidence": 0.94
+          },
+          "quantity": {
+            "value": 14.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.91
+          },
+          "unitPrice": {
+            "value": 1.48,
+            "confidence": 0.88
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.9
+          },
+          "lineTotal": {
+            "value": 18.65,
+            "confidence": 0.85
+          }
+        },
+        {
+          "description": {
+            "value": "POM-BAR ORGINAL 14x50g",
+            "confidence": 0.92
+          },
+          "quantity": {
+            "value": 14.0,
+            "confidence": 0.88
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.85
+          },
+          "unitPrice": {
+            "value": 1.48,
+            "confidence": 0.89
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.93
+          },
+          "lineTotal": {
+            "value": 18.65,
+            "confidence": 0.85
+          }
+        },
+        {
+          "description": {
+            "value": "POM-BAR PAPRIKA STYLE 14x50g",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 14.0,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 1.48,
+            "confidence": 0.85
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 18.65,
+            "confidence": 0.86
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-003",
+      "client": {
+        "id": "bili-brig",
+        "name": "BILI BRIG d.o.o. Grude",
+        "taxId": "4272080450006"
+      },
+      "receivedAt": "2022-01-12T07:58:00+01:00",
+      "channel": "email",
+      "originalFilename": "Racun 1416-22 EDO-SLAD.pdf",
+      "original": null,
+      "fields": {
+        "vendorName": {
+          "value": "\"EDO-SLAD\" d.o.o.",
+          "confidence": 0.94
+        },
+        "vendorTaxId": {
+          "value": "4209246240001",
+          "confidence": 0.93
+        },
+        "vendorVatId": {
+          "value": "209246240001",
+          "confidence": 0.9
+        },
+        "buyerName": {
+          "value": "BILI BRIG d.o.o.",
+          "confidence": 0.94
+        },
+        "buyerTaxId": {
+          "value": "4272080450006",
+          "confidence": 0.96
+        },
+        "invoiceNumber": {
+          "value": "1416/22",
+          "confidence": 0.91
+        },
+        "issueDate": {
+          "value": "2022-01-11",
+          "confidence": 0.92
+        },
+        "supplyDate": {
+          "value": "2022-01-12",
+          "confidence": 0.94
+        },
+        "dueDate": {
+          "value": "2022-02-10",
+          "confidence": 0.92
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.99
+        },
+        "netAmount": {
+          "value": 24.96,
+          "confidence": 0.95
+        },
+        "vatAmount": {
+          "value": 4.24,
+          "confidence": 0.9
+        },
+        "totalAmount": {
+          "value": 29.2,
+          "confidence": 0.92
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "1542002000381837",
+            "1345801002591156",
+            "1413875320019389",
+            "1995010049464486",
+            "1321800308978530",
+            "3386202200636628",
+            "1610250010760063"
+          ],
+          "confidence": 0.92
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "ROLAT ČOKOLADNI VELIKI 750GR *N",
+            "confidence": 0.9
+          },
+          "quantity": {
+            "value": 2.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 6.1,
+            "confidence": 0.91
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 9.76,
+            "confidence": 0.91
+          }
+        },
+        {
+          "description": {
+            "value": "MLIJEČNA ŠNITA 350GR *N",
+            "confidence": 0.95
+          },
+          "quantity": {
+            "value": 1.0,
+            "confidence": 0.94
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.92
+          },
+          "unitPrice": {
+            "value": 4.2,
+            "confidence": 0.95
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 3.36,
+            "confidence": 0.89
+          }
+        },
+        {
+          "description": {
+            "value": "TORTA ČOKOLADNA MALA 700GR *N",
+            "confidence": 0.98
+          },
+          "quantity": {
+            "value": 1.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.94
+          },
+          "unitPrice": {
+            "value": 7.4,
+            "confidence": 0.94
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.91
+          },
+          "lineTotal": {
+            "value": 5.92,
+            "confidence": 0.84
+          }
+        },
+        {
+          "description": {
+            "value": "TORTA KOKOS MALA 700GR *N",
+            "confidence": 0.94
+          },
+          "quantity": {
+            "value": 1.0,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.98
+          },
+          "unitPrice": {
+            "value": 7.4,
+            "confidence": 0.9
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.95
+          },
+          "lineTotal": {
+            "value": 5.92,
+            "confidence": 0.93
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-004",
+      "client": {
+        "id": "bili-brig",
+        "name": "BILI BRIG d.o.o. Grude",
+        "taxId": "4272080450006"
+      },
+      "receivedAt": "2022-01-12T09:20:00+01:00",
+      "channel": "mobile",
+      "originalFilename": "IMG_0474.JPG",
+      "original": {
+        "path": "originals/inv-004.jpg",
+        "mimeType": "image/jpeg",
+        "pages": 1,
+        "width": 1950,
+        "height": 2600
+      },
+      "fields": {
+        "vendorName": {
+          "value": "SARAJEVSKI KISELJAK d.o.o.",
+          "confidence": 0.87
+        },
+        "vendorTaxId": {
+          "value": "4236097460009",
+          "confidence": 0.87
+        },
+        "vendorVatId": {
+          "value": "236097460009",
+          "confidence": 0.87
+        },
+        "buyerName": {
+          "value": "BILI BRIG DOO",
+          "confidence": 0.92
+        },
+        "buyerTaxId": {
+          "value": "4272080450006",
+          "confidence": 0.88
+        },
+        "invoiceNumber": {
+          "value": "91733693",
+          "confidence": 0.93
+        },
+        "issueDate": {
+          "value": "2022-01-11",
+          "confidence": 0.88
+        },
+        "supplyDate": {
+          "value": "2022-01-11",
+          "confidence": 0.9
+        },
+        "dueDate": {
+          "value": "2022-02-10",
+          "confidence": 0.91
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.92
+        },
+        "netAmount": {
+          "value": 283.44,
+          "confidence": 0.93
+        },
+        "vatAmount": {
+          "value": 48.18,
+          "confidence": 0.93
+        },
+        "totalAmount": {
+          "value": 331.62,
+          "confidence": 0.85
+        },
+        "paymentReference": {
+          "value": "01 91733693-3621750000-10",
+          "confidence": 0.92
+        },
+        "bankAccounts": {
+          "value": [
+            "1610000024180074",
+            "3383402200166318",
+            "BA393380604813885972",
+            "1401011120031873",
+            "5715000000076449"
+          ],
+          "confidence": 0.87
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "Jamnica 0.5/12 PET",
+            "confidence": 0.88
+          },
+          "quantity": {
+            "value": 240,
+            "confidence": 0.84
+          },
+          "unit": {
+            "value": "KO",
+            "confidence": 0.91
+          },
+          "unitPrice": {
+            "value": 0.57,
+            "confidence": 0.82
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.89
+          },
+          "lineTotal": {
+            "value": 124.08,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "Mivela 1.35/6 PET blago gazirana",
+            "confidence": 0.89
+          },
+          "quantity": {
+            "value": 6,
+            "confidence": 0.83
+          },
+          "unit": {
+            "value": "KO",
+            "confidence": 0.8
+          },
+          "unitPrice": {
+            "value": 0.92,
+            "confidence": 0.89
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.85
+          },
+          "lineTotal": {
+            "value": 4.96,
+            "confidence": 0.89
+          }
+        },
+        {
+          "description": {
+            "value": "Jana Vitamin limun 1.5/6 PET",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 30,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "KO",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 1.37,
+            "confidence": 0.86
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.84
+          },
+          "lineTotal": {
+            "value": 37.78,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "Sar.kiseljak 1.0/12",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 192,
+            "confidence": 0.86
+          },
+          "unit": {
+            "value": "KO",
+            "confidence": 0.93
+          },
+          "unitPrice": {
+            "value": 0.59,
+            "confidence": 0.91
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 92.93,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "SKI Naranča 1.0/12",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 36,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "KO",
+            "confidence": 0.83
+          },
+          "unitPrice": {
+            "value": 0.74,
+            "confidence": 0.83
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.89
+          },
+          "lineTotal": {
+            "value": 23.69,
+            "confidence": 0.88
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-005",
+      "client": {
+        "id": "bili-brig",
+        "name": "BILI BRIG d.o.o. Grude",
+        "taxId": "4272080450006"
+      },
+      "receivedAt": "2022-01-12T10:04:00+01:00",
+      "channel": "email",
+      "originalFilename": "Racun 00113006-000245-22.pdf",
+      "original": null,
+      "fields": {
+        "vendorName": {
+          "value": "BAKALAR KOMERC DOO",
+          "confidence": 0.99
+        },
+        "vendorTaxId": {
+          "value": "4227033310004",
+          "confidence": 0.9
+        },
+        "vendorVatId": {
+          "value": "227033310004",
+          "confidence": 0.91
+        },
+        "buyerName": {
+          "value": "\"BILI BRIG\" DOO GRUDE",
+          "confidence": 0.99
+        },
+        "buyerTaxId": {
+          "value": "4272080450006",
+          "confidence": 0.94
+        },
+        "invoiceNumber": {
+          "value": "00113006-000245/22",
+          "confidence": 0.93
+        },
+        "issueDate": {
+          "value": "2022-01-11",
+          "confidence": 0.99
+        },
+        "supplyDate": {
+          "value": "2022-01-11",
+          "confidence": 0.97
+        },
+        "dueDate": {
+          "value": "2022-02-10",
+          "confidence": 0.94
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.98
+        },
+        "netAmount": {
+          "value": 396.99,
+          "confidence": 0.94
+        },
+        "vatAmount": {
+          "value": 67.49,
+          "confidence": 0.93
+        },
+        "totalAmount": {
+          "value": 464.48,
+          "confidence": 0.94
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "3381102200005607",
+            "1610000135630067",
+            "3060070000227092"
+          ],
+          "confidence": 0.93
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "POM.SIR LIVADA 45%mm",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 28.04,
+            "confidence": 0.93
+          },
+          "unit": {
+            "value": "kg",
+            "confidence": 0.93
+          },
+          "unitPrice": {
+            "value": 10.99,
+            "confidence": 0.89
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 308.16,
+            "confidence": 0.91
+          }
+        },
+        {
+          "description": {
+            "value": "ŠM.SIRKO SIRNI NAMAZ 200G 60%",
+            "confidence": 0.97
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.91
+          },
+          "unitPrice": {
+            "value": 1.53,
+            "confidence": 0.89
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 17.81,
+            "confidence": 0.89
+          }
+        },
+        {
+          "description": {
+            "value": "MORTADELA Kraljica 3/1 VP",
+            "confidence": 0.92
+          },
+          "quantity": {
+            "value": 3.76,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "kg",
+            "confidence": 0.92
+          },
+          "unitPrice": {
+            "value": 8.8,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 29.12,
+            "confidence": 0.92
+          }
+        },
+        {
+          "description": {
+            "value": "STAR S WINNY YUM 170G VOĆ.KARAMELA",
+            "confidence": 0.92
+          },
+          "quantity": {
+            "value": 24.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.86
+          },
+          "unitPrice": {
+            "value": 0.87,
+            "confidence": 0.88
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 20.25,
+            "confidence": 0.91
+          }
+        },
+        {
+          "description": {
+            "value": "ETA KAPULICE 290G",
+            "confidence": 0.88
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.93
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.99
+          },
+          "unitPrice": {
+            "value": 1.26,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 7.33,
+            "confidence": 0.97
+          }
+        },
+        {
+          "description": {
+            "value": "ETA KAPRE SLANE 200G",
+            "confidence": 0.93
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.93
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.92
+          },
+          "unitPrice": {
+            "value": 2.46,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 14.32,
+            "confidence": 0.96
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-006",
+      "client": {
+        "id": "bili-brig",
+        "name": "BILI BRIG d.o.o. Grude",
+        "taxId": "4272080450006"
+      },
+      "receivedAt": "2022-01-12T13:40:00+01:00",
+      "channel": "mobile",
+      "originalFilename": "IMG_0465.JPG",
+      "original": {
+        "path": "originals/inv-006.jpg",
+        "mimeType": "image/jpeg",
+        "pages": 1,
+        "width": 1950,
+        "height": 2600
+      },
+      "fields": {
+        "vendorName": {
+          "value": "IVA KOLAČI d.o.o.",
+          "confidence": 0.75
+        },
+        "vendorTaxId": {
+          "value": "4227374140000",
+          "confidence": 0.73
+        },
+        "vendorVatId": {
+          "value": "227374140000",
+          "confidence": 0.67
+        },
+        "buyerName": {
+          "value": "BILI BRIG DOO",
+          "confidence": 0.7
+        },
+        "buyerTaxId": {
+          "value": "4272080450006",
+          "confidence": 0.68
+        },
+        "invoiceNumber": {
+          "value": "1-41/22",
+          "confidence": 0.65
+        },
+        "issueDate": {
+          "value": "2022-01-11",
+          "confidence": 0.67
+        },
+        "supplyDate": {
+          "value": null,
+          "confidence": 0
+        },
+        "dueDate": {
+          "value": null,
+          "confidence": 0
+        },
+        "currency": {
+          "value": null,
+          "confidence": 0
+        },
+        "netAmount": {
+          "value": 73.13,
+          "confidence": 0.72
+        },
+        "vatAmount": {
+          "value": 12.43,
+          "confidence": 0.71
+        },
+        "totalAmount": {
+          "value": 85.56,
+          "confidence": 0.67
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "1941050905600145",
+            "1327002010888181"
+          ],
+          "confidence": 0.62
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "HURMAŠICA 470 gr.",
+            "confidence": 0.68
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.72
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.69
+          },
+          "unitPrice": {
+            "value": 3.75,
+            "confidence": 0.58
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 7.5,
+            "confidence": 0.68
+          }
+        },
+        {
+          "description": {
+            "value": "BAKLAVA 560 gr.",
+            "confidence": 0.71
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.65
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.7
+          },
+          "unitPrice": {
+            "value": 5.95,
+            "confidence": 0.7
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 11.9,
+            "confidence": 0.69
+          }
+        },
+        {
+          "description": {
+            "value": "ČUPAVCI 450 gr.",
+            "confidence": 0.62
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.68
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.66
+          },
+          "unitPrice": {
+            "value": 4.61,
+            "confidence": 0.67
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 9.22,
+            "confidence": 0.67
+          }
+        },
+        {
+          "description": {
+            "value": "KOKOS KIFLICE 400 gr.",
+            "confidence": 0.7
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.68
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.68
+          },
+          "unitPrice": {
+            "value": 4.58,
+            "confidence": 0.72
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 9.16,
+            "confidence": 0.65
+          }
+        },
+        {
+          "description": {
+            "value": "CVJETIĆI 300 gr.",
+            "confidence": 0.65
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.69
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.68
+          },
+          "unitPrice": {
+            "value": 3.74,
+            "confidence": 0.68
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 7.48,
+            "confidence": 0.69
+          }
+        },
+        {
+          "description": {
+            "value": "OBLATNE 350 gr.",
+            "confidence": 0.65
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.65
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.64
+          },
+          "unitPrice": {
+            "value": 4.46,
+            "confidence": 0.71
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 8.92,
+            "confidence": 0.64
+          }
+        },
+        {
+          "description": {
+            "value": "MIX SUHI 500 gr.",
+            "confidence": 0.65
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.66
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.68
+          },
+          "unitPrice": {
+            "value": 6.55,
+            "confidence": 0.65
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 13.1,
+            "confidence": 0.66
+          }
+        },
+        {
+          "description": {
+            "value": "BRESKVICE 350 gr.",
+            "confidence": 0.69
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.61
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.69
+          },
+          "unitPrice": {
+            "value": 4.85,
+            "confidence": 0.65
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 9.7,
+            "confidence": 0.68
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-007",
+      "client": {
+        "id": "bili-brig",
+        "name": "BILI BRIG d.o.o. Grude",
+        "taxId": "4272080450006"
+      },
+      "receivedAt": "2022-01-13T09:02:00+01:00",
+      "channel": "email",
+      "originalFilename": "Scan_20220113_0902.pdf",
+      "original": {
+        "path": "originals/inv-007.pdf",
+        "mimeType": "application/pdf",
+        "pages": 1
+      },
+      "fields": {
+        "vendorName": {
+          "value": "IVA KOLAČI d.o.o.",
+          "confidence": 0.84
+        },
+        "vendorTaxId": {
+          "value": "4227374140000",
+          "confidence": 0.82
+        },
+        "vendorVatId": {
+          "value": "227374140000",
+          "confidence": 0.85
+        },
+        "buyerName": {
+          "value": "BILI BRIG DOO",
+          "confidence": 0.89
+        },
+        "buyerTaxId": {
+          "value": "4272080450006",
+          "confidence": 0.83
+        },
+        "invoiceNumber": {
+          "value": "1-41/22",
+          "confidence": 0.81
+        },
+        "issueDate": {
+          "value": "2022-01-11",
+          "confidence": 0.84
+        },
+        "supplyDate": {
+          "value": null,
+          "confidence": 0
+        },
+        "dueDate": {
+          "value": null,
+          "confidence": 0
+        },
+        "currency": {
+          "value": null,
+          "confidence": 0
+        },
+        "netAmount": {
+          "value": 73.13,
+          "confidence": 0.86
+        },
+        "vatAmount": {
+          "value": 12.43,
+          "confidence": 0.92
+        },
+        "totalAmount": {
+          "value": 85.56,
+          "confidence": 0.85
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "1941050905600145",
+            "1327002010888181"
+          ],
+          "confidence": 0.84
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "HURMAŠICA 470 gr.",
+            "confidence": 0.85
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.82
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.84
+          },
+          "unitPrice": {
+            "value": 3.75,
+            "confidence": 0.85
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 7.5,
+            "confidence": 0.83
+          }
+        },
+        {
+          "description": {
+            "value": "BAKLAVA 560 gr.",
+            "confidence": 0.82
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.82
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.84
+          },
+          "unitPrice": {
+            "value": 5.95,
+            "confidence": 0.85
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 11.9,
+            "confidence": 0.84
+          }
+        },
+        {
+          "description": {
+            "value": "ČUPAVCI 450 gr.",
+            "confidence": 0.85
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.83
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.81
+          },
+          "unitPrice": {
+            "value": 4.61,
+            "confidence": 0.83
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 9.22,
+            "confidence": 0.82
+          }
+        },
+        {
+          "description": {
+            "value": "KOKOS KIFLICE 400 gr.",
+            "confidence": 0.79
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.83
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.84
+          },
+          "unitPrice": {
+            "value": 4.58,
+            "confidence": 0.84
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 9.16,
+            "confidence": 0.88
+          }
+        },
+        {
+          "description": {
+            "value": "CVJETIĆI 300 gr.",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.85
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.87
+          },
+          "unitPrice": {
+            "value": 3.74,
+            "confidence": 0.84
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 7.48,
+            "confidence": 0.83
+          }
+        },
+        {
+          "description": {
+            "value": "OBLATNE 350 gr.",
+            "confidence": 0.83
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.84
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.86
+          },
+          "unitPrice": {
+            "value": 4.46,
+            "confidence": 0.86
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 8.92,
+            "confidence": 0.8
+          }
+        },
+        {
+          "description": {
+            "value": "MIX SUHI 500 gr.",
+            "confidence": 0.85
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.88
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 6.55,
+            "confidence": 0.84
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 13.1,
+            "confidence": 0.83
+          }
+        },
+        {
+          "description": {
+            "value": "BRESKVICE 350 gr.",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.83
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.83
+          },
+          "unitPrice": {
+            "value": 4.85,
+            "confidence": 0.8
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 9.7,
+            "confidence": 0.82
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-008",
+      "client": {
+        "id": "bili-brig",
+        "name": "BILI BRIG d.o.o. Grude",
+        "taxId": "4272080450006"
+      },
+      "receivedAt": "2022-01-13T11:20:00+01:00",
+      "channel": "mobile",
+      "originalFilename": "IMG_0458.JPG",
+      "original": {
+        "path": "originals/inv-008.jpg",
+        "mimeType": "image/jpeg",
+        "pages": 1,
+        "width": 1950,
+        "height": 2600
+      },
+      "fields": {
+        "vendorName": {
+          "value": "Duvnjak d.o.o.",
+          "confidence": 0.94
+        },
+        "vendorTaxId": {
+          "value": "4402922090004",
+          "confidence": 0.89
+        },
+        "vendorVatId": {
+          "value": "402922090004",
+          "confidence": 0.93
+        },
+        "buyerName": {
+          "value": "BILI BRIG d.o.o.",
+          "confidence": 0.99
+        },
+        "buyerTaxId": {
+          "value": "4272080450006",
+          "confidence": 0.91
+        },
+        "invoiceNumber": {
+          "value": "22-3000-0164",
+          "confidence": 0.95
+        },
+        "issueDate": {
+          "value": "2022-01-12",
+          "confidence": 0.89
+        },
+        "supplyDate": {
+          "value": "2022-01-12",
+          "confidence": 0.93
+        },
+        "dueDate": {
+          "value": "2022-01-12",
+          "confidence": 0.91
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.99
+        },
+        "netAmount": {
+          "value": 42.0,
+          "confidence": 0.96
+        },
+        "vatAmount": {
+          "value": 7.14,
+          "confidence": 0.95
+        },
+        "totalAmount": {
+          "value": 49.14,
+          "confidence": 0.96
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "161-000-01893300-43"
+          ],
+          "confidence": 0.96
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "Kore za pitu i baklave 450 g",
+            "confidence": 0.89
+          },
+          "quantity": {
+            "value": 30.0,
+            "confidence": 0.94
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 1.4,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.91
+          },
+          "lineTotal": {
+            "value": 42.0,
+            "confidence": 0.91
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-009",
+      "client": {
+        "id": "bili-brig",
+        "name": "BILI BRIG d.o.o. Grude",
+        "taxId": "4272080450006"
+      },
+      "receivedAt": "2022-01-13T16:05:00+01:00",
+      "channel": "mobile",
+      "originalFilename": "IMG_0461.JPG",
+      "original": {
+        "path": "originals/inv-009.jpg",
+        "mimeType": "image/jpeg",
+        "pages": 1,
+        "width": 1950,
+        "height": 2600
+      },
+      "fields": {
+        "vendorName": {
+          "value": "Dukat d.o.o.",
+          "confidence": 0.87
+        },
+        "vendorTaxId": {
+          "value": "4400842150003",
+          "confidence": 0.85
+        },
+        "vendorVatId": {
+          "value": "400842150003",
+          "confidence": 0.93
+        },
+        "buyerName": {
+          "value": "BILI BRIG- doo",
+          "confidence": 0.92
+        },
+        "buyerTaxId": {
+          "value": "4272080450006",
+          "confidence": 0.9
+        },
+        "invoiceNumber": {
+          "value": "SA-1376/22",
+          "confidence": 0.87
+        },
+        "issueDate": {
+          "value": "2022-01-12",
+          "confidence": 0.91
+        },
+        "supplyDate": {
+          "value": "2022-01-13",
+          "confidence": 0.87
+        },
+        "dueDate": {
+          "value": "2022-02-11",
+          "confidence": 0.91
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.97
+        },
+        "netAmount": {
+          "value": 423.56,
+          "confidence": 0.85
+        },
+        "vatAmount": {
+          "value": 72.01,
+          "confidence": 0.86
+        },
+        "totalAmount": {
+          "value": 495.57,
+          "confidence": 0.86
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "555-007-01031979-75",
+            "567-241-11001338-02"
+          ],
+          "confidence": 0.87
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "CA.GRIL KOBASICA 280GR CARNEX",
+            "confidence": 0.85
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.88
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.84
+          },
+          "unitPrice": {
+            "value": 2.42,
+            "confidence": 0.89
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 16.47,
+            "confidence": 0.85
+          }
+        },
+        {
+          "description": {
+            "value": "CA.SRPSKA KOBASICA 310GR",
+            "confidence": 0.86
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.84
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.84
+          },
+          "unitPrice": {
+            "value": 2.12,
+            "confidence": 0.87
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.89
+          },
+          "lineTotal": {
+            "value": 14.44,
+            "confidence": 0.86
+          }
+        },
+        {
+          "description": {
+            "value": "CA.RIBLJA PAŠTETA S POV 75 GR",
+            "confidence": 0.89
+          },
+          "quantity": {
+            "value": 14.0,
+            "confidence": 0.88
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.84
+          },
+          "unitPrice": {
+            "value": 0.92,
+            "confidence": 0.87
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.84
+          },
+          "lineTotal": {
+            "value": 13.74,
+            "confidence": 0.86
+          }
+        },
+        {
+          "description": {
+            "value": "CA.PASULJ SA FAŠ.ŠNICLOM 400GR",
+            "confidence": 0.85
+          },
+          "quantity": {
+            "value": 15.0,
+            "confidence": 0.85
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.84
+          },
+          "unitPrice": {
+            "value": 2.56,
+            "confidence": 0.86
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.84
+          },
+          "lineTotal": {
+            "value": 43.58,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "PR SPUŽVASTA KRPA  3/1 PEREX",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 40.0,
+            "confidence": 0.85
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.87
+          },
+          "unitPrice": {
+            "value": 2.25,
+            "confidence": 0.82
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.85
+          },
+          "lineTotal": {
+            "value": 83.23,
+            "confidence": 0.86
+          }
+        },
+        {
+          "description": {
+            "value": "PR SPUŽVASTA KRPA  5/1 PEREX",
+            "confidence": 0.88
+          },
+          "quantity": {
+            "value": 15.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.83
+          },
+          "unitPrice": {
+            "value": 3.51,
+            "confidence": 0.85
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.94
+          },
+          "lineTotal": {
+            "value": 57.28,
+            "confidence": 0.85
+          }
+        },
+        {
+          "description": {
+            "value": "PR BRISAČ PODA SA DRŠKOM PEREX",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.84
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.87
+          },
+          "unitPrice": {
+            "value": 14.5,
+            "confidence": 0.83
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.92
+          },
+          "lineTotal": {
+            "value": 80.46,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "PR VR.ZA SMEĆE EX.JAKE BV 8/1 150L",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 15.0,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.85
+          },
+          "unitPrice": {
+            "value": 2.79,
+            "confidence": 0.95
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.9
+          },
+          "lineTotal": {
+            "value": 45.54,
+            "confidence": 0.82
+          }
+        },
+        {
+          "description": {
+            "value": "NE.FAMILY BRESKVA 1.5L",
+            "confidence": 0.88
+          },
+          "quantity": {
+            "value": 8.0,
+            "confidence": 0.84
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.92
+          },
+          "unitPrice": {
+            "value": 1.84,
+            "confidence": 0.87
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 16.36,
+            "confidence": 0.88
+          }
+        },
+        {
+          "description": {
+            "value": "NE.FAMILY VOĆNI MIX 1.5L",
+            "confidence": 0.94
+          },
+          "quantity": {
+            "value": 8.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 1.84,
+            "confidence": 0.86
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.95
+          },
+          "lineTotal": {
+            "value": 16.36,
+            "confidence": 0.84
+          }
+        },
+        {
+          "description": {
+            "value": "NE.FAMILY BRESKVA 1L",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.81
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.87
+          },
+          "unitPrice": {
+            "value": 1.32,
+            "confidence": 0.83
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.85
+          },
+          "lineTotal": {
+            "value": 17.61,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "NE.FAMILY POMORANDŽA 1L",
+            "confidence": 0.8
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.84
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.93
+          },
+          "unitPrice": {
+            "value": 1.54,
+            "confidence": 0.86
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.86
+          },
+          "lineTotal": {
+            "value": 20.55,
+            "confidence": 0.83
+          }
+        },
+        {
+          "description": {
+            "value": "NE.VOĆNE KAPI BRESKVA 15% 2l",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 30.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 1.76,
+            "confidence": 0.86
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.85
+          },
+          "lineTotal": {
+            "value": 52.81,
+            "confidence": 0.82
+          }
+        },
+        {
+          "description": {
+            "value": "NE.LIFE PREMIUM BOROVNICA 1L",
+            "confidence": 0.85
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 2.57,
+            "confidence": 0.82
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.84
+          },
+          "lineTotal": {
+            "value": 17.14,
+            "confidence": 0.85
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-010",
+      "client": {
+        "id": "bili-brig",
+        "name": "BILI BRIG d.o.o. Grude",
+        "taxId": "4272080450006"
+      },
+      "receivedAt": "2022-01-14T08:30:00+01:00",
+      "channel": "email",
+      "originalFilename": "001-211-22.pdf",
+      "original": null,
+      "fields": {
+        "vendorName": {
+          "value": "MEPAS d.o.o.",
+          "confidence": 0.99
+        },
+        "vendorTaxId": {
+          "value": "4272016790006",
+          "confidence": 0.91
+        },
+        "vendorVatId": {
+          "value": "272016790006",
+          "confidence": 0.92
+        },
+        "buyerName": {
+          "value": "BILI BRIG DOO GRUDE",
+          "confidence": 0.97
+        },
+        "buyerTaxId": {
+          "value": "4272080450006",
+          "confidence": 0.94
+        },
+        "invoiceNumber": {
+          "value": "001-211/22",
+          "confidence": 0.96
+        },
+        "issueDate": {
+          "value": "2022-01-05",
+          "confidence": 0.91
+        },
+        "supplyDate": {
+          "value": "2022-01-05",
+          "confidence": 0.97
+        },
+        "dueDate": {
+          "value": "2022-02-04",
+          "confidence": 0.98
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.92
+        },
+        "netAmount": {
+          "value": 1320.74,
+          "confidence": 0.93
+        },
+        "vatAmount": {
+          "value": 224.53,
+          "confidence": 0.97
+        },
+        "totalAmount": {
+          "value": 1545.27,
+          "confidence": 0.94
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "338 220 22000188 41"
+          ],
+          "confidence": 0.95
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "JELI HRENOVKE 200gr-Gavrilović",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.94
+          },
+          "unitPrice": {
+            "value": 2.21,
+            "confidence": 0.95
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.95
+          },
+          "lineTotal": {
+            "value": 11.27,
+            "confidence": 0.91
+          }
+        },
+        {
+          "description": {
+            "value": "KOBASICA ČAJNA NARESCI 80gr-Gavrilović",
+            "confidence": 0.95
+          },
+          "quantity": {
+            "value": 18.0,
+            "confidence": 0.94
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.91
+          },
+          "unitPrice": {
+            "value": 1.83,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.89
+          },
+          "lineTotal": {
+            "value": 31.29,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "KOBASICA KRANJSKA 320gr-Gavrilović",
+            "confidence": 0.92
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.91
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.96
+          },
+          "unitPrice": {
+            "value": 4.24,
+            "confidence": 0.93
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.91
+          },
+          "lineTotal": {
+            "value": 48.33,
+            "confidence": 0.91
+          }
+        },
+        {
+          "description": {
+            "value": "KOBASICA PILEĆA EXTRA 500gr-Gavrilović",
+            "confidence": 0.9
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.95
+          },
+          "unitPrice": {
+            "value": 3.41,
+            "confidence": 0.95
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.99
+          },
+          "lineTotal": {
+            "value": 19.43,
+            "confidence": 0.99
+          }
+        },
+        {
+          "description": {
+            "value": "KOBASICA POSEBNA 800gr-Gavrilović",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 3.0,
+            "confidence": 0.93
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.93
+          },
+          "unitPrice": {
+            "value": 6.79,
+            "confidence": 0.88
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.92
+          },
+          "lineTotal": {
+            "value": 19.35,
+            "confidence": 0.93
+          }
+        },
+        {
+          "description": {
+            "value": "GRANIČARSKA KOBASICA NARESCI 80gr-Gavrilović",
+            "confidence": 0.89
+          },
+          "quantity": {
+            "value": 9.0,
+            "confidence": 0.94
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.93
+          },
+          "unitPrice": {
+            "value": 1.81,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.92
+          },
+          "lineTotal": {
+            "value": 15.47,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "GALA PILEĆE HRENOVKE 200gr-Gavrilović",
+            "confidence": 0.93
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.95
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.93
+          },
+          "unitPrice": {
+            "value": 1.37,
+            "confidence": 0.93
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.92
+          },
+          "lineTotal": {
+            "value": 7.8,
+            "confidence": 0.92
+          }
+        },
+        {
+          "description": {
+            "value": "HRENOVKE FRANKFURTER 200gr-Gavrilović",
+            "confidence": 0.97
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.91
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 2.32,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.91
+          },
+          "lineTotal": {
+            "value": 13.22,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "ŠUNKA U OVITKU 250gr-Gavrilović",
+            "confidence": 0.94
+          },
+          "quantity": {
+            "value": 8.0,
+            "confidence": 0.95
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.93
+          },
+          "unitPrice": {
+            "value": 3.74,
+            "confidence": 0.88
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 28.42,
+            "confidence": 0.94
+          }
+        },
+        {
+          "description": {
+            "value": "PAŠTETA ČAJNA 100gr-Gavrilović",
+            "confidence": 0.96
+          },
+          "quantity": {
+            "value": 900.0,
+            "confidence": 0.98
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.91
+          },
+          "unitPrice": {
+            "value": 1.27,
+            "confidence": 0.87
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.89
+          },
+          "lineTotal": {
+            "value": 1028.7,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "PAŠTETA JETRENA 100gr-Gavrilović",
+            "confidence": 0.95
+          },
+          "quantity": {
+            "value": 60.0,
+            "confidence": 0.93
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 1.16,
+            "confidence": 0.94
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.99
+          },
+          "lineTotal": {
+            "value": 62.64,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "KULENOVA SEKA 640gr-GAVRILOVIĆ",
+            "confidence": 0.93
+          },
+          "quantity": {
+            "value": 3.0,
+            "confidence": 0.85
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.92
+          },
+          "unitPrice": {
+            "value": 12.22,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.89
+          },
+          "lineTotal": {
+            "value": 34.82,
+            "confidence": 0.92
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-011",
+      "client": {
+        "id": "bili-brig",
+        "name": "BILI BRIG d.o.o. Grude",
+        "taxId": "4272080450006"
+      },
+      "receivedAt": "2022-01-14T15:05:00+01:00",
+      "channel": "email",
+      "originalFilename": "001-144-22.pdf",
+      "original": {
+        "path": "originals/inv-011.pdf",
+        "mimeType": "application/pdf",
+        "pages": 2
+      },
+      "fields": {
+        "vendorName": {
+          "value": "TOMO ŠPED d.o.o.",
+          "confidence": 0.99
+        },
+        "vendorTaxId": {
+          "value": "4272084870000",
+          "confidence": 0.93
+        },
+        "vendorVatId": {
+          "value": "272084870000",
+          "confidence": 0.91
+        },
+        "buyerName": {
+          "value": "BILI BRIG d.o.o.",
+          "confidence": 0.99
+        },
+        "buyerTaxId": {
+          "value": "4272080450006",
+          "confidence": 0.91
+        },
+        "invoiceNumber": {
+          "value": "001-144/22",
+          "confidence": 0.92
+        },
+        "issueDate": {
+          "value": "2022-01-13",
+          "confidence": 0.91
+        },
+        "supplyDate": {
+          "value": "2022-01-13",
+          "confidence": 0.98
+        },
+        "dueDate": {
+          "value": "2022-02-12",
+          "confidence": 0.92
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.99
+        },
+        "netAmount": {
+          "value": 1073.28,
+          "confidence": 0.94
+        },
+        "vatAmount": {
+          "value": 182.46,
+          "confidence": 0.91
+        },
+        "totalAmount": {
+          "value": 1255.74,
+          "confidence": 0.94
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "338 220 2200 157939",
+            "1327002018312852",
+            "1610200023260019",
+            "BA393380604812170527"
+          ],
+          "confidence": 0.9
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "PF-SUSR ROĐENDANSKE SVIJEĆE 10cm 8/1",
+            "confidence": 0.93
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.95
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.9
+          },
+          "unitPrice": {
+            "value": 2.0,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.97
+          },
+          "lineTotal": {
+            "value": 19.2,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "SF-SUHB SVIJEĆA HAPPY BIRTHDAY RUŽIČASTO ZLATO 16 kom",
+            "confidence": 0.92
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.94
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.92
+          },
+          "unitPrice": {
+            "value": 2.7,
+            "confidence": 0.94
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 25.92,
+            "confidence": 0.91
+          }
+        },
+        {
+          "description": {
+            "value": "PF-SCZK0 SVIJEĆA ZLATNA BR.0",
+            "confidence": 0.96
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.94
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.93
+          },
+          "unitPrice": {
+            "value": 1.3,
+            "confidence": 0.93
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.98
+          },
+          "lineTotal": {
+            "value": 12.48,
+            "confidence": 0.91
+          }
+        },
+        {
+          "description": {
+            "value": "PF-SCZK1 SVIJEĆA ZLATNA BR.1",
+            "confidence": 0.95
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.97
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.94
+          },
+          "unitPrice": {
+            "value": 1.3,
+            "confidence": 0.97
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 12.48,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "PF-SCZK2 SVIJEĆA ZLATNA BR.2",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.9
+          },
+          "unitPrice": {
+            "value": 1.3,
+            "confidence": 0.87
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.9
+          },
+          "lineTotal": {
+            "value": 12.48,
+            "confidence": 0.89
+          }
+        },
+        {
+          "description": {
+            "value": "PF-SCZK3 SVIJEĆA ZLATNA BR.3",
+            "confidence": 0.88
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 1.3,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.9
+          },
+          "lineTotal": {
+            "value": 12.48,
+            "confidence": 0.89
+          }
+        },
+        {
+          "description": {
+            "value": "PF-SCZK4 SVIJEĆA ZLATNA BR.4",
+            "confidence": 0.9
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.92
+          },
+          "unitPrice": {
+            "value": 1.3,
+            "confidence": 0.88
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.92
+          },
+          "lineTotal": {
+            "value": 6.24,
+            "confidence": 0.86
+          }
+        },
+        {
+          "description": {
+            "value": "PF-SCZK5 SVIJEĆA ZLATNA BR.5",
+            "confidence": 0.92
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.87
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.92
+          },
+          "unitPrice": {
+            "value": 1.3,
+            "confidence": 0.94
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.96
+          },
+          "lineTotal": {
+            "value": 6.24,
+            "confidence": 0.91
+          }
+        },
+        {
+          "description": {
+            "value": "PF-SCZK6 SVIJEĆA ZLATNA BR.6",
+            "confidence": 0.92
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.9
+          },
+          "unitPrice": {
+            "value": 1.3,
+            "confidence": 0.93
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 12.48,
+            "confidence": 0.88
+          }
+        },
+        {
+          "description": {
+            "value": "PF-SCZK7 SVIJEĆA ZLATNA BR.7",
+            "confidence": 0.9
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.97
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.91
+          },
+          "unitPrice": {
+            "value": 1.3,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.94
+          },
+          "lineTotal": {
+            "value": 12.48,
+            "confidence": 0.88
+          }
+        },
+        {
+          "description": {
+            "value": "PF-SCZK8 SVIJEĆA ZLATNA BR.8",
+            "confidence": 0.9
+          },
+          "quantity": {
+            "value": 5.0,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.91
+          },
+          "unitPrice": {
+            "value": 1.3,
+            "confidence": 0.93
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.95
+          },
+          "lineTotal": {
+            "value": 5.2,
+            "confidence": 0.91
+          }
+        },
+        {
+          "description": {
+            "value": "FTH12-2 PRSKALICE ZA TORTU 10-12 cm, 2/1",
+            "confidence": 0.94
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.85
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.9
+          },
+          "unitPrice": {
+            "value": 2.0,
+            "confidence": 0.9
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.9
+          },
+          "lineTotal": {
+            "value": 19.2,
+            "confidence": 0.95
+          }
+        },
+        {
+          "description": {
+            "value": "KP-SG30 KONFETI PNEUMATSKI STARS SREBRO 30 cm",
+            "confidence": 0.9
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.93
+          },
+          "unitPrice": {
+            "value": 4.4,
+            "confidence": 0.94
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 42.24,
+            "confidence": 0.94
+          }
+        },
+        {
+          "description": {
+            "value": "PF-DPHR UKRAS OD PAPIRA HAPPY BIRTHDAY RUŽIČASTO ZLATO",
+            "confidence": 0.93
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.95
+          },
+          "unitPrice": {
+            "value": 2.2,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.89
+          },
+          "lineTotal": {
+            "value": 10.56,
+            "confidence": 0.94
+          }
+        },
+        {
+          "description": {
+            "value": "PF-DPHZ UKRAS OD PAPIRA HAPPY BIRTHDAY ZLATNI 14x11cm",
+            "confidence": 0.94
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.87
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.91
+          },
+          "unitPrice": {
+            "value": 2.2,
+            "confidence": 0.89
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.86
+          },
+          "lineTotal": {
+            "value": 10.56,
+            "confidence": 0.89
+          }
+        },
+        {
+          "description": {
+            "value": "KIŠOBRAN MEDITERAN TAMNO PLAVO",
+            "confidence": 0.9
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.86
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 8.9,
+            "confidence": 0.94
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.93
+          },
+          "lineTotal": {
+            "value": 42.72,
+            "confidence": 0.88
+          }
+        },
+        {
+          "description": {
+            "value": "KIŠOBRAN MEDITERAN CRNO",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 12.0,
+            "confidence": 0.95
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.91
+          },
+          "unitPrice": {
+            "value": 8.9,
+            "confidence": 0.93
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.9
+          },
+          "lineTotal": {
+            "value": 85.44,
+            "confidence": 0.85
+          }
+        },
+        {
+          "description": {
+            "value": "KIŠOBRAN DRVENI BOJ.TREŠNJA",
+            "confidence": 0.93
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 5.9,
+            "confidence": 0.91
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.91
+          },
+          "lineTotal": {
+            "value": 28.32,
+            "confidence": 0.86
+          }
+        },
+        {
+          "description": {
+            "value": "KIŠOBRAN DRVENI CRVENO",
+            "confidence": 0.92
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.94
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 5.9,
+            "confidence": 0.93
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.97
+          },
+          "lineTotal": {
+            "value": 28.32,
+            "confidence": 0.93
+          }
+        },
+        {
+          "description": {
+            "value": "KIŠOBRAN DRVENI T.PLAVO",
+            "confidence": 0.89
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.88
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 5.9,
+            "confidence": 0.93
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.96
+          },
+          "lineTotal": {
+            "value": 28.32,
+            "confidence": 0.93
+          }
+        },
+        {
+          "description": {
+            "value": "KIŠOBRAN GOLF CRNO",
+            "confidence": 0.92
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.91
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.93
+          },
+          "unitPrice": {
+            "value": 7.9,
+            "confidence": 0.89
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.9
+          },
+          "lineTotal": {
+            "value": 37.92,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "KIŠOBRAN GOLF SIVO",
+            "confidence": 0.89
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.9
+          },
+          "unitPrice": {
+            "value": 7.9,
+            "confidence": 0.93
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.89
+          },
+          "lineTotal": {
+            "value": 37.92,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "KIŠOBRAN ZA DJECU 19\"",
+            "confidence": 0.96
+          },
+          "quantity": {
+            "value": 5.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 4.9,
+            "confidence": 0.96
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.86
+          },
+          "lineTotal": {
+            "value": 19.6,
+            "confidence": 0.89
+          }
+        },
+        {
+          "description": {
+            "value": "0110 KIŠOBRAN PVC CRVENO",
+            "confidence": 0.85
+          },
+          "quantity": {
+            "value": 4.0,
+            "confidence": 0.95
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.92
+          },
+          "unitPrice": {
+            "value": 5.0,
+            "confidence": 0.9
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.86
+          },
+          "lineTotal": {
+            "value": 16.0,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "0112 KIŠOBRAN PVC S.PLAVO",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.95
+          },
+          "unitPrice": {
+            "value": 5.0,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.92
+          },
+          "lineTotal": {
+            "value": 24.0,
+            "confidence": 0.96
+          }
+        },
+        {
+          "description": {
+            "value": "0114 KIŠOBRAN PVC PINK",
+            "confidence": 0.88
+          },
+          "quantity": {
+            "value": 2.0,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.93
+          },
+          "unitPrice": {
+            "value": 5.0,
+            "confidence": 0.93
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.89
+          },
+          "lineTotal": {
+            "value": 8.0,
+            "confidence": 0.92
+          }
+        },
+        {
+          "description": {
+            "value": "KIŠOBRAN PVC BIJELO/PLAVO",
+            "confidence": 0.84
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.94
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.9
+          },
+          "unitPrice": {
+            "value": 5.0,
+            "confidence": 0.91
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 24.0,
+            "confidence": 0.93
+          }
+        },
+        {
+          "description": {
+            "value": "KIŠOBRAN PVC SIVO",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.9
+          },
+          "unitPrice": {
+            "value": 5.0,
+            "confidence": 0.95
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 24.0,
+            "confidence": 0.91
+          }
+        },
+        {
+          "description": {
+            "value": "30012 LUTKA DUGA 35cm",
+            "confidence": 0.93
+          },
+          "quantity": {
+            "value": 3.0,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 12.5,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.91
+          },
+          "lineTotal": {
+            "value": 30.0,
+            "confidence": 0.88
+          }
+        },
+        {
+          "description": {
+            "value": "30021 LUTKA Bebelou 35cm \"Lunch Time\"",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 3.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.97
+          },
+          "unitPrice": {
+            "value": 25.5,
+            "confidence": 0.93
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 61.2,
+            "confidence": 0.92
+          }
+        },
+        {
+          "description": {
+            "value": "MKM742144 LUTKA 32x21cm",
+            "confidence": 0.92
+          },
+          "quantity": {
+            "value": 4.0,
+            "confidence": 0.95
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.93
+          },
+          "unitPrice": {
+            "value": 13.5,
+            "confidence": 0.89
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 43.2,
+            "confidence": 0.92
+          }
+        },
+        {
+          "description": {
+            "value": "MKM349888 LUTKA 20x18 cm",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 3.0,
+            "confidence": 0.94
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 18.0,
+            "confidence": 0.91
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.91
+          },
+          "lineTotal": {
+            "value": 43.2,
+            "confidence": 0.86
+          }
+        },
+        {
+          "description": {
+            "value": "MKL789989 LUTKA 35 cm",
+            "confidence": 0.95
+          },
+          "quantity": {
+            "value": 2.0,
+            "confidence": 0.87
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 17.0,
+            "confidence": 0.9
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.92
+          },
+          "lineTotal": {
+            "value": 27.2,
+            "confidence": 0.91
+          }
+        },
+        {
+          "description": {
+            "value": "MKM144040 LUTKA SET 33x30 cm",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 4.0,
+            "confidence": 0.93
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.95
+          },
+          "unitPrice": {
+            "value": 11.7,
+            "confidence": 0.88
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.92
+          },
+          "lineTotal": {
+            "value": 37.44,
+            "confidence": 0.88
+          }
+        },
+        {
+          "description": {
+            "value": "MKM797701 MAKE UP SET 30x21cm",
+            "confidence": 0.96
+          },
+          "quantity": {
+            "value": 5.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.93
+          },
+          "unitPrice": {
+            "value": 7.9,
+            "confidence": 0.93
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.92
+          },
+          "lineTotal": {
+            "value": 31.6,
+            "confidence": 0.92
+          }
+        },
+        {
+          "description": {
+            "value": "MKM382180 SET ZA ULJEPŠAVANJE 32x28 cm",
+            "confidence": 0.89
+          },
+          "quantity": {
+            "value": 4.0,
+            "confidence": 0.93
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.95
+          },
+          "unitPrice": {
+            "value": 9.9,
+            "confidence": 0.94
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.85
+          },
+          "lineTotal": {
+            "value": 31.68,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "MKM777712 MAKE UP SET 41x32",
+            "confidence": 0.92
+          },
+          "quantity": {
+            "value": 4.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.91
+          },
+          "unitPrice": {
+            "value": 14.5,
+            "confidence": 0.94
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.9
+          },
+          "lineTotal": {
+            "value": 46.4,
+            "confidence": 0.94
+          }
+        },
+        {
+          "description": {
+            "value": "MKN243975 MEDICINSKI SET 44x21cm",
+            "confidence": 0.89
+          },
+          "quantity": {
+            "value": 4.0,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.92
+          },
+          "unitPrice": {
+            "value": 2.4,
+            "confidence": 0.97
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.89
+          },
+          "lineTotal": {
+            "value": 7.68,
+            "confidence": 0.93
+          }
+        },
+        {
+          "description": {
+            "value": "RV-DDJM DRVENA DEKORACIJA JUST MARRIED 13x14cm",
+            "confidence": 0.9
+          },
+          "quantity": {
+            "value": 6.0,
+            "confidence": 0.83
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.94
+          },
+          "unitPrice": {
+            "value": 2.5,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.98
+          },
+          "lineTotal": {
+            "value": 12.0,
+            "confidence": 0.92
+          }
+        },
+        {
+          "description": {
+            "value": "QT-PJMS PAPIRNE ČAČKALICE JUST MARRIED 5/!",
+            "confidence": 0.89
+          },
+          "quantity": {
+            "value": 5.0,
+            "confidence": 0.94
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.95
+          },
+          "unitPrice": {
+            "value": 2.9,
+            "confidence": 0.94
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.91
+          },
+          "lineTotal": {
+            "value": 11.6,
+            "confidence": 0.91
+          }
+        },
+        {
+          "description": {
+            "value": "DM4-39 BALON ZA MODELIRANJE ZLATNI 100/1",
+            "confidence": 0.92
+          },
+          "quantity": {
+            "value": 4.0,
+            "confidence": 0.91
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 14.0,
+            "confidence": 0.9
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 44.8,
+            "confidence": 0.94
+          }
+        },
+        {
+          "description": {
+            "value": "FG-C35S1 FOLIJSKI BALON SILVER 35 cm, br.1",
+            "confidence": 0.92
+          },
+          "quantity": {
+            "value": 5.0,
+            "confidence": 0.95
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 1.6,
+            "confidence": 0.9
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.9
+          },
+          "lineTotal": {
+            "value": 6.4,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "FG-C35S2 FOLIJSKI BALON SILVER 35 cm,br.2",
+            "confidence": 0.88
+          },
+          "quantity": {
+            "value": 3.0,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.9
+          },
+          "unitPrice": {
+            "value": 1.6,
+            "confidence": 0.85
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.93
+          },
+          "lineTotal": {
+            "value": 3.84,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "FG-C35Z1 FOLIJSKI BALON ZLATNI br.1, 35 cm",
+            "confidence": 0.89
+          },
+          "quantity": {
+            "value": 5.0,
+            "confidence": 0.94
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.87
+          },
+          "unitPrice": {
+            "value": 1.6,
+            "confidence": 0.91
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 6.4,
+            "confidence": 0.93
+          }
+        },
+        {
+          "description": {
+            "value": "FG-C35Z2 FOLIJSKI BALON ZLATNI br.2, 35 cm",
+            "confidence": 0.85
+          },
+          "quantity": {
+            "value": 3.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.86
+          },
+          "unitPrice": {
+            "value": 1.6,
+            "confidence": 0.88
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.91
+          },
+          "lineTotal": {
+            "value": 3.84,
+            "confidence": 0.9
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-012",
+      "client": {
+        "id": "bili-brig",
+        "name": "BILI BRIG d.o.o. Grude",
+        "taxId": "4272080450006"
+      },
+      "receivedAt": "2022-01-18T07:51:00+01:00",
+      "channel": "email",
+      "originalFilename": "Cerigajka 1-13.pdf",
+      "original": {
+        "path": "originals/inv-012.pdf",
+        "mimeType": "application/pdf",
+        "pages": 1
+      },
+      "fields": {
+        "vendorName": {
+          "value": "FARMA KOKA \"ČERIGAJKA\"",
+          "confidence": 0.99
+        },
+        "vendorTaxId": {
+          "value": "4372322200004",
+          "confidence": 0.97
+        },
+        "vendorVatId": {
+          "value": "372322200004",
+          "confidence": 0.94
+        },
+        "buyerName": {
+          "value": "BILI BRIG d.o.o.",
+          "confidence": 0.94
+        },
+        "buyerTaxId": {
+          "value": "4272080450006",
+          "confidence": 0.96
+        },
+        "invoiceNumber": {
+          "value": "1-13/2022",
+          "confidence": 0.97
+        },
+        "issueDate": {
+          "value": "2022-01-17",
+          "confidence": 0.94
+        },
+        "supplyDate": {
+          "value": "2022-01-17",
+          "confidence": 0.99
+        },
+        "dueDate": {
+          "value": "2022-01-17",
+          "confidence": 0.92
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.97
+        },
+        "netAmount": {
+          "value": 307.68,
+          "confidence": 0.93
+        },
+        "vatAmount": {
+          "value": 52.31,
+          "confidence": 0.95
+        },
+        "totalAmount": {
+          "value": 359.99,
+          "confidence": 0.97
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "1610200055610004"
+          ],
+          "confidence": 0.87
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "Jaja \"L\" 10/1",
+            "confidence": 0.9
+          },
+          "quantity": {
+            "value": 4.0,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": "PAK",
+            "confidence": 0.9
+          },
+          "unitPrice": {
+            "value": 76.92,
+            "confidence": 0.88
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.98
+          },
+          "lineTotal": {
+            "value": 359.99,
+            "confidence": 0.93
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-013",
+      "client": {
+        "id": "bili-brig",
+        "name": "BILI BRIG d.o.o. Grude",
+        "taxId": "4272080450006"
+      },
+      "receivedAt": "2022-01-19T12:11:00+01:00",
+      "channel": "mobile",
+      "originalFilename": "IMG_0441.HEIC",
+      "original": {
+        "path": "originals/inv-013.jpg",
+        "mimeType": "image/jpeg",
+        "pages": 1,
+        "width": 2600,
+        "height": 1950
+      },
+      "fields": {
+        "vendorName": {
+          "value": "Mljekara PAĐENI d.o.o.",
+          "confidence": 0.85
+        },
+        "vendorTaxId": {
+          "value": "4402818780007",
+          "confidence": 0.82
+        },
+        "vendorVatId": {
+          "value": "402818780007",
+          "confidence": 0.84
+        },
+        "buyerName": {
+          "value": "BILI BRIG d.o.o",
+          "confidence": 0.84
+        },
+        "buyerTaxId": {
+          "value": "4272080450006",
+          "confidence": 0.84
+        },
+        "invoiceNumber": {
+          "value": "001-05117/2022",
+          "confidence": 0.8
+        },
+        "issueDate": {
+          "value": "2022-01-18",
+          "confidence": 0.84
+        },
+        "supplyDate": {
+          "value": "2022-01-18",
+          "confidence": 0.79
+        },
+        "dueDate": {
+          "value": "2022-01-28",
+          "confidence": 0.77
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.83
+        },
+        "netAmount": {
+          "value": 26.4,
+          "confidence": 0.84
+        },
+        "vatAmount": {
+          "value": 4.49,
+          "confidence": 0.85
+        },
+        "totalAmount": {
+          "value": 30.89,
+          "confidence": 0.8
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "5674431100001878",
+            "1941058963600150"
+          ],
+          "confidence": 0.75
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "MLADI KAJMAK 300g",
+            "confidence": 0.74
+          },
+          "quantity": {
+            "value": 6,
+            "confidence": 0.8
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.78
+          },
+          "unitPrice": {
+            "value": 4.4,
+            "confidence": 0.79
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.78
+          },
+          "lineTotal": {
+            "value": 30.89,
+            "confidence": 0.81
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-014",
+      "client": {
+        "id": "call-ero",
+        "name": "CALL ERO d.o.o. Mostar",
+        "taxId": "4227805140002"
+      },
+      "receivedAt": "2022-06-20T10:30:00+02:00",
+      "channel": "email",
+      "originalFilename": "Racun 329-2022.pdf",
+      "original": {
+        "path": "originals/inv-014.pdf",
+        "mimeType": "application/pdf",
+        "pages": 1
+      },
+      "fields": {
+        "vendorName": {
+          "value": "HOTEL NOVITAS",
+          "confidence": 0.93
+        },
+        "vendorTaxId": {
+          "value": "4281311430002",
+          "confidence": 0.93
+        },
+        "vendorVatId": {
+          "value": null,
+          "confidence": 0
+        },
+        "buyerName": {
+          "value": "CALL ERO D.O.O.",
+          "confidence": 0.99
+        },
+        "buyerTaxId": {
+          "value": "4227805140002",
+          "confidence": 0.94
+        },
+        "invoiceNumber": {
+          "value": "329-2022",
+          "confidence": 0.94
+        },
+        "issueDate": {
+          "value": "2022-06-17",
+          "confidence": 0.95
+        },
+        "supplyDate": {
+          "value": null,
+          "confidence": 0
+        },
+        "dueDate": {
+          "value": "2022-06-24",
+          "confidence": 0.96
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.99
+        },
+        "netAmount": {
+          "value": 854.7,
+          "confidence": 0.93
+        },
+        "vatAmount": {
+          "value": 145.3,
+          "confidence": 0.93
+        },
+        "totalAmount": {
+          "value": 1000.0,
+          "confidence": 0.93
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "1610000277860003"
+          ],
+          "confidence": 0.92
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "Najam",
+            "confidence": 0.93
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.9
+          },
+          "unit": {
+            "value": null,
+            "confidence": 0
+          },
+          "unitPrice": {
+            "value": 1000.0,
+            "confidence": 0.94
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.9
+          },
+          "lineTotal": {
+            "value": 1000.0,
+            "confidence": 0.91
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-015",
+      "client": {
+        "id": "call-ero",
+        "name": "CALL ERO d.o.o. Mostar",
+        "taxId": "4227805140002"
+      },
+      "receivedAt": "2022-06-22T11:37:00+02:00",
+      "channel": "email",
+      "originalFilename": "scan0042.pdf",
+      "original": {
+        "path": "originals/inv-015.pdf",
+        "mimeType": "application/pdf",
+        "pages": 1
+      },
+      "fields": {
+        "vendorName": {
+          "value": "ĆURIĆ - J",
+          "confidence": 0.9
+        },
+        "vendorTaxId": {
+          "value": "4281225860002",
+          "confidence": 0.83
+        },
+        "vendorVatId": {
+          "value": "281225860002",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "CALL-ERO d.o.o.",
+          "confidence": 0.91
+        },
+        "buyerTaxId": {
+          "value": "4227805140002",
+          "confidence": 0.91
+        },
+        "invoiceNumber": {
+          "value": "015/22",
+          "confidence": 0.9
+        },
+        "issueDate": {
+          "value": "2022-06-20",
+          "confidence": 0.87
+        },
+        "supplyDate": {
+          "value": null,
+          "confidence": 0
+        },
+        "dueDate": {
+          "value": null,
+          "confidence": 0
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.94
+        },
+        "netAmount": {
+          "value": 10529.0,
+          "confidence": 0.93
+        },
+        "vatAmount": {
+          "value": 1789.93,
+          "confidence": 0.84
+        },
+        "totalAmount": {
+          "value": 12318.93,
+          "confidence": 0.91
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "3382302263236064"
+          ],
+          "confidence": 0.88
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "cijev fosta fi 32x3 mm sa izolacijom",
+            "confidence": 0.83
+          },
+          "quantity": {
+            "value": 50,
+            "confidence": 0.94
+          },
+          "unit": {
+            "value": "m",
+            "confidence": 0.85
+          },
+          "unitPrice": {
+            "value": 8.0,
+            "confidence": 0.9
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 400.0,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "cijev fosta fi 26x3 mm sa izolacijom",
+            "confidence": 0.9
+          },
+          "quantity": {
+            "value": 70,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "m",
+            "confidence": 0.86
+          },
+          "unitPrice": {
+            "value": 6.0,
+            "confidence": 0.86
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 420.0,
+            "confidence": 0.83
+          }
+        },
+        {
+          "description": {
+            "value": "cijev fosta fi 20x2 mm sa iolacijom",
+            "confidence": 0.82
+          },
+          "quantity": {
+            "value": 90,
+            "confidence": 0.84
+          },
+          "unit": {
+            "value": "m",
+            "confidence": 0.87
+          },
+          "unitPrice": {
+            "value": 4.5,
+            "confidence": 0.89
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 405.0,
+            "confidence": 0.86
+          }
+        },
+        {
+          "description": {
+            "value": "cijev fosta fi 16x2 mm sa izolacijom",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 95,
+            "confidence": 0.85
+          },
+          "unit": {
+            "value": "m",
+            "confidence": 0.9
+          },
+          "unitPrice": {
+            "value": 2.0,
+            "confidence": 0.84
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 190.0,
+            "confidence": 0.85
+          }
+        },
+        {
+          "description": {
+            "value": "spojni materijal za sastavljanje cijevi-t-kom,mufne,redukcije,obilazi,zavrsna koljena,cepovi",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.82
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.9
+          },
+          "unitPrice": {
+            "value": 1450.0,
+            "confidence": 0.84
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.86
+          },
+          "lineTotal": {
+            "value": 1450.0,
+            "confidence": 0.89
+          }
+        },
+        {
+          "description": {
+            "value": "kanalizaciona besumna cijev fi 110",
+            "confidence": 0.88
+          },
+          "quantity": {
+            "value": 38,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "m",
+            "confidence": 0.92
+          },
+          "unitPrice": {
+            "value": 18.0,
+            "confidence": 0.93
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 684.0,
+            "confidence": 0.85
+          }
+        },
+        {
+          "description": {
+            "value": "kanalizaciona besumna cijev fi 75",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 15,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "m",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 12.0,
+            "confidence": 0.86
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.84
+          },
+          "lineTotal": {
+            "value": 180.0,
+            "confidence": 0.88
+          }
+        },
+        {
+          "description": {
+            "value": "kanalizaciona besumna cijev fi 50",
+            "confidence": 0.85
+          },
+          "quantity": {
+            "value": 60,
+            "confidence": 0.85
+          },
+          "unit": {
+            "value": "m",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 10.0,
+            "confidence": 0.86
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.86
+          },
+          "lineTotal": {
+            "value": 600.0,
+            "confidence": 0.83
+          }
+        },
+        {
+          "description": {
+            "value": "spojni materijalk za kanalizacione cijevi-kolina,mufne,racve i redukcije",
+            "confidence": 0.94
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.87
+          },
+          "unitPrice": {
+            "value": 650.0,
+            "confidence": 0.87
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 650.0,
+            "confidence": 0.85
+          }
+        },
+        {
+          "description": {
+            "value": "ugradbeni vodokotlici alkaplast",
+            "confidence": 0.88
+          },
+          "quantity": {
+            "value": 3,
+            "confidence": 0.86
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.86
+          },
+          "unitPrice": {
+            "value": 230.0,
+            "confidence": 0.83
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 690.0,
+            "confidence": 0.86
+          }
+        },
+        {
+          "description": {
+            "value": "ugradbeni bide alkaplast",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 3,
+            "confidence": 0.87
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 240.0,
+            "confidence": 0.85
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.86
+          },
+          "lineTotal": {
+            "value": 720.0,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "zavrsno kolino s usima 16x1/2",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 35,
+            "confidence": 0.82
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 10.0,
+            "confidence": 0.87
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.93
+          },
+          "lineTotal": {
+            "value": 350.0,
+            "confidence": 0.85
+          }
+        },
+        {
+          "description": {
+            "value": "kugla ventil 1 col",
+            "confidence": 0.86
+          },
+          "quantity": {
+            "value": 3,
+            "confidence": 0.83
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.82
+          },
+          "unitPrice": {
+            "value": 25.0,
+            "confidence": 0.88
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.85
+          },
+          "lineTotal": {
+            "value": 75.0,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "kugla ventil 3/4 col",
+            "confidence": 0.92
+          },
+          "quantity": {
+            "value": 5,
+            "confidence": 0.94
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 20.0,
+            "confidence": 0.86
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 100.0,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "kugla ventil 1/2 col",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 6,
+            "confidence": 0.88
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.84
+          },
+          "unitPrice": {
+            "value": 15.0,
+            "confidence": 0.88
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.83
+          },
+          "lineTotal": {
+            "value": 90.0,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "podzbukni ventil sa prelazim 1/2 col",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 30,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": null,
+            "confidence": 0
+          },
+          "unitPrice": {
+            "value": null,
+            "confidence": 0
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.82
+          },
+          "lineTotal": {
+            "value": 0.0,
+            "confidence": 0.88
+          }
+        },
+        {
+          "description": {
+            "value": "sifoni za ves masine",
+            "confidence": 0.9
+          },
+          "quantity": {
+            "value": 3,
+            "confidence": 0.88
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.9
+          },
+          "unitPrice": {
+            "value": 15.0,
+            "confidence": 0.87
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.86
+          },
+          "lineTotal": {
+            "value": 45.0,
+            "confidence": 0.83
+          }
+        },
+        {
+          "description": {
+            "value": "perforirana traka i tiple",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.8
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.87
+          },
+          "unitPrice": {
+            "value": 80.0,
+            "confidence": 0.86
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.91
+          },
+          "lineTotal": {
+            "value": 80.0,
+            "confidence": 0.92
+          }
+        },
+        {
+          "description": {
+            "value": "ispitni set sa ventilom i manometrom",
+            "confidence": 0.86
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.82
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 50.0,
+            "confidence": 0.85
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.84
+          },
+          "lineTotal": {
+            "value": 100.0,
+            "confidence": 0.9
+          }
+        },
+        {
+          "description": {
+            "value": "IZVODJENJE RADOVA-stemanje, razvod cijevi vode i kanalizacije,fiksiranje,ucvrscivanje i ispitivanje na propusnost",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.88
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.89
+          },
+          "unitPrice": {
+            "value": 3300.0,
+            "confidence": 0.84
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.83
+          },
+          "lineTotal": {
+            "value": 3300.0,
+            "confidence": 0.85
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-016",
+      "client": {
+        "id": "call-ero",
+        "name": "CALL ERO d.o.o. Mostar",
+        "taxId": "4227805140002"
+      },
+      "receivedAt": "2022-07-19T09:12:00+02:00",
+      "channel": "email",
+      "originalFilename": "Racun 245-22 NAM.pdf",
+      "original": null,
+      "fields": {
+        "vendorName": {
+          "value": "NAM d.o.o. Čitluk",
+          "confidence": 0.98
+        },
+        "vendorTaxId": {
+          "value": "4227021060002",
+          "confidence": 0.89
+        },
+        "vendorVatId": {
+          "value": "227021060002",
+          "confidence": 0.94
+        },
+        "buyerName": {
+          "value": "CALL ERO D.O.O.",
+          "confidence": 0.93
+        },
+        "buyerTaxId": {
+          "value": "4227805140002",
+          "confidence": 0.97
+        },
+        "invoiceNumber": {
+          "value": "245/22",
+          "confidence": 0.93
+        },
+        "issueDate": {
+          "value": "2022-07-18",
+          "confidence": 0.99
+        },
+        "supplyDate": {
+          "value": null,
+          "confidence": 0
+        },
+        "dueDate": {
+          "value": null,
+          "confidence": 0
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.97
+        },
+        "netAmount": {
+          "value": 120.0,
+          "confidence": 0.98
+        },
+        "vatAmount": {
+          "value": 20.4,
+          "confidence": 0.91
+        },
+        "totalAmount": {
+          "value": 140.4,
+          "confidence": 0.95
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "1941054418700167",
+            "BA391941054418702204"
+          ],
+          "confidence": 0.95
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "Najam automobila",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.91
+          },
+          "unit": {
+            "value": null,
+            "confidence": 0
+          },
+          "unitPrice": {
+            "value": 60.0,
+            "confidence": 0.89
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 140.4,
+            "confidence": 0.94
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-017",
+      "client": {
+        "id": "call-ero",
+        "name": "CALL ERO d.o.o. Mostar",
+        "taxId": "4227805140002"
+      },
+      "receivedAt": "2022-08-02T16:10:00+02:00",
+      "channel": "mobile",
+      "originalFilename": "WhatsApp Image 2022-08-02 at 16.10.44.jpeg",
+      "original": {
+        "path": "originals/inv-017.jpg",
+        "mimeType": "image/jpeg",
+        "pages": 1,
+        "width": 1200,
+        "height": 1600
+      },
+      "fields": {
+        "vendorName": {
+          "value": "Hotel Novitas",
+          "confidence": 0.9
+        },
+        "vendorTaxId": {
+          "value": "4281311430002",
+          "confidence": 0.97
+        },
+        "vendorVatId": {
+          "value": "281311430002",
+          "confidence": 0.93
+        },
+        "buyerName": {
+          "value": "CALL ERO D.O.O.",
+          "confidence": 0.99
+        },
+        "buyerTaxId": {
+          "value": "4227805140002",
+          "confidence": 0.91
+        },
+        "invoiceNumber": {
+          "value": "543-2022",
+          "confidence": 0.88
+        },
+        "issueDate": {
+          "value": "2022-08-01",
+          "confidence": 0.94
+        },
+        "supplyDate": {
+          "value": null,
+          "confidence": 0
+        },
+        "dueDate": {
+          "value": "2022-08-08",
+          "confidence": 0.91
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.92
+        },
+        "netAmount": {
+          "value": 1000.0,
+          "confidence": 0.93
+        },
+        "vatAmount": {
+          "value": 170.0,
+          "confidence": 0.94
+        },
+        "totalAmount": {
+          "value": 1170.0,
+          "confidence": 0.94
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "1610000277860003"
+          ],
+          "confidence": 0.88
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "Najam",
+            "confidence": 0.89
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.96
+          },
+          "unit": {
+            "value": null,
+            "confidence": 0
+          },
+          "unitPrice": {
+            "value": 1170.0,
+            "confidence": 0.88
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.91
+          },
+          "lineTotal": {
+            "value": 1170.0,
+            "confidence": 0.91
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-018",
+      "client": {
+        "id": "call-ero",
+        "name": "CALL ERO d.o.o. Mostar",
+        "taxId": "4227805140002"
+      },
+      "receivedAt": "2022-08-24T13:16:00+02:00",
+      "channel": "email",
+      "originalFilename": "Racun 94441.pdf",
+      "original": null,
+      "fields": {
+        "vendorName": {
+          "value": "TRICOM d.o.o.",
+          "confidence": 0.96
+        },
+        "vendorTaxId": {
+          "value": "4227078170009",
+          "confidence": 0.88
+        },
+        "vendorVatId": {
+          "value": "227078170009",
+          "confidence": 0.87
+        },
+        "buyerName": {
+          "value": "Call Ero d.o.o.",
+          "confidence": 0.96
+        },
+        "buyerTaxId": {
+          "value": "4227805140002",
+          "confidence": 0.91
+        },
+        "invoiceNumber": {
+          "value": "94441",
+          "confidence": 0.95
+        },
+        "issueDate": {
+          "value": "2022-08-23",
+          "confidence": 0.99
+        },
+        "supplyDate": {
+          "value": "2022-08-23",
+          "confidence": 0.97
+        },
+        "dueDate": {
+          "value": "2022-09-06",
+          "confidence": 0.98
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.96
+        },
+        "netAmount": {
+          "value": 38.29,
+          "confidence": 0.9
+        },
+        "vatAmount": {
+          "value": 6.51,
+          "confidence": 0.99
+        },
+        "totalAmount": {
+          "value": 44.8,
+          "confidence": 0.89
+        },
+        "paymentReference": {
+          "value": "02",
+          "confidence": 0.91
+        },
+        "bankAccounts": {
+          "value": [
+            "1610200013460012",
+            "3381002201272238",
+            "3060210000040942"
+          ],
+          "confidence": 0.89
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "[02492] Toner CANON CRG-737 reciklirani",
+            "confidence": 0.99
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.99
+          },
+          "unitPrice": {
+            "value": 47.86,
+            "confidence": 0.9
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.9
+          },
+          "lineTotal": {
+            "value": 44.8,
+            "confidence": 0.91
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-019",
+      "client": {
+        "id": "call-ero",
+        "name": "CALL ERO d.o.o. Mostar",
+        "taxId": "4227805140002"
+      },
+      "receivedAt": "2022-11-15T10:48:00+01:00",
+      "channel": "mobile",
+      "originalFilename": "WhatsApp Image 2022-11-15 at 10.48.19.jpeg",
+      "original": {
+        "path": "originals/inv-019.jpg",
+        "mimeType": "image/jpeg",
+        "pages": 1,
+        "width": 1200,
+        "height": 1600
+      },
+      "fields": {
+        "vendorName": {
+          "value": "B KRUG D.O.O.",
+          "confidence": 0.86
+        },
+        "vendorTaxId": {
+          "value": "4281262710002",
+          "confidence": 0.87
+        },
+        "vendorVatId": {
+          "value": "281262710002",
+          "confidence": 0.83
+        },
+        "buyerName": {
+          "value": "CALL ERO D.O.O.",
+          "confidence": 0.89
+        },
+        "buyerTaxId": {
+          "value": "4227805140002",
+          "confidence": 0.83
+        },
+        "invoiceNumber": {
+          "value": "100",
+          "confidence": 0.9
+        },
+        "issueDate": {
+          "value": "2022-11-14",
+          "confidence": 0.88
+        },
+        "supplyDate": {
+          "value": "2022-11-14",
+          "confidence": 0.88
+        },
+        "dueDate": {
+          "value": "2022-11-14",
+          "confidence": 0.9
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.87
+        },
+        "netAmount": {
+          "value": 14216.02,
+          "confidence": 0.91
+        },
+        "vatAmount": {
+          "value": 2416.72,
+          "confidence": 0.87
+        },
+        "totalAmount": {
+          "value": 16632.74,
+          "confidence": 0.89
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "1610000150630050",
+            "3381502289509136"
+          ],
+          "confidence": 0.84
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "Alu DK Vrata",
+            "confidence": 0.82
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.85
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.84
+          },
+          "unitPrice": {
+            "value": 2651.61,
+            "confidence": 0.83
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.83
+          },
+          "lineTotal": {
+            "value": 3102.36,
+            "confidence": 0.79
+          }
+        },
+        {
+          "description": {
+            "value": "ALu Stijena PD",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.86
+          },
+          "unitPrice": {
+            "value": 2305.85,
+            "confidence": 0.9
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.85
+          },
+          "lineTotal": {
+            "value": 2697.94,
+            "confidence": 0.81
+          }
+        },
+        {
+          "description": {
+            "value": "Alu Stijena fix+fix",
+            "confidence": 0.89
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.81
+          },
+          "unitPrice": {
+            "value": 2985.99,
+            "confidence": 0.87
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.81
+          },
+          "lineTotal": {
+            "value": 3493.61,
+            "confidence": 0.82
+          }
+        },
+        {
+          "description": {
+            "value": "Alu DK+fix prozor",
+            "confidence": 0.84
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.84
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 1660.5,
+            "confidence": 0.8
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 1942.79,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "Alu fix. prozor",
+            "confidence": 0.88
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.86
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.84
+          },
+          "unitPrice": {
+            "value": 1468.97,
+            "confidence": 0.85
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 1718.69,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "Profil kutnog spoja",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 2,
+            "confidence": 0.79
+          },
+          "unit": {
+            "value": "Kom",
+            "confidence": 0.82
+          },
+          "unitPrice": {
+            "value": 251.55,
+            "confidence": 0.82
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 588.63,
+            "confidence": 0.88
+          }
+        },
+        {
+          "description": {
+            "value": "USLUGA DEMONTAŽE",
+            "confidence": 0.82
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.83
+          },
+          "unit": {
+            "value": "m",
+            "confidence": 0.85
+          },
+          "unitPrice": {
+            "value": 1070.0,
+            "confidence": 0.85
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.81
+          },
+          "lineTotal": {
+            "value": 1251.9,
+            "confidence": 0.81
+          }
+        },
+        {
+          "description": {
+            "value": "USLUGA MONTAŽE",
+            "confidence": 0.88
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.82
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.81
+          },
+          "unitPrice": {
+            "value": 1570.0,
+            "confidence": 0.85
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.85
+          },
+          "lineTotal": {
+            "value": 1836.9,
+            "confidence": 0.84
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-020",
+      "client": {
+        "id": "call-ero",
+        "name": "CALL ERO d.o.o. Mostar",
+        "taxId": "4227805140002"
+      },
+      "receivedAt": "2022-11-23T08:40:00+01:00",
+      "channel": "mobile",
+      "originalFilename": "WhatsApp Image 2022-11-23 at 08.40.43.jpeg",
+      "original": {
+        "path": "originals/inv-020.jpg",
+        "mimeType": "image/jpeg",
+        "pages": 1,
+        "width": 1200,
+        "height": 1600
+      },
+      "fields": {
+        "vendorName": {
+          "value": "AUTOPROM Commerce d.o.o.",
+          "confidence": 0.96
+        },
+        "vendorTaxId": {
+          "value": "4227921130006",
+          "confidence": 0.86
+        },
+        "vendorVatId": {
+          "value": "227921130006",
+          "confidence": 0.9
+        },
+        "buyerName": {
+          "value": "CALL ERO d.o.o.",
+          "confidence": 0.9
+        },
+        "buyerTaxId": {
+          "value": "4227805140002",
+          "confidence": 0.9
+        },
+        "invoiceNumber": {
+          "value": "22-300-000036",
+          "confidence": 0.86
+        },
+        "issueDate": {
+          "value": "2022-11-22",
+          "confidence": 0.92
+        },
+        "supplyDate": {
+          "value": "2022-11-22",
+          "confidence": 0.96
+        },
+        "dueDate": {
+          "value": "2022-11-22",
+          "confidence": 0.93
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.91
+        },
+        "netAmount": {
+          "value": 564.1,
+          "confidence": 0.92
+        },
+        "vatAmount": {
+          "value": 95.9,
+          "confidence": 0.87
+        },
+        "totalAmount": {
+          "value": 660.0,
+          "confidence": 0.87
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "3381302247454990"
+          ],
+          "confidence": 0.87
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "HIFLY 245/45R18 100H XL WIN TURI 212",
+            "confidence": 0.92
+          },
+          "quantity": {
+            "value": 4,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 141.03,
+            "confidence": 0.96
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.86
+          },
+          "lineTotal": {
+            "value": 564.1,
+            "confidence": 0.88
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-021",
+      "client": {
+        "id": "call-ero",
+        "name": "CALL ERO d.o.o. Mostar",
+        "taxId": "4227805140002"
+      },
+      "receivedAt": "2022-11-30T12:15:00+01:00",
+      "channel": "mobile",
+      "originalFilename": "WhatsApp Image 2022-11-30 at 12.15.12.jpeg",
+      "original": {
+        "path": "originals/inv-021.jpg",
+        "mimeType": "image/jpeg",
+        "pages": 1,
+        "width": 1200,
+        "height": 1600
+      },
+      "fields": {
+        "vendorName": {
+          "value": "SELAK d.o.o.",
+          "confidence": 0.91
+        },
+        "vendorTaxId": {
+          "value": "4227009870104",
+          "confidence": 0.9
+        },
+        "vendorVatId": {
+          "value": "227009870007",
+          "confidence": 0.89
+        },
+        "buyerName": {
+          "value": "CALL ERO d.o.o.",
+          "confidence": 0.88
+        },
+        "buyerTaxId": {
+          "value": "4227805140002",
+          "confidence": 0.82
+        },
+        "invoiceNumber": {
+          "value": "00109070-000288/22",
+          "confidence": 0.85
+        },
+        "issueDate": {
+          "value": "2022-11-29",
+          "confidence": 0.87
+        },
+        "supplyDate": {
+          "value": "2022-11-29",
+          "confidence": 0.89
+        },
+        "dueDate": {
+          "value": "2022-12-14",
+          "confidence": 0.88
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.89
+        },
+        "netAmount": {
+          "value": 394.02,
+          "confidence": 0.94
+        },
+        "vatAmount": {
+          "value": 66.98,
+          "confidence": 0.87
+        },
+        "totalAmount": {
+          "value": 461.0,
+          "confidence": 0.85
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "3381202200027815",
+            "1610200007310018"
+          ],
+          "confidence": 0.86
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "CASTROL EDGE LL 5W-30 1/1",
+            "confidence": 0.86
+          },
+          "quantity": {
+            "value": 6,
+            "confidence": 0.84
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.87
+          },
+          "unitPrice": {
+            "value": 18.8,
+            "confidence": 0.87
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 132.0,
+            "confidence": 0.85
+          }
+        },
+        {
+          "description": {
+            "value": "SIJALICA 12V5W C5W",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.85
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.86
+          },
+          "unitPrice": {
+            "value": 0.85,
+            "confidence": 0.9
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.85
+          },
+          "lineTotal": {
+            "value": 1.0,
+            "confidence": 0.86
+          }
+        },
+        {
+          "description": {
+            "value": "JC FILTER GORIVA",
+            "confidence": 0.96
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.86
+          },
+          "unit": {
+            "value": "kom",
+            "confidence": 0.86
+          },
+          "unitPrice": {
+            "value": 80.34,
+            "confidence": 0.81
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 94.0,
+            "confidence": 0.86
+          }
+        },
+        {
+          "description": {
+            "value": "RAD MEHANIČARA",
+            "confidence": 0.83
+          },
+          "quantity": {
+            "value": 10,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "h",
+            "confidence": 0.83
+          },
+          "unitPrice": {
+            "value": 20.0,
+            "confidence": 0.87
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.82
+          },
+          "lineTotal": {
+            "value": 234.0,
+            "confidence": 0.88
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-022",
+      "client": {
+        "id": "call-ero",
+        "name": "CALL ERO d.o.o. Mostar",
+        "taxId": "4227805140002"
+      },
+      "receivedAt": "2022-12-01T07:42:00+01:00",
+      "channel": "email",
+      "originalFilename": "EP_racun_11_2022.pdf",
+      "original": {
+        "path": "originals/inv-022.pdf",
+        "mimeType": "application/pdf",
+        "pages": 2
+      },
+      "fields": {
+        "vendorName": {
+          "value": "JP \"Elektroprivreda HZ HB\" d.d. Mostar",
+          "confidence": 0.99
+        },
+        "vendorTaxId": {
+          "value": null,
+          "confidence": 0
+        },
+        "vendorVatId": {
+          "value": "227248350007",
+          "confidence": 0.93
+        },
+        "buyerName": {
+          "value": "CALL ERO D.O.O. MOSTAR",
+          "confidence": 0.98
+        },
+        "buyerTaxId": {
+          "value": "4227805140002",
+          "confidence": 0.9
+        },
+        "invoiceNumber": {
+          "value": "41520478-221120-3",
+          "confidence": 0.92
+        },
+        "issueDate": {
+          "value": "2022-11-30",
+          "confidence": 0.91
+        },
+        "supplyDate": {
+          "value": null,
+          "confidence": 0
+        },
+        "dueDate": {
+          "value": "2022-12-25",
+          "confidence": 0.94
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.95
+        },
+        "netAmount": {
+          "value": 35.44,
+          "confidence": 0.96
+        },
+        "vatAmount": {
+          "value": 6.02,
+          "confidence": 0.91
+        },
+        "totalAmount": {
+          "value": 41.46,
+          "confidence": 0.89
+        },
+        "paymentReference": {
+          "value": "41520478-221120-3",
+          "confidence": 0.9
+        },
+        "bankAccounts": {
+          "value": [
+            "3381002201139542"
+          ],
+          "confidence": 0.9
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "Mjerno mjesto kupca",
+            "confidence": 0.9
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.92
+          },
+          "unit": {
+            "value": "mjesec",
+            "confidence": 0.91
+          },
+          "unitPrice": {
+            "value": 5.2,
+            "confidence": 0.89
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.88
+          },
+          "lineTotal": {
+            "value": 5.2,
+            "confidence": 0.92
+          }
+        },
+        {
+          "description": {
+            "value": "Obračunska snaga",
+            "confidence": 0.9
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.86
+          },
+          "unit": {
+            "value": "kW",
+            "confidence": 0.87
+          },
+          "unitPrice": {
+            "value": 20.12,
+            "confidence": 0.92
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.92
+          },
+          "lineTotal": {
+            "value": 20.12,
+            "confidence": 0.88
+          }
+        },
+        {
+          "description": {
+            "value": "Potrošak radne energije po višem dnevnom tarifnom stavu",
+            "confidence": 0.9
+          },
+          "quantity": {
+            "value": 21,
+            "confidence": 0.89
+          },
+          "unit": {
+            "value": "kWh",
+            "confidence": 0.87
+          },
+          "unitPrice": {
+            "value": 0.2566,
+            "confidence": 0.87
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.89
+          },
+          "lineTotal": {
+            "value": 5.39,
+            "confidence": 0.87
+          }
+        },
+        {
+          "description": {
+            "value": "Potrošak radne energije po nižem dnevnom tarifnom stavu",
+            "confidence": 0.87
+          },
+          "quantity": {
+            "value": 35,
+            "confidence": 0.85
+          },
+          "unit": {
+            "value": "kWh",
+            "confidence": 0.91
+          },
+          "unitPrice": {
+            "value": 0.1283,
+            "confidence": 0.91
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.9
+          },
+          "lineTotal": {
+            "value": 4.49,
+            "confidence": 0.84
+          }
+        },
+        {
+          "description": {
+            "value": "Naknada za poticanje proizvodnje el.energije iz OIEiUK",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 56,
+            "confidence": 0.88
+          },
+          "unit": {
+            "value": "kWh",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 0.0042,
+            "confidence": 0.88
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.86
+          },
+          "lineTotal": {
+            "value": 0.24,
+            "confidence": 0.9
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-023",
+      "client": {
+        "id": "call-ero",
+        "name": "CALL ERO d.o.o. Mostar",
+        "taxId": "4227805140002"
+      },
+      "receivedAt": "2022-12-05T12:03:00+01:00",
+      "channel": "mobile",
+      "originalFilename": "WhatsApp Image 2022-12-05 at 12.03.31.jpeg",
+      "original": {
+        "path": "originals/inv-023.jpg",
+        "mimeType": "image/jpeg",
+        "pages": 1,
+        "width": 1200,
+        "height": 1600
+      },
+      "fields": {
+        "vendorName": {
+          "value": "JP Hrvatske telekomunikacije d.d. Mostar",
+          "confidence": 0.9
+        },
+        "vendorTaxId": {
+          "value": "4227270100006",
+          "confidence": 0.85
+        },
+        "vendorVatId": {
+          "value": null,
+          "confidence": 0
+        },
+        "buyerName": {
+          "value": "CALL ERO D.O.O.",
+          "confidence": 0.88
+        },
+        "buyerTaxId": {
+          "value": "4227805140002",
+          "confidence": 0.81
+        },
+        "invoiceNumber": {
+          "value": null,
+          "confidence": 0
+        },
+        "issueDate": {
+          "value": "2022-12-02",
+          "confidence": 0.91
+        },
+        "supplyDate": {
+          "value": "2022-11-30",
+          "confidence": 0.89
+        },
+        "dueDate": {
+          "value": "2022-12-17",
+          "confidence": 0.87
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.84
+        },
+        "netAmount": {
+          "value": 119.18,
+          "confidence": 0.77
+        },
+        "vatAmount": {
+          "value": 23.63,
+          "confidence": 0.88
+        },
+        "totalAmount": {
+          "value": 139.18,
+          "confidence": 0.9
+        },
+        "paymentReference": {
+          "value": "1-0345854-93285513-5",
+          "confidence": 0.88
+        },
+        "bankAccounts": {
+          "value": [
+            "338100220220896",
+            "161020002380089",
+            "306019000018760"
+          ],
+          "confidence": 0.79
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "Pretplata DUO Office Extra fiber paket s integriranim uslugama IP, VDSL priključka",
+            "confidence": 0.82
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.83
+          },
+          "unit": {
+            "value": null,
+            "confidence": 0
+          },
+          "unitPrice": {
+            "value": 118.0,
+            "confidence": 0.89
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 118.0,
+            "confidence": 0.79
+          }
+        },
+        {
+          "description": {
+            "value": "Zatezne kamate, oslobođene PDV-a, članak 20., stavak 10, točka 3 Zakona o PDV",
+            "confidence": 0.84
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.78
+          },
+          "unit": {
+            "value": null,
+            "confidence": 0
+          },
+          "unitPrice": {
+            "value": 0.0,
+            "confidence": 0.84
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 0.18,
+            "confidence": 0.85
+          }
+        },
+        {
+          "description": {
+            "value": "Najam FTTH integriranog pristupnog uređaja (FTTH IAD) za DUO paket ugovor na 12 ili 24 mjeseca",
+            "confidence": 0.81
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.85
+          },
+          "unit": {
+            "value": null,
+            "confidence": 0
+          },
+          "unitPrice": {
+            "value": 1.0,
+            "confidence": 0.81
+          },
+          "vatRate": {
+            "value": null,
+            "confidence": 0
+          },
+          "lineTotal": {
+            "value": 1.0,
+            "confidence": 0.87
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-024",
+      "client": {
+        "id": "call-ero",
+        "name": "CALL ERO d.o.o. Mostar",
+        "taxId": "4227805140002"
+      },
+      "receivedAt": "2022-12-16T17:10:00+01:00",
+      "channel": "mobile",
+      "originalFilename": "WhatsApp Image 2022-12-16 at 17.10.46.jpeg",
+      "original": {
+        "path": "originals/inv-024.jpg",
+        "mimeType": "image/jpeg",
+        "pages": 1,
+        "width": 1200,
+        "height": 1600
+      },
+      "fields": {
+        "vendorName": {
+          "value": "LUKAS TP NAKIĆ d.o.o.",
+          "confidence": 0.97
+        },
+        "vendorTaxId": {
+          "value": "4272051510008",
+          "confidence": 0.87
+        },
+        "vendorVatId": {
+          "value": "272051510008",
+          "confidence": 0.93
+        },
+        "buyerName": {
+          "value": "CALL ERO d.o.o. MOSTAR",
+          "confidence": 0.94
+        },
+        "buyerTaxId": {
+          "value": "4227805140002",
+          "confidence": 0.88
+        },
+        "invoiceNumber": {
+          "value": "001-42569/22",
+          "confidence": 0.9
+        },
+        "issueDate": {
+          "value": "2022-12-15",
+          "confidence": 0.89
+        },
+        "supplyDate": {
+          "value": "2022-12-15",
+          "confidence": 0.88
+        },
+        "dueDate": {
+          "value": "2022-12-15",
+          "confidence": 0.93
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.94
+        },
+        "netAmount": {
+          "value": 41.0,
+          "confidence": 0.93
+        },
+        "vatAmount": {
+          "value": 6.97,
+          "confidence": 0.94
+        },
+        "totalAmount": {
+          "value": 47.97,
+          "confidence": 0.9
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "3382202200832283",
+            "1327002006941445"
+          ],
+          "confidence": 0.89
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "VODA LEDA PET BOCA 18,9L GALON",
+            "confidence": 0.91
+          },
+          "quantity": {
+            "value": 4,
+            "confidence": 0.91
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.84
+          },
+          "unitPrice": {
+            "value": 10.25,
+            "confidence": 0.9
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.87
+          },
+          "lineTotal": {
+            "value": 41.0,
+            "confidence": 0.86
+          }
+        }
+      ]
+    },
+    {
+      "id": "inv-025",
+      "client": {
+        "id": "call-ero",
+        "name": "CALL ERO d.o.o. Mostar",
+        "taxId": "4227805140002"
+      },
+      "receivedAt": "2022-12-28T14:41:00+01:00",
+      "channel": "mobile",
+      "originalFilename": "WhatsApp Image 2022-12-28 at 14.41.45.jpeg",
+      "original": {
+        "path": "originals/inv-025.jpg",
+        "mimeType": "image/jpeg",
+        "pages": 1,
+        "width": 1200,
+        "height": 1600
+      },
+      "fields": {
+        "vendorName": {
+          "value": "SERVIS JELIĆ",
+          "confidence": 0.89
+        },
+        "vendorTaxId": {
+          "value": "4272033700045",
+          "confidence": 0.83
+        },
+        "vendorVatId": {
+          "value": "272033700002",
+          "confidence": 0.9
+        },
+        "buyerName": {
+          "value": "CALL ERO d.o.o.",
+          "confidence": 0.87
+        },
+        "buyerTaxId": {
+          "value": "4227805140002",
+          "confidence": 0.89
+        },
+        "invoiceNumber": {
+          "value": "60586",
+          "confidence": 0.81
+        },
+        "issueDate": {
+          "value": "2022-12-27",
+          "confidence": 0.87
+        },
+        "supplyDate": {
+          "value": "2022-12-27",
+          "confidence": 0.86
+        },
+        "dueDate": {
+          "value": null,
+          "confidence": 0
+        },
+        "currency": {
+          "value": "BAM",
+          "confidence": 0.88
+        },
+        "netAmount": {
+          "value": 251.3,
+          "confidence": 0.91
+        },
+        "vatAmount": {
+          "value": 42.72,
+          "confidence": 0.85
+        },
+        "totalAmount": {
+          "value": 294.02,
+          "confidence": 0.91
+        },
+        "paymentReference": {
+          "value": null,
+          "confidence": 0
+        },
+        "bankAccounts": {
+          "value": [
+            "3382202200061424",
+            "1610200022810036",
+            "1995320030341939"
+          ],
+          "confidence": 0.84
+        }
+      },
+      "lineItems": [
+        {
+          "description": {
+            "value": "RADIJATOR ULJNI OIL02-2500/11-WL WELL",
+            "confidence": 0.84
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.83
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.84
+          },
+          "unitPrice": {
+            "value": 179.57,
+            "confidence": 0.85
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.85
+          },
+          "lineTotal": {
+            "value": 179.57,
+            "confidence": 0.8
+          }
+        },
+        {
+          "description": {
+            "value": "GRIJALICA KONVEKTORSKA CH 2009 FW VIVAX",
+            "confidence": 0.89
+          },
+          "quantity": {
+            "value": 1,
+            "confidence": 0.87
+          },
+          "unit": {
+            "value": "KOM",
+            "confidence": 0.88
+          },
+          "unitPrice": {
+            "value": 99.66,
+            "confidence": 0.86
+          },
+          "vatRate": {
+            "value": 17,
+            "confidence": 0.85
+          },
+          "lineTotal": {
+            "value": 99.66,
+            "confidence": 0.86
+          }
+        }
+      ]
+    }
+  ]
+}
