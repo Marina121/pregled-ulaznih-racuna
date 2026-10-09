@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Badge, Box, Button, Group, ScrollArea, SegmentedControl, Select, Stack, Text, UnstyledButton } from '@mantine/core'
+import { Badge, Box, Button, Group, Progress, ScrollArea, SegmentedControl, Select, Stack, Text, UnstyledButton } from '@mantine/core'
 import type { Invoice } from '../types/invoice'
 import type { Issue } from '../lib/checks'
 import type { ReviewEntry } from '../lib/review'
@@ -49,6 +49,7 @@ export function InvoiceList(p: Props) {
             {p.doneCount} od {p.total} obrađeno
           </Text>
         </Group>
+        <Progress value={(p.doneCount / Math.max(p.total, 1)) * 100} size="sm" aria-label="Napredak pregleda" />
         {/* The accountant handles ~40 companies, so a searchable dropdown instead of buttons. */}
         <Select
           size="xs"
@@ -93,37 +94,37 @@ export function InvoiceList(p: Props) {
               p="sm"
               w="100%"
               style={{ borderBottom: '1px solid var(--mantine-color-gray-2)', opacity: confirmed || rejected ? 0.6 : 1 }}
-              bg={inv.id === p.selectedId ? 'var(--mantine-color-blue-light)' : undefined}
+              bg={inv.id === p.selectedId ? 'var(--mantine-primary-color-light)' : undefined}
             >
               <Group justify="space-between" wrap="nowrap" gap="xs">
                 <Text size="sm" truncate>
                   {inv.fields.vendorName.value}
                 </Text>
                 {rejected ? (
-                  <Badge color="gray" variant="light" size="sm">
+                  <Badge color="gray" variant="light" size="sm" style={{ flexShrink: 0 }}>
                     duplikat
                   </Badge>
                 ) : confirmed ? (
-                  <Badge color="green" variant="light" size="sm">
+                  <Badge color="green" variant="light" size="sm" style={{ flexShrink: 0 }}>
                     ✓
                   </Badge>
                 ) : open.length > 0 ? (
-                  <Badge color={hasError ? 'red' : 'yellow'} variant="light" size="sm">
+                  <Badge color={hasError ? 'red' : 'yellow'} variant="light" size="sm" style={{ flexShrink: 0 }}>
                     {open.length}
                   </Badge>
                 ) : (
-                  <Badge color="gray" variant="light" size="sm">
+                  <Badge color="teal" variant="light" size="sm" style={{ flexShrink: 0 }}>
                     spreman
                   </Badge>
                 )}
               </Group>
-              <Group justify="space-between" mt={2}>
-                <Text size="xs" c="dimmed">
+              <Group justify="space-between" mt={2} wrap="nowrap" gap="xs">
+                <Text size="xs" c="dimmed" truncate>
                   {inv.fields.invoiceNumber.value ?? 'bez broja'} · {inv.fields.totalAmount.value?.toFixed(2)}{' '}
                   {inv.fields.currency.value ?? ''}
                 </Text>
                 {p.clientFilter === 'all' && (
-                  <Text size="xs" c="dimmed">
+                  <Text size="xs" c="dimmed" style={{ flexShrink: 0 }}>
                     {inv.client.id}
                   </Text>
                 )}

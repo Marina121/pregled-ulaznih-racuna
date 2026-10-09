@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Accordion, Alert, Anchor, Badge, Box, Button, Group, ScrollArea, Stack, Table, Text, Tooltip } from '@mantine/core'
+import { Accordion, Alert, Anchor, Badge, Box, Button, Group, Paper, ScrollArea, Stack, Table, Text, Tooltip } from '@mantine/core'
 import type { Invoice } from '../types/invoice'
 import { FIELD_META } from '../lib/fields'
 import { lineCellUncertain, valueOf, type Issue } from '../lib/checks'
@@ -19,6 +19,12 @@ interface Props {
   onReject: (duplicateOf: string) => void
 }
 
+// 2022-01-04 → 4. 1. 2022., as dates are written on Croatian/Bosnian invoices.
+const fmtDate = (v: unknown) => {
+  const m = typeof v === 'string' ? /^(\d{4})-(\d{2})-(\d{2})$/.exec(v) : null
+  return m ? `${Number(m[3])}. ${Number(m[2])}. ${m[1]}.` : v ? String(v) : '—'
+}
+
 const fmt = (v: unknown) => (v === null || v === undefined ? '—' : typeof v === 'number' ? v.toFixed(2).replace(/\.00$/, '') : String(v))
 
 export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onResolve, onConfirm, onReopen, onOpenInvoice, onReject }: Props) {
@@ -27,6 +33,7 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
   const confirmed = entry.status === 'confirmed'
   const rejected = entry.status === 'rejected'
   const docIssues = issues.filter((i) => i.fields.length === 0)
+  const total = valueOf(invoice, entry.edits, 'totalAmount')
   const openFor = (k: string) => open.filter((i) => (i.fields as string[]).includes(k))
   // A field that was flagged once stays at the top while the invoice is open.
   // Otherwise it would disappear as soon as an edit fixes the issue, mid-typing.
@@ -88,6 +95,44 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
 
       <ScrollArea style={{ flex: 1 }} p="sm">
         <Stack gap="sm" p="sm">
+          {/* Nothing left to check: instead of an empty panel, show what is being confirmed. */}
+          {open.length === 0 && (
+            <>
+              {entry.status === 'pending' && (
+                <Alert color="teal" variant="light" title={issues.length === 0 ? 'Sve automatske provjere su prošle' : 'Sve je provjereno'}>
+                  Usporedi sažetak s originalom i potvrdi.
+                </Alert>
+              )}
+              <Paper withBorder p="sm">
+                <Stack gap={6}>
+                  {[
+                    ['Dobavljač', valueOf(invoice, entry.edits, 'vendorName')],
+                    ['Broj računa', valueOf(invoice, entry.edits, 'invoiceNumber')],
+                    ['Datum računa', fmtDate(valueOf(invoice, entry.edits, 'issueDate'))],
+                    ['Dospijeće', fmtDate(valueOf(invoice, entry.edits, 'dueDate'))],
+                  ].map(([label, val]) => (
+                    <Group key={String(label)} justify="space-between" wrap="nowrap">
+                      <Text size="xs" c="dimmed">
+                        {String(label)}
+                      </Text>
+                      <Text size="sm" ta="right">
+                        {val ? String(val) : '—'}
+                      </Text>
+                    </Group>
+                  ))}
+                  <Group justify="space-between" pt={6} style={{ borderTop: '1px solid var(--mantine-color-gray-2)' }}>
+                    <Text size="sm" fw={600}>
+                      Ukupno
+                    </Text>
+                    <Text size="lg" fw={700}>
+                      {typeof total === 'number' ? total.toFixed(2) : '—'} {String(valueOf(invoice, entry.edits, 'currency') ?? '')}
+                    </Text>
+                  </Group>
+                </Stack>
+              </Paper>
+            </>
+          )}
+
           {docIssues.map((i) => {
             const resolved = entry.resolved.includes(i.key)
             return (

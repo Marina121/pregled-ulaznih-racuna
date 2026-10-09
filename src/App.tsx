@@ -92,7 +92,7 @@ export default function App() {
   if (invoices.length === 0) return <Loader m="xl" />
 
   return (
-    <AppShell navbar={{ width: 300, breakpoint: 'sm' }} padding={0}>
+    <AppShell navbar={{ width: 320, breakpoint: 'sm' }} padding={0}>
       <AppShell.Navbar>
         <InvoiceList
           invoices={visible}
