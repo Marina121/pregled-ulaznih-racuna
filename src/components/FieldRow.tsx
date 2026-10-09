@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Badge, Button, Group, NumberInput, Select, Stack, Text, TextInput } from '@mantine/core'
 import type { FieldMeta } from '../lib/fields'
 import type { Issue } from '../lib/checks'
@@ -19,11 +20,36 @@ interface Props {
   locked: boolean // invoice confirmed or rejected: show values, allow no changes
 }
 
-export function FieldRow({ meta, value, confidence, edited, issues, linked, wasResolved, onChange, onClear, onResolve, locked }: Props) {
+export function FieldRow({
+  meta,
+  value,
+  confidence,
+  edited,
+  issues,
+  linked,
+  wasResolved,
+  onChange,
+  onClear,
+  onResolve,
+  locked,
+}: Props) {
   const all = [...issues, ...linked.map((l) => l.issue)]
   const flagged = all.length > 0
   const hasValue = value !== null && value !== undefined && value !== ''
   const color = all.some((i) => i.severity === 'error') ? 'red' : 'yellow'
+
+  // A list (bank accounts) is typed as text separated by commas. The typed text is kept as is
+  // while editing; turning it into a list and back on every keystroke would swallow the comma
+  // and glue the next number onto the previous one. It's reset only when the value changes from
+  // outside (e.g. the edit is undone).
+  const toList = (t: string) =>
+    t
+      .split(',')
+      .map((x) => x.trim())
+      .filter(Boolean)
+  const listText = Array.isArray(value) ? value.join(', ') : ''
+  const [draft, setDraft] = useState(listText)
+  if (meta.kind === 'list' && toList(draft).join(', ') !== listText) setDraft(listText)
 
   const input =
     meta.kind === 'select' ? (
@@ -54,10 +80,15 @@ export function FieldRow({ meta, value, confidence, edited, issues, linked, wasR
     ) : (
       <TextInput
         size="xs"
-        value={meta.kind === 'list' ? ((value as string[] | null) ?? []).join(', ') : ((value as string | null) ?? '')}
+        value={meta.kind === 'list' ? draft : ((value as string | null) ?? '')}
         onChange={(e) => {
           const t = e.currentTarget.value
-          onChange(meta.kind === 'list' ? t.split(',').map((s) => s.trim()).filter(Boolean) : t === '' ? null : t)
+          if (meta.kind === 'list') {
+            setDraft(t)
+            onChange(toList(t))
+          } else {
+            onChange(t === '' ? null : t)
+          }
         }}
         placeholder={meta.kind === 'date' ? 'GGGG-MM-DD' : 'nije pronađeno'}
         data-field={meta.key}
@@ -93,7 +124,11 @@ export function FieldRow({ meta, value, confidence, edited, issues, linked, wasR
             </Badge>
           )}
           {!edited && hasValue && (
-            <Badge size="xs" variant="light" color={confidence < LOW_CONFIDENCE ? 'yellow' : 'gray'}>
+            <Badge
+              size="xs"
+              variant="light"
+              color={confidence < LOW_CONFIDENCE ? 'yellow' : 'gray'}
+            >
               {Math.round(confidence * 100)}%
             </Badge>
           )}
@@ -111,7 +146,8 @@ export function FieldRow({ meta, value, confidence, edited, issues, linked, wasR
         </Text>
       )}
       {meta.key === 'bankAccounts' && Array.isArray(value) && value.length > 0 && (
-        // Raw digits are hard to compare with the original: group them as printed, with the bank name.
+        // Raw digits are hard to compare with the original: group them as printed, with the bank
+        // name.
         <Stack gap={2}>
           {(value as string[]).map((a, idx) => {
             const ok = isValidAccount(a)
@@ -138,7 +174,13 @@ export function FieldRow({ meta, value, confidence, edited, issues, linked, wasR
         </Text>
       ))}
       {issues.length > 0 && !locked && (
-        <Button size="compact-xs" variant="light" color={color} onClick={onResolve} style={{ alignSelf: 'flex-start' }}>
+        <Button
+          size="compact-xs"
+          variant="light"
+          color={color}
+          onClick={onResolve}
+          style={{ alignSelf: 'flex-start' }}
+        >
           Provjereno, u redu je
         </Button>
       )}

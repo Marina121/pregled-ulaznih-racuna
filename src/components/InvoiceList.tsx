@@ -1,5 +1,18 @@
 import { useState } from 'react'
-import { Badge, Box, CloseButton, Group, Progress, ScrollArea, SegmentedControl, Select, Stack, Text, TextInput, UnstyledButton } from '@mantine/core'
+import {
+  Badge,
+  Box,
+  CloseButton,
+  Group,
+  Progress,
+  ScrollArea,
+  SegmentedControl,
+  Select,
+  Stack,
+  Text,
+  TextInput,
+  UnstyledButton,
+} from '@mantine/core'
 import type { Invoice } from '../types/invoice'
 import { valueOf, type Issue } from '../lib/checks'
 import type { FieldKey } from '../lib/fields'
@@ -43,7 +56,11 @@ export function InvoiceList(p: Props) {
             {p.doneCount} od {p.total} obrađeno
           </Text>
         </Group>
-        <Progress value={(p.doneCount / Math.max(p.total, 1)) * 100} size="sm" aria-label="Napredak pregleda" />
+        <Progress
+          value={(p.doneCount / Math.max(p.total, 1)) * 100}
+          size="sm"
+          aria-label="Napredak pregleda"
+        />
         <TextInput
           size="xs"
           placeholder="Traži dobavljača, broj ili iznos"
@@ -51,7 +68,9 @@ export function InvoiceList(p: Props) {
           onChange={(e) => p.onSearch(e.currentTarget.value)}
           aria-label="Pretraga računa"
           rightSection={
-            p.search ? <CloseButton size="xs" onClick={() => p.onSearch('')} aria-label="Očisti pretragu" /> : null
+            p.search ? (
+              <CloseButton size="xs" onClick={() => p.onSearch('')} aria-label="Očisti pretragu" />
+            ) : null
           }
         />
         {/* The accountant handles ~40 companies, so a searchable dropdown instead of buttons. */}
@@ -134,7 +153,12 @@ export function InvoiceList(p: Props) {
                     ✓
                   </Badge>
                 ) : open.length > 0 ? (
-                  <Badge color={hasError ? 'red' : 'yellow'} variant="light" size="sm" style={{ flexShrink: 0 }}>
+                  <Badge
+                    color={hasError ? 'red' : 'yellow'}
+                    variant="light"
+                    size="sm"
+                    style={{ flexShrink: 0 }}
+                  >
                     {open.length}
                   </Badge>
                 ) : (

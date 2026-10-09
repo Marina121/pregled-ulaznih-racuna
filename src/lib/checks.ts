@@ -7,7 +7,10 @@ export type Severity = 'error' | 'warn'
 export type Edits = Record<string, unknown>
 
 export interface Issue {
-  /** Stable key, so "checked" survives recomputation. */
+  /**
+   * Stable key, so "checked" survives recomputation. It includes the values the issue is about:
+   * if they change (e.g. the total is edited again), it's a new issue and needs checking again.
+   */
   key: string
   severity: Severity
   /** Fields the issue applies to. Empty = an issue with the whole invoice. */
@@ -22,15 +25,29 @@ const TOLERANCE = 0.02
 
 const str = (x: unknown): string | null => (typeof x === 'string' && x.trim() !== '' ? x : null)
 const num = (x: unknown): number | null => (typeof x === 'number' && Number.isFinite(x) ? x : null)
-const isEmpty = (x: unknown) => x === null || x === undefined || x === '' || (Array.isArray(x) && x.length === 0)
+const isEmpty = (x: unknown) =>
+  x === null || x === undefined || x === '' || (Array.isArray(x) && x.length === 0)
 const norm = (s: string | null) => (s ?? '').toLowerCase().replace(/\s+/g, '')
+// A real date in YYYY-MM-DD form. 2022-02-30 is rejected (Date would roll it over to March),
+// and so is 2022-13-01 (an invalid Date, whose toISOString would throw).
+const isIsoDate = (s: string) => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return false
+  const d = new Date(`${s}T00:00:00Z`)
+  return !Number.isNaN(d.getTime()) && d.toISOString().startsWith(s)
+}
 
 // Line item numbers can be verified by arithmetic: quantity × price gives the total, with or
 // without VAT. If they match, they were read correctly, however unsure the system was.
 function lineMathOk(l: LineItem): boolean {
-  const q = num(l.quantity.value), p = num(l.unitPrice.value), t = num(l.lineTotal.value), r = num(l.vatRate.value)
+  const q = num(l.quantity.value),
+    p = num(l.unitPrice.value),
+    t = num(l.lineTotal.value),
+    r = num(l.vatRate.value)
   if (q === null || p === null || t === null) return false
-  return Math.abs(q * p - t) <= TOLERANCE || (r !== null && Math.abs(q * p * (1 + r / 100) - t) <= TOLERANCE)
+  return (
+    Math.abs(q * p - t) <= TOLERANCE ||
+    (r !== null && Math.abs(q * p * (1 + r / 100) - t) <= TOLERANCE)
+  )
 }
 
 const LINE_NUMBERS = ['quantity', 'unitPrice', 'vatRate', 'lineTotal'] as const
@@ -54,7 +71,12 @@ function vendorKey(inv: Invoice, edits: Edits | undefined) {
   return norm(str(valueOf(inv, edits, 'vendorTaxId')) ?? str(valueOf(inv, edits, 'vendorName')))
 }
 
-function checkInvoice(inv: Invoice, all: Invoice[], allEdits: Record<string, Edits>, rejected: Set<string>): Issue[] {
+function checkInvoice(
+  inv: Invoice,
+  all: Invoice[],
+  allEdits: Record<string, Edits>,
+  rejected: Set<string>,
+): Issue[] {
   const edits = allEdits[inv.id]
   const v = (k: FieldKey) => valueOf(inv, edits, k)
   const issues: Issue[] = []
@@ -65,11 +87,13 @@ function checkInvoice(inv: Invoice, all: Invoice[], allEdits: Record<string, Edi
   const badAccounts = accounts.filter((a) => !isValidAccount(a))
   // Same for tax IDs and VAT numbers: a valid check digit is better evidence than confidence.
   const checkDigitOk = (k: FieldKey): boolean => {
+    // Bank accounts are a list, not text, so they're handled before str() below. When there are
+    // any, check 7 decides (valid -> nothing, invalid -> error), so confidence is never shown.
+    if (k === 'bankAccounts') return accounts.length > 0
     const x = str(v(k))
     if (x === null) return false
     if (k === 'vendorTaxId' || k === 'buyerTaxId') return isValidTaxId(x)
     if (k === 'vendorVatId') return isValidVatId(x)
-    if (k === 'bankAccounts') return accounts.length > 0
     return false
   }
 
@@ -79,7 +103,13 @@ function checkInvoice(inv: Invoice, all: Invoice[], allEdits: Record<string, Edi
     const f = inv.fields[m.key]
     const edited = edits?.[m.key] !== undefined
     if (isEmpty(v(m.key))) {
-      if (m.required) issues.push({ key: `missing:${m.key}`, severity: 'error', fields: [m.key], message: 'Polje nije pročitano.' })
+      if (m.required)
+        issues.push({
+          key: `missing:${m.key}`,
+          severity: 'error',
+          fields: [m.key],
+          message: 'Polje nije pročitano.',
+        })
     } else if (!edited && f.confidence < LOW_CONFIDENCE && !checkDigitOk(m.key)) {
       issues.push({
         key: `conf:${m.key}`,
@@ -104,10 +134,12 @@ function checkInvoice(inv: Invoice, all: Invoice[], allEdits: Record<string, Edi
   }
 
   // 2. Net + VAT must equal the total.
-  const n = num(v('netAmount')), t = num(v('vatAmount')), tot = num(v('totalAmount'))
+  const n = num(v('netAmount')),
+    t = num(v('vatAmount')),
+    tot = num(v('totalAmount'))
   if (n !== null && t !== null && tot !== null && Math.abs(n + t - tot) > TOLERANCE) {
     issues.push({
-      key: 'math',
+      key: `math:${n}+${t}=${tot}`,
       severity: 'error',
       fields: ['netAmount', 'vatAmount', 'totalAmount'],
       message: `Osnovica + PDV = ${(n + t).toFixed(2)}, a ukupno je ${tot.toFixed(2)}.`,
@@ -117,15 +149,24 @@ function checkInvoice(inv: Invoice, all: Invoice[], allEdits: Record<string, Edi
   // 3. Sum of line items. Lines may include VAT or not, so it passes if it matches either.
   // An invoice can also have a discount (e.g. inv-006), so this is a warning, not an error.
   const lineSum = inv.lineItems.reduce((s, l) => s + (num(l.lineTotal.value) ?? 0), 0)
-  if (inv.lineItems.length > 0 && n !== null && tot !== null && Math.abs(lineSum - n) > TOLERANCE && Math.abs(lineSum - tot) > TOLERANCE) {
+  if (
+    inv.lineItems.length > 0 &&
+    n !== null &&
+    tot !== null &&
+    Math.abs(lineSum - n) > TOLERANCE &&
+    Math.abs(lineSum - tot) > TOLERANCE
+  ) {
     issues.push({
-      key: 'linesSum',
+      key: `linesSum:${lineSum.toFixed(2)}:${n}:${tot}`,
       severity: 'warn',
       fields: [],
       message: `Zbroj stavki (${lineSum.toFixed(2)}) ne odgovara ni osnovici ni ukupnom iznosu. Ako račun ima rabat, to može biti u redu.`,
     })
   }
-  const lowLineCells = inv.lineItems.reduce((s, l) => s + LINE_NUMBERS.filter((k) => lineCellUncertain(l, k)).length, 0)
+  const lowLineCells = inv.lineItems.reduce(
+    (s, l) => s + LINE_NUMBERS.filter((k) => lineCellUncertain(l, k)).length,
+    0,
+  )
   if (lowLineCells > 0) {
     issues.push({
       key: 'linesConf',
@@ -138,20 +179,47 @@ function checkInvoice(inv: Invoice, all: Invoice[], allEdits: Record<string, Edi
     })
   }
 
-  // 4. Dates.
-  const issue = str(v('issueDate')), supply = str(v('supplyDate')), due = str(v('dueDate'))
+  // 4. Dates. Any text can be typed into a date field, so check the form first: "1.2.2022" would
+  // break the comparisons below and couldn't be booked. Only valid dates are compared.
+  const date = (k: FieldKey) => {
+    const x = str(v(k))
+    if (x !== null && !isIsoDate(x)) {
+      issues.push({
+        key: `invalid:${k}:${x}`,
+        severity: 'error',
+        fields: [k],
+        message: 'Datum mora biti u obliku GGGG-MM-DD, npr. 2022-01-11.',
+      })
+      return null
+    }
+    return x
+  }
+  const issue = date('issueDate'),
+    supply = date('supplyDate'),
+    due = date('dueDate')
   if (issue && supply && supply > issue) {
-    issues.push({ key: 'dates:supply', severity: 'warn', fields: ['supplyDate', 'issueDate'], message: 'Datum isporuke je nakon datuma računa.' })
+    issues.push({
+      key: `dates:supply:${issue}:${supply}`,
+      severity: 'warn',
+      fields: ['supplyDate', 'issueDate'],
+      message: 'Datum isporuke je nakon datuma računa.',
+    })
   }
   if (issue && due && due < issue) {
-    issues.push({ key: 'dates:due', severity: 'warn', fields: ['dueDate', 'issueDate'], message: 'Datum dospijeća je prije datuma računa.' })
+    issues.push({
+      key: `dates:due:${issue}:${due}`,
+      severity: 'warn',
+      fields: ['dueDate', 'issueDate'],
+      message: 'Datum dospijeća je prije datuma računa.',
+    })
   }
 
   // 5. The buyer must be the client whose invoices the accountant is handling.
+  // Spaces don't matter ("4272 0804 50006" is the same number).
   const buyerTax = str(v('buyerTaxId'))
-  if (buyerTax && buyerTax !== inv.client.taxId) {
+  if (buyerTax && buyerTax.replace(/\s/g, '') !== inv.client.taxId) {
     issues.push({
-      key: 'buyer',
+      key: `buyer:${buyerTax}`,
       severity: 'error',
       fields: ['buyerTaxId', 'buyerName'],
       message: `ID broj kupca se razlikuje od klijenta (${inv.client.name}). Je li račun u pravoj mapi?`,
@@ -159,11 +227,14 @@ function checkInvoice(inv: Invoice, all: Invoice[], allEdits: Record<string, Edi
   }
 
   // 6. Tax ID and VAT number: each has a check digit, so we know which one was misread.
-  // A branch has its own tax ID but the company's VAT number, so only the "company" part is compared.
-  const vTax = str(v('vendorTaxId')), vVat = str(v('vendorVatId')), bTax = str(v('buyerTaxId'))
+  // A branch has its own tax ID but the company's VAT number, so only the "company" part is
+  // compared.
+  const vTax = str(v('vendorTaxId')),
+    vVat = str(v('vendorVatId')),
+    bTax = str(v('buyerTaxId'))
   const badId = (k: FieldKey, label: string) =>
     issues.push({
-      key: `checkdigit:${k}`,
+      key: `checkdigit:${k}:${str(v(k))}`,
       severity: 'error',
       fields: [k],
       message: `${label} nije ispravan: kontrolna znamenka ne odgovara. Neka znamenka je krivo pročitana.`,
@@ -173,7 +244,7 @@ function checkInvoice(inv: Invoice, all: Invoice[], allEdits: Record<string, Edi
   if (bTax && !isValidTaxId(bTax)) badId('buyerTaxId', 'ID broj')
   if (vTax && vVat && isValidTaxId(vTax) && isValidVatId(vVat) && !sameCompany(vTax, vVat)) {
     issues.push({
-      key: 'vat-tax',
+      key: `vat-tax:${vTax}:${vVat}`,
       severity: 'warn',
       fields: ['vendorTaxId', 'vendorVatId'],
       message: 'ID broj i PDV broj su ispravni, ali pripadaju različitim firmama.',
@@ -198,7 +269,13 @@ function checkInvoice(inv: Invoice, all: Invoice[], allEdits: Record<string, Edi
   const myNumber = norm(str(v('invoiceNumber')))
   for (const o of all) {
     // A rejected duplicate isn't booked, so it no longer threatens the original.
-    if (o.id === inv.id || rejected.has(o.id) || vendorKey(o, allEdits[o.id]) !== myVendor || !myVendor) continue
+    if (
+      o.id === inv.id ||
+      rejected.has(o.id) ||
+      vendorKey(o, allEdits[o.id]) !== myVendor ||
+      !myVendor
+    )
+      continue
     const oNumber = norm(str(valueOf(o, allEdits[o.id], 'invoiceNumber')))
     const oTotal = num(valueOf(o, allEdits[o.id], 'totalAmount'))
     if (myNumber && myNumber === oNumber) {

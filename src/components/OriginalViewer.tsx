@@ -10,15 +10,20 @@ const ZOOM_STEP = 50
 export function OriginalViewer({ invoice }: { invoice: Invoice }) {
   const [zoom, setZoom] = useState(MIN_ZOOM)
   // A zoomed image can be panned by dragging. Remembers where the drag started.
-  const [drag, setDrag] = useState<{ x: number; y: number; left: number; top: number } | null>(null)
+  const [drag, setDrag] = useState<{
+    x: number
+    y: number
+    left: number
+    top: number
+  } | null>(null)
   const o = invoice.original
 
   if (!o) {
     return (
       <Box p="md">
         <Alert color="yellow" title="Original nije priložen">
-          Račun je stigao e-poštom bez priloga. Možeš provjeriti samo izvučene vrijednosti, a ne i usporediti ih s
-          dokumentom.
+          Račun je stigao e-poštom bez priloga. Možeš provjeriti samo izvučene vrijednosti, a ne i
+          usporediti ih s dokumentom.
         </Alert>
       </Box>
     )
@@ -29,13 +34,23 @@ export function OriginalViewer({ invoice }: { invoice: Invoice }) {
 
   return (
     <Box h="100%" style={{ display: 'flex', flexDirection: 'column' }}>
-      <Group justify="space-between" p="xs" style={{ borderBottom: '1px solid var(--mantine-color-gray-3)' }}>
+      <Group
+        justify="space-between"
+        p="xs"
+        style={{ borderBottom: '1px solid var(--mantine-color-gray-3)' }}
+      >
         <Text size="xs" c="dimmed">
-          {invoice.originalFilename} · {o.pages} str. · {invoice.channel === 'mobile' ? 'fotografija' : 'e-pošta'}
+          {invoice.originalFilename} · {o.pages} str. ·{' '}
+          {invoice.channel === 'mobile' ? 'fotografija' : 'e-pošta'}
         </Text>
         {!isPdf && (
           <Group gap={4}>
-            <Button size="compact-xs" variant="default" onClick={() => setZoom(100)} disabled={zoom === 100}>
+            <Button
+              size="compact-xs"
+              variant="default"
+              onClick={() => setZoom(100)}
+              disabled={zoom === 100}
+            >
               Prilagodi
             </Button>
             <Button
@@ -60,7 +75,14 @@ export function OriginalViewer({ invoice }: { invoice: Invoice }) {
               +
             </Button>
             {/* For tiny print beyond 400%: the browser has its own zoom and shows full resolution. */}
-            <Button size="compact-xs" variant="subtle" component="a" href={src} target="_blank" rel="noreferrer">
+            <Button
+              size="compact-xs"
+              variant="subtle"
+              component="a"
+              href={src}
+              target="_blank"
+              rel="noreferrer"
+            >
               Otvori u novoj kartici
             </Button>
           </Group>
@@ -76,7 +98,12 @@ export function OriginalViewer({ invoice }: { invoice: Invoice }) {
         onPointerDown={(e) => {
           if (isPdf || zoom === MIN_ZOOM) return
           e.preventDefault() // otherwise the browser starts dragging the image as a file
-          setDrag({ x: e.clientX, y: e.clientY, left: e.currentTarget.scrollLeft, top: e.currentTarget.scrollTop })
+          setDrag({
+            x: e.clientX,
+            y: e.clientY,
+            left: e.currentTarget.scrollLeft,
+            top: e.currentTarget.scrollTop,
+          })
           e.currentTarget.setPointerCapture(e.pointerId)
         }}
         onPointerMove={(e) => {
@@ -88,13 +115,22 @@ export function OriginalViewer({ invoice }: { invoice: Invoice }) {
         onPointerCancel={() => setDrag(null)}
       >
         {isPdf ? (
-          <iframe title={invoice.id} src={src} style={{ width: '100%', height: '100%', border: 0 }} />
+          <iframe
+            title={invoice.id}
+            src={src}
+            style={{ width: '100%', height: '100%', border: 0 }}
+          />
         ) : (
           <img
             src={src}
             alt={`Račun ${invoice.id}`}
             draggable={false}
-            style={{ width: `${zoom}%`, maxWidth: 'none', display: 'block', userSelect: 'none' }}
+            style={{
+              width: `${zoom}%`,
+              maxWidth: 'none',
+              display: 'block',
+              userSelect: 'none',
+            }}
           />
         )}
       </Box>

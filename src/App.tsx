@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { AppShell, Box, Flex, Loader, Text } from '@mantine/core'
+import { Alert, AppShell, Box, Flex, Loader, Text } from '@mantine/core'
 import { useHotkeys } from '@mantine/hooks'
 import type { Invoice } from './types/invoice'
 import { computeIssues, valueOf } from './lib/checks'
@@ -10,6 +10,8 @@ import { FieldsPanel } from './components/FieldsPanel'
 
 export default function App() {
   const [invoices, setInvoices] = useState<Invoice[]>([])
+  // 'loading' until invoices.json arrives; an error message if it can't be read.
+  const [load, setLoad] = useState<'loading' | 'ok' | string>('loading')
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [clientFilter, setClientFilter] = useState('all')
   const [statusFilter, setStatusFilter] = useState('all')
@@ -18,11 +20,16 @@ export default function App() {
 
   useEffect(() => {
     fetch('/invoices.json')
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`)
+        return r.json()
+      })
       .then((d: { invoices: Invoice[] }) => {
         setInvoices(d.invoices)
         setSelectedId(d.invoices[0]?.id ?? null)
+        setLoad('ok')
       })
+      .catch((e: Error) => setLoad(e.message))
   }, [])
 
   const edits = useMemo(
@@ -30,15 +37,27 @@ export default function App() {
     [review.state],
   )
   const rejected = useMemo(
-    () => new Set(Object.entries(review.state).filter(([, s]) => s.status === 'rejected').map(([id]) => id)),
+    () =>
+      new Set(
+        Object.entries(review.state)
+          .filter(([, s]) => s.status === 'rejected')
+          .map(([id]) => id),
+      ),
     [review.state],
   )
-  const issues = useMemo(() => computeIssues(invoices, edits, rejected), [invoices, edits, rejected])
+  const issues = useMemo(
+    () => computeIssues(invoices, edits, rejected),
+    [invoices, edits, rejected],
+  )
 
   const clients = useMemo(() => {
     const m = new Map<string, { id: string; name: string; pending: number }>()
     invoices.forEach((i) => {
-      const c = m.get(i.client.id) ?? { id: i.client.id, name: i.client.name, pending: 0 }
+      const c = m.get(i.client.id) ?? {
+        id: i.client.id,
+        name: i.client.name,
+        pending: 0,
+      }
       if ((review.state[i.id]?.status ?? 'pending') === 'pending') c.pending++
       m.set(i.client.id, c)
     })
@@ -46,7 +65,8 @@ export default function App() {
   }, [invoices, review.state])
 
   // Search by vendor, invoice number or amount ("495", "495,57"), using corrected values.
-  // With hundreds of invoices a month this is how a specific one is found, e.g. when a client calls.
+  // With hundreds of invoices a month this is how a specific one is found, e.g. when a client
+  // calls.
   const query = search.trim().toLowerCase().replace(',', '.')
   const matchesSearch = (i: Invoice) => {
     if (!query) return true
@@ -57,7 +77,11 @@ export default function App() {
       valueOf(i, edits, 'invoiceNumber'),
       typeof total === 'number' ? total.toFixed(2) : '',
     ]
-    return haystack.some((x) => String(x ?? '').toLowerCase().includes(query))
+    return haystack.some((x) =>
+      String(x ?? '')
+        .toLowerCase()
+        .includes(query),
+    )
   }
 
   const visible = invoices.filter(
@@ -68,10 +92,12 @@ export default function App() {
   )
 
   const selected = invoices.find((i) => i.id === selectedId)
-  const selectedIssues = selected ? issues[selected.id] ?? [] : []
+  const selectedIssues = selected ? (issues[selected.id] ?? []) : []
   const selectedEntry = selected ? review.get(selected.id) : null
   const canConfirm =
-    !!selected && selectedEntry!.status === 'pending' && selectedIssues.every((i) => selectedEntry!.resolved.includes(i.key))
+    !!selected &&
+    selectedEntry!.status === 'pending' &&
+    selectedIssues.every((i) => selectedEntry!.resolved.includes(i.key))
 
   const move = (delta: number) => {
     const idx = visible.findIndex((i) => i.id === selectedId)
@@ -106,7 +132,15 @@ export default function App() {
   ])
   useHotkeys([['mod+Enter', confirmAndNext, { preventDefault: true }]], [])
 
-  if (invoices.length === 0) return <Loader m="xl" />
+  if (load === 'loading') return <Loader m="xl" />
+  if (load !== 'ok' || invoices.length === 0) {
+    return (
+      <Alert color="red" title="Računi se nisu mogli učitati" m="xl">
+        {load !== 'ok' ? `Greška: ${load}. ` : 'Datoteka s računima je prazna. '}
+        Provjeri postoji li public/invoices.json i osvježi stranicu.
+      </Alert>
+    )
+  }
 
   return (
     <AppShell navbar={{ width: 320, breakpoint: 'sm' }} padding={0}>
@@ -121,9 +155,16 @@ export default function App() {
           clientFilter={clientFilter}
           onClientFilter={(c) => {
             setClientFilter(c)
-            // Don't keep another client's invoice open on the right while the list shows a different company.
+            // Don't keep another client's invoice open on the right while the list shows a
+            // different company. Open the client's first invoice that the other filters show.
             if (c !== 'all' && selected?.client.id !== c) {
-              setSelectedId(invoices.find((i) => i.client.id === c)?.id ?? null)
+              const first = invoices.find(
+                (i) =>
+                  i.client.id === c &&
+                  (statusFilter === 'all' || review.get(i.id).status === statusFilter) &&
+                  matchesSearch(i),
+              )
+              setSelectedId(first?.id ?? null)
             }
           }}
           statusFilter={statusFilter}
@@ -140,7 +181,13 @@ export default function App() {
             <Box style={{ flex: '1 1 55%', minWidth: 0 }}>
               <OriginalViewer key={selected.id} invoice={selected} />
             </Box>
-            <Box w={440} style={{ borderLeft: '1px solid var(--mantine-color-gray-3)', flexShrink: 0 }}>
+            <Box
+              w={440}
+              style={{
+                borderLeft: '1px solid var(--mantine-color-gray-3)',
+                flexShrink: 0,
+              }}
+            >
               <FieldsPanel
                 key={selected.id}
                 invoice={selected}
@@ -148,11 +195,22 @@ export default function App() {
                 entry={selectedEntry}
                 onEdit={(k, v) => review.setEdit(selected.id, k, v)}
                 onClearEdit={(k) => {
-                  // Which issues will this field have once the edit is gone? Those become open again.
+                  // Which issues will this field have once the edit is gone? Those become open
+                  // again.
                   const { [k]: _removed, ...withoutEdit } = selectedEntry.edits
-                  const after = computeIssues(invoices, { ...edits, [selected.id]: withoutEdit }, rejected)
-                  const reopen = after[selected.id].filter((i) => (i.fields as string[]).includes(k))
-                  review.clearEdit(selected.id, k, reopen.map((i) => i.key))
+                  const after = computeIssues(
+                    invoices,
+                    { ...edits, [selected.id]: withoutEdit },
+                    rejected,
+                  )
+                  const reopen = after[selected.id].filter((i) =>
+                    (i.fields as string[]).includes(k),
+                  )
+                  review.clearEdit(
+                    selected.id,
+                    k,
+                    reopen.map((i) => i.key),
+                  )
                 }}
                 onResolve={(keys) => review.resolve(selected.id, keys)}
                 onConfirm={confirmAndNext}
@@ -165,10 +223,12 @@ export default function App() {
                 onReject={rejectAndNext}
                 onResetInvoice={() => review.resetOne(selected.id)}
                 onOpenInvoice={(id) => {
-                  // If the filters hide that invoice, clear them so it also shows up in the list.
+                  // If the filters or the search hide that invoice, clear them so it also shows
+                  // up in the list.
                   if (!visible.some((i) => i.id === id)) {
                     setClientFilter('all')
                     setStatusFilter('all')
+                    setSearch('')
                   }
                   setSelectedId(id)
                 }}

@@ -2,7 +2,8 @@ import { useLocalStorage } from '@mantine/hooks'
 import type { Edits } from './checks'
 
 export interface ReviewEntry {
-  // Rejected = a duplicate that is not booked. Never deleted, so the decision stays visible and reversible.
+  // Rejected = a duplicate that is not booked. Never deleted, so the decision stays visible and
+  // reversible.
   status: 'pending' | 'confirmed' | 'rejected'
   /** For a rejected invoice: which invoice is the original. */
   duplicateOf?: string
@@ -20,7 +21,10 @@ const EMPTY: ReviewEntry = { status: 'pending', edits: {}, resolved: [] }
 
 export function useReview() {
   // No backend: review state lives in localStorage.
-  const [state, setState] = useLocalStorage<ReviewState>({ key: 'racuni-pregled-v1', defaultValue: {} })
+  const [state, setState] = useLocalStorage<ReviewState>({
+    key: 'racuni-pregled-v1',
+    defaultValue: {},
+  })
 
   const update = (id: string, fn: (e: ReviewEntry) => ReviewEntry) =>
     setState((s) => ({ ...s, [id]: fn(s[id] ?? EMPTY) }))
@@ -43,11 +47,22 @@ export function useReview() {
       }),
     resolve: (id: string, keys: string[]) =>
       update(id, (e) => ({ ...e, resolved: Array.from(new Set([...e.resolved, ...keys])) })),
-    confirm: (id: string) => update(id, (e) => ({ ...e, status: 'confirmed', decidedAt: new Date().toISOString() })),
+    confirm: (id: string) =>
+      update(id, (e) => ({ ...e, status: 'confirmed', decidedAt: new Date().toISOString() })),
     reject: (id: string, duplicateOf: string) =>
-      update(id, (e) => ({ ...e, status: 'rejected', duplicateOf, decidedAt: new Date().toISOString() })),
+      update(id, (e) => ({
+        ...e,
+        status: 'rejected',
+        duplicateOf,
+        decidedAt: new Date().toISOString(),
+      })),
     reopen: (id: string) =>
-      update(id, (e) => ({ ...e, status: 'pending', duplicateOf: undefined, decidedAt: undefined })),
+      update(id, (e) => ({
+        ...e,
+        status: 'pending',
+        duplicateOf: undefined,
+        decidedAt: undefined,
+      })),
     // Back to how the system read it: no edits, nothing checked, pending.
     resetOne: (id: string) =>
       setState((s) => {

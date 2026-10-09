@@ -15,6 +15,10 @@ const BANKS: Record<string, string> = {
   '555': 'Nova banka',
   '567': 'Sberbank Banja Luka',
   '571': 'Komercijalna banka',
+  '141': 'Bosna Bank International d.d. Sarajevo',
+  '134':' ASA Banka d.d. Sarajevo',
+  '154':' Intesa Sanpolo Banka DD BIH'
+
 }
 
 const clean = (s: string) => s.replace(/[\s-]/g, '').toUpperCase()
@@ -30,7 +34,8 @@ function mod97(digits: string): number {
 export function isValidAccount(raw: string): boolean {
   const c = clean(raw)
   if (/^BA\d{18}$/.test(c)) {
-    // Standard IBAN check: move the first four characters to the end, letters to digits (B=11, A=10).
+    // Standard IBAN check: move the first four characters to the end, letters to digits (B=11,
+    // A=10).
     return mod97(c.slice(4) + '1110' + c.slice(2, 4)) === 1
   }
   if (!/^\d{16}$/.test(c)) return false
@@ -41,10 +46,11 @@ export function bankName(raw: string): string | null {
   return BANKS[domestic(clean(raw)).slice(0, 3)] ?? null
 }
 
-/** 1610200055610004 → 161-020-00055610-04, as printed on invoices. */
+/** 1610200055610004 → 161-020-00556100-04, as printed on invoices. */
 export function formatAccount(raw: string): string {
   const c = clean(raw)
-  if (/^\d{16}$/.test(c)) return `${c.slice(0, 3)}-${c.slice(3, 6)}-${c.slice(6, 14)}-${c.slice(14)}`
+  if (/^\d{16}$/.test(c))
+    return `${c.slice(0, 3)}-${c.slice(3, 6)}-${c.slice(6, 14)}-${c.slice(14)}`
   if (/^BA\d{18}$/.test(c)) return c.replace(/(.{4})/g, '$1 ').trim()
   return raw
 }

@@ -1,5 +1,19 @@
 import { useEffect, useState } from 'react'
-import { Accordion, Alert, Anchor, Badge, Box, Button, Group, Paper, ScrollArea, Stack, Table, Text, Tooltip } from '@mantine/core'
+import {
+  Accordion,
+  Alert,
+  Anchor,
+  Badge,
+  Box,
+  Button,
+  Group,
+  Paper,
+  ScrollArea,
+  Stack,
+  Table,
+  Text,
+  Tooltip,
+} from '@mantine/core'
 import type { Invoice } from '../types/invoice'
 import { FIELD_META } from '../lib/fields'
 import { lineCellUncertain, valueOf, type Issue } from '../lib/checks'
@@ -33,9 +47,26 @@ const fmtDateTime = (iso: string) => {
   return `${d.getDate()}. ${d.getMonth() + 1}. ${d.getFullYear()}. u ${hm}`
 }
 
-const fmt = (v: unknown) => (v === null || v === undefined ? '—' : typeof v === 'number' ? v.toFixed(2).replace(/\.00$/, '') : String(v))
+const fmt = (v: unknown) =>
+  v === null || v === undefined
+    ? '—'
+    : typeof v === 'number'
+      ? v.toFixed(2).replace(/\.00$/, '')
+      : String(v)
 
-export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onResolve, onConfirm, onReopen, onOpenInvoice, onReject, onResetInvoice }: Props) {
+export function FieldsPanel({
+  invoice,
+  issues,
+  entry,
+  onEdit,
+  onClearEdit,
+  onResolve,
+  onConfirm,
+  onReopen,
+  onOpenInvoice,
+  onReject,
+  onResetInvoice,
+}: Props) {
   const [showRest, setShowRest] = useState(false)
   const open = issues.filter((i) => !entry.resolved.includes(i.key))
   const confirmed = entry.status === 'confirmed'
@@ -96,7 +127,11 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
 
   return (
     <Box h="100%" style={{ display: 'flex', flexDirection: 'column' }}>
-      <Group justify="space-between" p="sm" style={{ borderBottom: '1px solid var(--mantine-color-gray-3)' }}>
+      <Group
+        justify="space-between"
+        p="sm"
+        style={{ borderBottom: '1px solid var(--mantine-color-gray-3)' }}
+      >
         <Box>
           <Text fw={600}>{String(valueOf(invoice, entry.edits, 'vendorName') ?? '')}</Text>
           <Text size="xs" c="dimmed">
@@ -135,8 +170,8 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
             <Alert color="gray" variant="light" p="xs">
               <Text size="xs">
                 {confirmed ? 'Račun je potvrđen' : 'Račun je odbačen'}
-                {entry.decidedAt ? ` ${fmtDateTime(entry.decidedAt)}` : ''} i zaključan. Za izmjene klikni „Vrati
-                na pregled”.
+                {entry.decidedAt ? ` ${fmtDateTime(entry.decidedAt)}` : ''} i zaključan. Za izmjene
+                klikni „Vrati na pregled”.
               </Text>
             </Alert>
           )}
@@ -145,7 +180,13 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
           {open.length === 0 && (
             <>
               {entry.status === 'pending' && (
-                <Alert color="teal" variant="light" title={issues.length === 0 ? 'Sve automatske provjere su prošle' : 'Sve je provjereno'}>
+                <Alert
+                  color="teal"
+                  variant="light"
+                  title={
+                    issues.length === 0 ? 'Sve automatske provjere su prošle' : 'Sve je provjereno'
+                  }
+                >
                   Usporedi sažetak s originalom i potvrdi.
                 </Alert>
               )}
@@ -166,12 +207,19 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
                       </Text>
                     </Group>
                   ))}
-                  <Group justify="space-between" pt={6} style={{ borderTop: '1px solid var(--mantine-color-gray-2)' }}>
+                  <Group
+                    justify="space-between"
+                    pt={6}
+                    style={{
+                      borderTop: '1px solid var(--mantine-color-gray-2)',
+                    }}
+                  >
                     <Text size="sm" fw={600}>
                       Ukupno
                     </Text>
                     <Text size="lg" fw={700}>
-                      {typeof total === 'number' ? total.toFixed(2) : '—'} {String(valueOf(invoice, entry.edits, 'currency') ?? '')}
+                      {typeof total === 'number' ? total.toFixed(2) : '—'}{' '}
+                      {String(valueOf(invoice, entry.edits, 'currency') ?? '')}
                     </Text>
                   </Group>
                 </Stack>
@@ -212,12 +260,23 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
                       ✓
                     </Text>
                   ) : locked ? null : i.relatedId ? (
-                    // For duplicates "checked" means nothing: the accountant must say whether it is one or not.
+                    // For duplicates "checked" means nothing: the accountant must say whether it is
+                    // one or not.
                     <Stack gap={4} style={{ flexShrink: 0 }}>
-                      <Button size="compact-xs" variant="white" color="dark" onClick={() => onResolve([i.key])}>
+                      <Button
+                        size="compact-xs"
+                        variant="white"
+                        color="dark"
+                        onClick={() => onResolve([i.key])}
+                      >
                         Nije duplikat
                       </Button>
-                      <Button size="compact-xs" variant="white" color="red" onClick={() => onReject(i.relatedId!)}>
+                      <Button
+                        size="compact-xs"
+                        variant="white"
+                        color="red"
+                        onClick={() => onReject(i.relatedId!)}
+                      >
                         Duplikat je, odbaci
                       </Button>
                     </Stack>
@@ -244,7 +303,12 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
           )}
           {flaggedMeta.map(row)}
 
-          <Button variant="subtle" size="compact-sm" onClick={() => setShowRest((s) => !s)} style={{ alignSelf: 'flex-start' }}>
+          <Button
+            variant="subtle"
+            size="compact-sm"
+            onClick={() => setShowRest((s) => !s)}
+            style={{ alignSelf: 'flex-start' }}
+          >
             {showRest ? 'Sakrij' : 'Prikaži'} ostala polja ({restMeta.length})
           </Button>
           {showRest && restMeta.map(row)}
@@ -268,11 +332,20 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
                       <Table.Tbody>
                         {invoice.lineItems.map((l, idx) => (
                           <Table.Tr key={idx}>
-                            {(['description', 'quantity', 'unitPrice', 'vatRate', 'lineTotal'] as const).map((k) => (
+                            {(
+                              [
+                                'description',
+                                'quantity',
+                                'unitPrice',
+                                'vatRate',
+                                'lineTotal',
+                              ] as const
+                            ).map((k) => (
                               <Table.Td
                                 key={k}
                                 bg={
-                                  // After "Provjereno" the highlight goes away, like with the other warnings.
+                                  // After "Provjereno" the highlight goes away, like with the other
+                                  // warnings.
                                   !entry.resolved.includes('linesConf') && lineCellUncertain(l, k)
                                     ? 'var(--mantine-color-yellow-1)'
                                     : undefined
@@ -297,9 +370,15 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
         </Stack>
       </ScrollArea>
 
-      <Group justify="space-between" p="sm" style={{ borderTop: '1px solid var(--mantine-color-gray-3)' }}>
+      <Group
+        justify="space-between"
+        p="sm"
+        style={{ borderTop: '1px solid var(--mantine-color-gray-3)' }}
+      >
         <Text size="xs" c="dimmed">
-          {issues.length === 0 ? 'Nema upozorenja' : `${issues.length - open.length} od ${issues.length} provjereno`}
+          {issues.length === 0
+            ? 'Nema upozorenja'
+            : `${issues.length - open.length} od ${issues.length} provjereno`}
         </Text>
         {confirmed || rejected ? (
           <Button variant="default" size="xs" onClick={onReopen}>
