@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { AppShell, Box, Flex, Loader, Text } from '@mantine/core'
 import { useHotkeys } from '@mantine/hooks'
 import type { Invoice } from './types/invoice'
-import { computeIssues } from './lib/checks'
+import { computeIssues, valueOf } from './lib/checks'
 import { useReview } from './lib/review'
 import { InvoiceList } from './components/InvoiceList'
 import { OriginalViewer } from './components/OriginalViewer'
@@ -13,6 +13,7 @@ export default function App() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [clientFilter, setClientFilter] = useState('all')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [search, setSearch] = useState('')
   const review = useReview()
 
   useEffect(() => {
@@ -44,10 +45,26 @@ export default function App() {
     return [...m.values()].sort((a, b) => a.name.localeCompare(b.name, 'hr'))
   }, [invoices, review.state])
 
+  // Search by vendor, invoice number or amount ("495", "495,57"), using corrected values.
+  // With hundreds of invoices a month this is how a specific one is found, e.g. when a client calls.
+  const query = search.trim().toLowerCase().replace(',', '.')
+  const matchesSearch = (i: Invoice) => {
+    if (!query) return true
+    const edits = review.get(i.id).edits
+    const total = valueOf(i, edits, 'totalAmount')
+    const haystack = [
+      valueOf(i, edits, 'vendorName'),
+      valueOf(i, edits, 'invoiceNumber'),
+      typeof total === 'number' ? total.toFixed(2) : '',
+    ]
+    return haystack.some((x) => String(x ?? '').toLowerCase().includes(query))
+  }
+
   const visible = invoices.filter(
     (i) =>
       (clientFilter === 'all' || i.client.id === clientFilter) &&
-      (statusFilter === 'all' || review.get(i.id).status === statusFilter),
+      (statusFilter === 'all' || review.get(i.id).status === statusFilter) &&
+      matchesSearch(i),
   )
 
   const selected = invoices.find((i) => i.id === selectedId)
@@ -111,6 +128,8 @@ export default function App() {
           }}
           statusFilter={statusFilter}
           onStatusFilter={setStatusFilter}
+          search={search}
+          onSearch={setSearch}
           total={invoices.length}
           doneCount={invoices.filter((i) => review.get(i.id).status !== 'pending').length}
         />

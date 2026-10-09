@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Badge, Box, Group, Progress, ScrollArea, SegmentedControl, Select, Stack, Text, UnstyledButton } from '@mantine/core'
+import { Badge, Box, CloseButton, Group, Progress, ScrollArea, SegmentedControl, Select, Stack, Text, TextInput, UnstyledButton } from '@mantine/core'
 import type { Invoice } from '../types/invoice'
 import { valueOf, type Issue } from '../lib/checks'
 import type { FieldKey } from '../lib/fields'
@@ -16,6 +16,8 @@ interface Props {
   onClientFilter: (v: string) => void
   statusFilter: string
   onStatusFilter: (v: string) => void
+  search: string
+  onSearch: (v: string) => void
   total: number
   doneCount: number
 }
@@ -42,6 +44,16 @@ export function InvoiceList(p: Props) {
           </Text>
         </Group>
         <Progress value={(p.doneCount / Math.max(p.total, 1)) * 100} size="sm" aria-label="Napredak pregleda" />
+        <TextInput
+          size="xs"
+          placeholder="Traži dobavljača, broj ili iznos"
+          value={p.search}
+          onChange={(e) => p.onSearch(e.currentTarget.value)}
+          aria-label="Pretraga računa"
+          rightSection={
+            p.search ? <CloseButton size="xs" onClick={() => p.onSearch('')} aria-label="Očisti pretragu" /> : null
+          }
+        />
         {/* The accountant handles ~40 companies, so a searchable dropdown instead of buttons. */}
         <Select
           size="xs"
@@ -72,7 +84,7 @@ export function InvoiceList(p: Props) {
           ]}
         />
       </Stack>
-      <ScrollArea style={{ flex: 1 }}>
+      <ScrollArea style={{ flex: 1 }} bg="var(--mantine-color-gray-0)">
         {p.invoices.map((inv) => {
           const e = p.review(inv.id)
           const open = (p.issues[inv.id] ?? []).filter((i) => !e.resolved.includes(i.key))
@@ -82,17 +94,35 @@ export function InvoiceList(p: Props) {
           // Show the accountant's corrections, not what the reader originally returned.
           const val = (k: FieldKey) => valueOf(inv, e.edits, k)
           const total = val('totalAmount')
+          // One colour per state, used for the stripe on the left edge so the list can be
+          // scanned without reading the badges.
+          const color = rejected
+            ? 'gray'
+            : confirmed
+              ? 'green'
+              : open.length > 0
+                ? hasError
+                  ? 'red'
+                  : 'yellow'
+                : 'teal'
+          const selected = inv.id === p.selectedId
           return (
             <UnstyledButton
               key={inv.id}
               onClick={() => p.onSelect(inv.id)}
-              p="sm"
+              py="sm"
+              pr="sm"
+              pl={selected ? 'calc(var(--mantine-spacing-sm) - 2px)' : 'sm'}
               w="100%"
-              style={{ borderBottom: '1px solid var(--mantine-color-gray-2)', opacity: confirmed || rejected ? 0.6 : 1 }}
-              bg={inv.id === p.selectedId ? 'var(--mantine-primary-color-light)' : undefined}
+              style={{
+                borderBottom: '1px solid var(--mantine-color-gray-2)',
+                borderLeft: `${selected ? 6 : 4}px solid var(--mantine-color-${selected ? 'teal-7' : `${color}-4`})`,
+                opacity: confirmed || rejected ? 0.6 : 1,
+              }}
+              bg={selected ? 'var(--mantine-primary-color-light)' : 'var(--mantine-color-white)'}
             >
               <Group justify="space-between" wrap="nowrap" gap="xs">
-                <Text size="sm" truncate>
+                <Text size="sm" fw={500} truncate>
                   {String(val('vendorName') ?? '')}
                 </Text>
                 {rejected ? (
@@ -113,16 +143,18 @@ export function InvoiceList(p: Props) {
                   </Badge>
                 )}
               </Group>
-              <Group justify="space-between" mt={2} wrap="nowrap" gap="xs">
+              {/* The amount is what the accountant looks for, so it's bold and on the right. */}
+              <Group justify="space-between" mt={4} wrap="nowrap" gap="xs">
                 <Text size="xs" c="dimmed" truncate>
-                  {String(val('invoiceNumber') ?? 'bez broja')} ·{' '}
-                  {typeof total === 'number' ? total.toFixed(2) : '—'} {String(val('currency') ?? '')}
+                  {String(val('invoiceNumber') ?? 'bez broja')}
+                  {p.clientFilter === 'all' ? ` · ${inv.client.id}` : ''}
                 </Text>
-                {p.clientFilter === 'all' && (
-                  <Text size="xs" c="dimmed" style={{ flexShrink: 0 }}>
-                    {inv.client.id}
+                <Text size="sm" fw={600} style={{ flexShrink: 0 }}>
+                  {typeof total === 'number' ? total.toFixed(2) : '—'}{' '}
+                  <Text span size="xs" c="dimmed" fw={400}>
+                    {String(val('currency') ?? '')}
                   </Text>
-                )}
+                </Text>
               </Group>
             </UnstyledButton>
           )
