@@ -2,23 +2,27 @@ import { Badge, Button, Group, NumberInput, Stack, Text, TextInput } from '@mant
 import type { FieldMeta } from '../lib/fields'
 import type { Issue } from '../lib/checks'
 import { LOW_CONFIDENCE } from '../lib/checks'
+import { bankName, formatAccount, isValidAccount } from '../lib/bankAccounts'
+import { isBranch } from '../lib/taxIds'
 
 interface Props {
   meta: FieldMeta
   value: unknown
   confidence: number
   edited: boolean
-  issues: Issue[] // nepregledani problemi za ovo polje
+  issues: Issue[] // unreviewed issues whose message is shown on this field
+  linked: { issue: Issue; label: string }[] // issues whose message is shown on another field
   wasResolved: boolean
   onChange: (v: unknown) => void
   onClear: () => void
   onResolve: () => void
 }
 
-export function FieldRow({ meta, value, confidence, edited, issues, wasResolved, onChange, onClear, onResolve }: Props) {
-  const flagged = issues.length > 0
+export function FieldRow({ meta, value, confidence, edited, issues, linked, wasResolved, onChange, onClear, onResolve }: Props) {
+  const all = [...issues, ...linked.map((l) => l.issue)]
+  const flagged = all.length > 0
   const hasValue = value !== null && value !== undefined && value !== ''
-  const color = issues.some((i) => i.severity === 'error') ? 'red' : 'yellow'
+  const color = all.some((i) => i.severity === 'error') ? 'red' : 'yellow'
 
   const input =
     meta.kind === 'number' ? (
@@ -78,12 +82,39 @@ export function FieldRow({ meta, value, confidence, edited, issues, wasResolved,
         </Group>
       </Group>
       {input}
+      {meta.key === 'vendorTaxId' && typeof value === 'string' && isBranch(value) && (
+        <Text size="xs" c="dimmed">
+          Račun je izdala poslovnica, pa se ID broj razlikuje od PDV broja firme. To je u redu.
+        </Text>
+      )}
+      {meta.key === 'bankAccounts' && Array.isArray(value) && value.length > 0 && (
+        // Raw digits are hard to compare with the original: group them as printed, with the bank name.
+        <Stack gap={2}>
+          {(value as string[]).map((a, idx) => {
+            const ok = isValidAccount(a)
+            return (
+              <Text key={idx} size="xs" c={ok ? 'dimmed' : 'red.8'} ff="monospace">
+                {ok ? '✓' : '✗'} {formatAccount(a)}
+                <Text span size="xs" ff="text" c={ok ? 'dimmed' : 'red.8'}>
+                  {' · '}
+                  {bankName(a) ?? 'nepoznata banka'}
+                </Text>
+              </Text>
+            )
+          })}
+        </Stack>
+      )}
       {issues.map((i) => (
         <Text key={i.key} size="xs" c={i.severity === 'error' ? 'red.8' : 'yellow.9'}>
           {i.message}
         </Text>
       ))}
-      {flagged && (
+      {linked.map((l) => (
+        <Text key={l.issue.key} size="xs" c="dimmed">
+          ↑ Vidi upozorenje uz polje „{l.label}”.
+        </Text>
+      ))}
+      {issues.length > 0 && (
         <Button size="compact-xs" variant="light" color={color} onClick={onResolve} style={{ alignSelf: 'flex-start' }}>
           Provjereno, u redu je
         </Button>

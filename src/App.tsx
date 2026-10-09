@@ -28,13 +28,21 @@ export default function App() {
     () => Object.fromEntries(Object.entries(review.state).map(([id, s]) => [id, s.edits])),
     [review.state],
   )
-  const issues = useMemo(() => computeIssues(invoices, edits), [invoices, edits])
+  const rejected = useMemo(
+    () => new Set(Object.entries(review.state).filter(([, s]) => s.status === 'rejected').map(([id]) => id)),
+    [review.state],
+  )
+  const issues = useMemo(() => computeIssues(invoices, edits, rejected), [invoices, edits, rejected])
 
   const clients = useMemo(() => {
-    const m = new Map<string, string>()
-    invoices.forEach((i) => m.set(i.client.id, i.client.name))
-    return [...m].map(([id, name]) => ({ id, name }))
-  }, [invoices])
+    const m = new Map<string, { id: string; name: string; pending: number }>()
+    invoices.forEach((i) => {
+      const c = m.get(i.client.id) ?? { id: i.client.id, name: i.client.name, pending: 0 }
+      if ((review.state[i.id]?.status ?? 'pending') === 'pending') c.pending++
+      m.set(i.client.id, c)
+    })
+    return [...m.values()].sort((a, b) => a.name.localeCompare(b.name, 'hr'))
+  }, [invoices, review.state])
 
   const visible = invoices.filter(
     (i) =>
@@ -54,17 +62,27 @@ export default function App() {
     if (next) setSelectedId(next.id)
   }
 
-  const confirmAndNext = () => {
-    if (!selected || !canConfirm) return
-    review.confirm(selected.id)
-    // Sljedeći nepotvrđeni račun u redu, a ako ga nema nakon trenutnog, prvi od početka.
-    const idx = visible.findIndex((i) => i.id === selected.id)
-    const pending = (i: Invoice) => i.id !== selected.id && review.get(i.id).status !== 'confirmed'
+  // Next unprocessed invoice in the list; if there is none after the current one, wrap to the top.
+  const goToNextPending = (fromId: string) => {
+    const idx = visible.findIndex((i) => i.id === fromId)
+    const pending = (i: Invoice) => i.id !== fromId && review.get(i.id).status === 'pending'
     const next = visible.slice(idx + 1).find(pending) ?? visible.find(pending)
     if (next) setSelectedId(next.id)
   }
 
-  // j/k za kretanje se ne aktiviraju dok se piše u polju; Ctrl+Enter radi i iz polja.
+  const confirmAndNext = () => {
+    if (!selected || !canConfirm) return
+    review.confirm(selected.id)
+    goToNextPending(selected.id)
+  }
+
+  const rejectAndNext = (duplicateOf: string) => {
+    if (!selected) return
+    review.reject(selected.id, duplicateOf)
+    goToNextPending(selected.id)
+  }
+
+  // j/k navigation is ignored while typing in a field; Ctrl+Enter works from inside a field too.
   useHotkeys([
     ['j', () => move(1)],
     ['k', () => move(-1)],
@@ -84,11 +102,17 @@ export default function App() {
           onSelect={setSelectedId}
           clients={clients}
           clientFilter={clientFilter}
-          onClientFilter={setClientFilter}
+          onClientFilter={(c) => {
+            setClientFilter(c)
+            // Don't keep another client's invoice open on the right while the list shows a different company.
+            if (c !== 'all' && selected?.client.id !== c) {
+              setSelectedId(invoices.find((i) => i.client.id === c)?.id ?? null)
+            }
+          }}
           statusFilter={statusFilter}
           onStatusFilter={setStatusFilter}
           total={invoices.length}
-          confirmedCount={invoices.filter((i) => review.get(i.id).status === 'confirmed').length}
+          doneCount={invoices.filter((i) => review.get(i.id).status !== 'pending').length}
         />
       </AppShell.Navbar>
       <AppShell.Main h="100vh">
@@ -108,6 +132,15 @@ export default function App() {
                 onResolve={(keys) => review.resolve(selected.id, keys)}
                 onConfirm={confirmAndNext}
                 onReopen={() => review.reopen(selected.id)}
+                onReject={rejectAndNext}
+                onOpenInvoice={(id) => {
+                  // If the filters hide that invoice, clear them so it also shows up in the list.
+                  if (!visible.some((i) => i.id === id)) {
+                    setClientFilter('all')
+                    setStatusFilter('all')
+                  }
+                  setSelectedId(id)
+                }}
               />
             </Box>
           </Flex>

@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Accordion, Alert, Badge, Box, Button, Group, ScrollArea, Stack, Table, Text, Tooltip } from '@mantine/core'
+import { Accordion, Alert, Anchor, Badge, Box, Button, Group, ScrollArea, Stack, Table, Text, Tooltip } from '@mantine/core'
 import type { Invoice } from '../types/invoice'
 import { FIELD_META } from '../lib/fields'
-import { LOW_CONFIDENCE, valueOf, type Issue } from '../lib/checks'
+import { lineCellUncertain, valueOf, type Issue } from '../lib/checks'
 import type { ReviewEntry } from '../lib/review'
 import { FieldRow } from './FieldRow'
 
@@ -15,21 +15,39 @@ interface Props {
   onResolve: (keys: string[]) => void
   onConfirm: () => void
   onReopen: () => void
+  onOpenInvoice: (id: string) => void
+  onReject: (duplicateOf: string) => void
 }
 
 const fmt = (v: unknown) => (v === null || v === undefined ? '—' : typeof v === 'number' ? v.toFixed(2).replace(/\.00$/, '') : String(v))
 
-export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onResolve, onConfirm, onReopen }: Props) {
+export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onResolve, onConfirm, onReopen, onOpenInvoice, onReject }: Props) {
   const [showRest, setShowRest] = useState(false)
   const open = issues.filter((i) => !entry.resolved.includes(i.key))
   const confirmed = entry.status === 'confirmed'
+  const rejected = entry.status === 'rejected'
   const docIssues = issues.filter((i) => i.fields.length === 0)
   const openFor = (k: string) => open.filter((i) => (i.fields as string[]).includes(k))
-  const flaggedMeta = FIELD_META.filter((m) => openFor(m.key).length > 0)
-  const restMeta = FIELD_META.filter((m) => openFor(m.key).length === 0)
+  // A field that was flagged once stays at the top while the invoice is open.
+  // Otherwise it would disappear as soon as an edit fixes the issue, mid-typing.
+  // The panel has key={invoice.id}, so the list starts fresh for each invoice.
+  const openKeys: string[] = open.flatMap((i) => i.fields)
+  const [flaggedKeys, setFlaggedKeys] = useState(() => new Set(openKeys))
+  if (openKeys.some((k) => !flaggedKeys.has(k))) {
+    setFlaggedKeys(new Set([...flaggedKeys, ...openKeys]))
+  }
+  const flaggedMeta = FIELD_META.filter((m) => flaggedKeys.has(m.key))
+  const restMeta = FIELD_META.filter((m) => !flaggedKeys.has(m.key))
 
+  // An issue that spans several fields (e.g. two dates) is written only on the first one;
+  // the other fields are just highlighted, so the same message isn't repeated two or three times.
+  const firstFieldOf = (i: Issue) => FIELD_META.find((m) => i.fields.includes(m.key))
   const row = (m: (typeof FIELD_META)[number]) => {
     const touching = issues.filter((i) => (i.fields as string[]).includes(m.key))
+    const own = openFor(m.key).filter((i) => firstFieldOf(i)?.key === m.key)
+    const linked = openFor(m.key)
+      .filter((i) => firstFieldOf(i)?.key !== m.key)
+      .map((i) => ({ issue: i, label: firstFieldOf(i)?.label ?? '' }))
     return (
       <FieldRow
         key={m.key}
@@ -37,11 +55,12 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
         value={valueOf(invoice, entry.edits, m.key)}
         confidence={invoice.fields[m.key].confidence}
         edited={entry.edits[m.key] !== undefined}
-        issues={openFor(m.key)}
+        issues={own}
+        linked={linked}
         wasResolved={touching.some((i) => entry.resolved.includes(i.key))}
         onChange={(v) => onEdit(m.key, v, touching.map((i) => i.key))}
         onClear={() => onClearEdit(m.key)}
-        onResolve={() => onResolve(openFor(m.key).map((i) => i.key))}
+        onResolve={() => onResolve(own.map((i) => i.key))}
       />
     )
   }
@@ -60,6 +79,11 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
             Potvrđeno
           </Badge>
         )}
+        {rejected && (
+          <Badge color="gray" variant="filled">
+            Odbačeno · duplikat {entry.duplicateOf}
+          </Badge>
+        )}
       </Group>
 
       <ScrollArea style={{ flex: 1 }} p="sm">
@@ -74,15 +98,46 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
                 p="xs"
               >
                 <Group justify="space-between" wrap="nowrap" align="flex-start">
-                  <Text size="xs" c={resolved ? 'dimmed' : undefined}>
+                  <Text size="xs" c={resolved ? 'dimmed' : undefined} style={{ flex: 1 }}>
                     {i.message}
+                    {i.relatedId && (
+                      <>
+                        {' '}
+                        <Anchor
+                          component="button"
+                          size="xs"
+                          c="inherit"
+                          fw={700}
+                          underline="always"
+                          onClick={() => onOpenInvoice(i.relatedId!)}
+                        >
+                          Otvori {i.relatedId} →
+                        </Anchor>
+                      </>
+                    )}
                   </Text>
                   {resolved ? (
                     <Text size="xs" c="green">
                       ✓
                     </Text>
+                  ) : i.relatedId && entry.status === 'pending' ? (
+                    // For duplicates "checked" means nothing: the accountant must say whether it is one or not.
+                    <Stack gap={4} style={{ flexShrink: 0 }}>
+                      <Button size="compact-xs" variant="white" color="dark" onClick={() => onResolve([i.key])}>
+                        Nije duplikat
+                      </Button>
+                      <Button size="compact-xs" variant="white" color="red" onClick={() => onReject(i.relatedId!)}>
+                        Duplikat je, odbaci
+                      </Button>
+                    </Stack>
                   ) : (
-                    <Button size="compact-xs" variant="white" color="dark" onClick={() => onResolve([i.key])}>
+                    <Button
+                      size="compact-xs"
+                      variant="white"
+                      color="dark"
+                      onClick={() => onResolve([i.key])}
+                      style={{ flexShrink: 0 }}
+                    >
                       Provjereno
                     </Button>
                   )}
@@ -125,7 +180,12 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
                             {(['description', 'quantity', 'unitPrice', 'vatRate', 'lineTotal'] as const).map((k) => (
                               <Table.Td
                                 key={k}
-                                bg={l[k].value !== null && l[k].confidence < LOW_CONFIDENCE ? 'var(--mantine-color-yellow-1)' : undefined}
+                                bg={
+                                  // After "Provjereno" the highlight goes away, like with the other warnings.
+                                  !entry.resolved.includes('linesConf') && lineCellUncertain(l, k)
+                                    ? 'var(--mantine-color-yellow-1)'
+                                    : undefined
+                                }
                               >
                                 {fmt(l[k].value)}
                                 {k === 'quantity' && l.unit.value ? ` ${l.unit.value}` : ''}
@@ -150,7 +210,7 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
         <Text size="xs" c="dimmed">
           {issues.length === 0 ? 'Nema upozorenja' : `${issues.length - open.length} od ${issues.length} provjereno`}
         </Text>
-        {confirmed ? (
+        {confirmed || rejected ? (
           <Button variant="default" size="xs" onClick={onReopen}>
             Vrati na pregled
           </Button>
