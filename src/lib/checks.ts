@@ -90,6 +90,19 @@ function checkInvoice(inv: Invoice, all: Invoice[], allEdits: Record<string, Edi
     }
   }
 
+  // 1b. A value outside the allowed options (e.g. the reader returned "KM" for currency).
+  for (const m of FIELD_META) {
+    const x = str(v(m.key))
+    if (m.options && x !== null && !m.options.some((o) => o.value === x)) {
+      issues.push({
+        key: `invalid:${m.key}:${x}`,
+        severity: 'error',
+        fields: [m.key],
+        message: `Nepoznata vrijednost „${x}”. Odaberi s popisa.`,
+      })
+    }
+  }
+
   // 2. Net + VAT must equal the total.
   const n = num(v('netAmount')), t = num(v('vatAmount')), tot = num(v('totalAmount'))
   if (n !== null && t !== null && tot !== null && Math.abs(n + t - tot) > TOLERANCE) {

@@ -1,7 +1,7 @@
 import type { InvoiceFields } from '../types/invoice'
 
 export type FieldKey = keyof InvoiceFields
-export type FieldKind = 'text' | 'date' | 'number' | 'list'
+export type FieldKind = 'text' | 'date' | 'number' | 'list' | 'select'
 
 export interface FieldMeta {
   key: FieldKey
@@ -11,7 +11,17 @@ export interface FieldMeta {
   // Missing optional fields (e.g. payment reference) are NOT a warning:
   // confidence 0 with null means "not on the invoice", not "the system is unsure".
   required: boolean
+  /** For kind 'select': the only accepted values. Booking expects exact codes, so free text
+   * like "bAM" or "KM" must not get through. */
+  options?: { value: string; label: string }[]
 }
+
+// Currencies the booking system accepts. Invoices in BiH often print "KM" for BAM.
+export const CURRENCIES = [
+  { value: 'BAM', label: 'BAM (KM)' },
+  { value: 'EUR', label: 'EUR' },
+  { value: 'USD', label: 'USD' },
+]
 
 export const FIELD_META: FieldMeta[] = [
   { key: 'vendorName', label: 'Dobavljač', kind: 'text', required: true },
@@ -21,7 +31,7 @@ export const FIELD_META: FieldMeta[] = [
   { key: 'issueDate', label: 'Datum računa', kind: 'date', required: true },
   { key: 'supplyDate', label: 'Datum isporuke', kind: 'date', required: false },
   { key: 'dueDate', label: 'Datum dospijeća', kind: 'date', required: false },
-  { key: 'currency', label: 'Valuta', kind: 'text', required: true },
+  { key: 'currency', label: 'Valuta', kind: 'select', required: true, options: CURRENCIES },
   { key: 'netAmount', label: 'Osnovica (neto)', kind: 'number', required: true },
   { key: 'vatAmount', label: 'PDV', kind: 'number', required: true },
   { key: 'totalAmount', label: 'Ukupno', kind: 'number', required: true },

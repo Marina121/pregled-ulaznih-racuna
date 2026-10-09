@@ -1,4 +1,4 @@
-import { Badge, Button, Group, NumberInput, Stack, Text, TextInput } from '@mantine/core'
+import { Badge, Button, Group, NumberInput, Select, Stack, Text, TextInput } from '@mantine/core'
 import type { FieldMeta } from '../lib/fields'
 import type { Issue } from '../lib/checks'
 import { LOW_CONFIDENCE } from '../lib/checks'
@@ -26,7 +26,20 @@ export function FieldRow({ meta, value, confidence, edited, issues, linked, wasR
   const color = all.some((i) => i.severity === 'error') ? 'red' : 'yellow'
 
   const input =
-    meta.kind === 'number' ? (
+    meta.kind === 'select' ? (
+      <Select
+        size="xs"
+        data={meta.options}
+        // A value the reader returned that isn't an option (e.g. "KM") is shown as empty here;
+        // the check in checks.ts explains what was read.
+        value={meta.options?.some((o) => o.value === value) ? (value as string) : null}
+        onChange={(v) => onChange(v)}
+        allowDeselect={false}
+        placeholder="odaberi"
+        data-field={meta.key}
+        readOnly={locked}
+      />
+    ) : meta.kind === 'number' ? (
       <NumberInput
         size="xs"
         value={typeof value === 'number' ? value : ''}
