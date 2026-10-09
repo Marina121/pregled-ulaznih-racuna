@@ -56,7 +56,6 @@ export const useReview = () => {
         otherClient: undefined,
         decidedAt: undefined,
       })),
-    // Puts back an entry as it was, to undo "Poništi izmjene".
     restore: (id: string, entry: ReviewEntry) => update(id, () => entry),
     resetOne: (id: string) =>
       setState((all) => {

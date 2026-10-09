@@ -35,7 +35,6 @@ export type Issue = {
 export const openIssues = (issues: Issue[], resolved: string[]) =>
   issues.filter((issue) => !resolved.includes(issue.key))
 
-/** Every issue has been corrected or checked, so the invoice can be confirmed. */
 export const canConfirm = (entry: ReviewEntry, issues: Issue[]) =>
   entry.status === 'pending' && openIssues(issues, entry.resolved).length === 0
 
@@ -366,7 +365,6 @@ export function computeIssues(
   )
 }
 
-/** Issues for every invoice, from the saved review state. */
 export function issuesFor(invoices: Invoice[], state: ReviewState): Record<string, Issue[]> {
   const edits = Object.fromEntries(Object.entries(state).map(([id, entry]) => [id, entry.edits]))
   const rejected = new Set(

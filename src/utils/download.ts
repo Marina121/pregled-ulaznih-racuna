@@ -1,4 +1,3 @@
-/** Makes the browser save text as a file, e.g. a CSV export. */
 export const downloadFile = (filename: string, content: string, type: string) => {
   const link = document.createElement('a')
   link.href = URL.createObjectURL(new Blob([content], { type }))

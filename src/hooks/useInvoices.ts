@@ -6,7 +6,6 @@ export type InvoicesLoad =
   | { status: 'ready'; invoices: Invoice[] }
   | { status: 'error'; message: string }
 
-/** Loads public/invoices.json once, when the app opens. */
 export const useInvoices = () => {
   const [load, setLoad] = useState<InvoicesLoad>({ status: 'loading' })
 

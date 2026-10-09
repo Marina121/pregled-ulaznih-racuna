@@ -17,7 +17,7 @@ export const CURRENCIES = [
   { value: 'USD', label: 'USD' },
 ]
 
-/** Where review decisions are kept in the browser. Change the version if their shape changes. */
+/** Change the version if the shape of the saved review state changes. */
 export const STORAGE_KEY = 'racuni-pregled-v1'
 
 /** Zoom of the original, in % of the frame width. Phone photos have small print. */

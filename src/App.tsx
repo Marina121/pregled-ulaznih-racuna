@@ -56,7 +56,6 @@ const App: FC = () => {
     if (next) setSelectedId(next.id)
   }
 
-  // Next unprocessed invoice in the list; if there is none after the current one, wrap to the top.
   const goToNextPending = (fromId: string) => {
     const index = visible.findIndex((invoice) => invoice.id === fromId)
     const isPending = (invoice: Invoice) =>
@@ -65,7 +64,6 @@ const App: FC = () => {
     if (next) setSelectedId(next.id)
   }
 
-  // "Izvezi potvrđene": what would go to the booking system, as a CSV file to download.
   const exportConfirmed = () =>
     downloadFile(
       `potvrdeni-racuni-${new Date().toISOString().slice(0, 10)}.csv`,

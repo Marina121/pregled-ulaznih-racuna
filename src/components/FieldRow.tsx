@@ -38,7 +38,6 @@ const fromText = (kind: FieldMeta['kind'], text: string): FieldValue => {
   return kind === 'date' ? (parseDate(text) ?? text) : text
 }
 
-// What a stored value is shown as in a text input.
 const toText = (kind: FieldMeta['kind'], value: FieldValue) => {
   if (Array.isArray(value)) return value.join(', ')
   if (typeof value !== 'string') return ''

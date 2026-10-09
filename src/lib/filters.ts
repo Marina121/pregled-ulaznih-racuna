@@ -29,7 +29,6 @@ export const matchesFilters = (invoice: Invoice, entry: ReviewEntry, filters: Fi
   (filters.status === 'all' || entry.status === filters.status) &&
   matchesSearch(invoice, entry, filters.search)
 
-/** Clients for the client picker, by name, with how many of their invoices are still pending. */
 export function clientsOf(invoices: Invoice[], state: ReviewState): ClientSummary[] {
   const byId = new Map<string, ClientSummary>()
   invoices.forEach((invoice) => {
