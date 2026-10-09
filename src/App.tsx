@@ -3,6 +3,7 @@ import { Alert, AppShell, Box, Flex, Loader, Text } from '@mantine/core'
 import { useHotkeys } from '@mantine/hooks'
 import type { Invoice } from './types/invoice'
 import { computeIssues, valueOf } from './lib/checks'
+import { confirmedCsv } from './lib/export'
 import { useReview } from './lib/review'
 import { InvoiceList } from './components/InvoiceList'
 import { OriginalViewer } from './components/OriginalViewer'
@@ -113,6 +114,18 @@ export default function App() {
     if (next) setSelectedId(next.id)
   }
 
+  // "Izvezi potvrđene": what would go to the booking system, as a CSV file to download.
+  const exportConfirmed = () => {
+    const blob = new Blob([confirmedCsv(invoices, review.state)], {
+      type: 'text/csv;charset=utf-8',
+    })
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = `potvrdeni-racuni-${new Date().toISOString().slice(0, 10)}.csv`
+    a.click()
+    URL.revokeObjectURL(a.href)
+  }
+
   const confirmAndNext = () => {
     if (!selected || !canConfirm) return
     review.confirm(selected.id)
@@ -173,6 +186,8 @@ export default function App() {
           onSearch={setSearch}
           total={invoices.length}
           doneCount={invoices.filter((i) => review.get(i.id).status !== 'pending').length}
+          confirmedCount={invoices.filter((i) => review.get(i.id).status === 'confirmed').length}
+          onExport={exportConfirmed}
         />
       </AppShell.Navbar>
       <AppShell.Main h="100vh">

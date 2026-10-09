@@ -2,6 +2,7 @@ import { useState } from 'react'
 import {
   Badge,
   Box,
+  Button,
   CloseButton,
   Group,
   Progress,
@@ -33,6 +34,8 @@ interface Props {
   onSearch: (v: string) => void
   total: number
   doneCount: number
+  confirmedCount: number
+  onExport: () => void
 }
 
 export function InvoiceList(p: Props) {
@@ -191,6 +194,18 @@ export function InvoiceList(p: Props) {
           </Box>
         )}
       </ScrollArea>
+      {/* After the review: the confirmed invoices, with corrections, as they'd go to booking. */}
+      <Box p="xs" style={{ borderTop: '1px solid var(--mantine-color-gray-3)' }}>
+        <Button
+          size="compact-sm"
+          variant="light"
+          fullWidth
+          disabled={p.confirmedCount === 0}
+          onClick={p.onExport}
+        >
+          Izvezi potvrđene ({p.confirmedCount}) u CSV
+        </Button>
+      </Box>
     </Stack>
   )
 }

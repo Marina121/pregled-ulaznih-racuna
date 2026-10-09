@@ -17,6 +17,7 @@ import {
 import type { Invoice } from '../types/invoice'
 import { FIELD_META } from '../lib/fields'
 import { lineCellUncertain, valueOf, type Issue } from '../lib/checks'
+import { changesOf } from '../lib/export'
 import type { ReviewEntry } from '../lib/review'
 import { FieldRow } from './FieldRow'
 
@@ -84,6 +85,7 @@ export function FieldsPanel({
   }, [resetArmed])
   const docIssues = issues.filter((i) => i.fields.length === 0)
   const total = valueOf(invoice, entry.edits, 'totalAmount')
+  const changes = changesOf(invoice, entry.edits)
   const openFor = (k: string) => open.filter((i) => (i.fields as string[]).includes(k))
   // A field never moves while it is on screen, or typing in it would lose focus:
   // - a flagged field stays at the top even after an edit fixes it;
@@ -222,6 +224,23 @@ export function FieldsPanel({
                       {String(valueOf(invoice, entry.edits, 'currency') ?? '')}
                     </Text>
                   </Group>
+                  {/* What the accountant changed, so they see exactly what they are confirming. */}
+                  {changes.length > 0 && (
+                    <Stack
+                      gap={2}
+                      pt={6}
+                      style={{ borderTop: '1px solid var(--mantine-color-gray-2)' }}
+                    >
+                      <Text size="xs" c="dimmed">
+                        Ispravljeno
+                      </Text>
+                      {changes.map((c) => (
+                        <Text key={c.label} size="xs">
+                          <b>{c.label}:</b> {c.from} → {c.to}
+                        </Text>
+                      ))}
+                    </Stack>
+                  )}
                 </Stack>
               </Paper>
             </>
