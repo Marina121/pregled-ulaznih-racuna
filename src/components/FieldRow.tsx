@@ -16,9 +16,10 @@ interface Props {
   onChange: (v: unknown) => void
   onClear: () => void
   onResolve: () => void
+  locked: boolean // invoice confirmed or rejected: show values, allow no changes
 }
 
-export function FieldRow({ meta, value, confidence, edited, issues, linked, wasResolved, onChange, onClear, onResolve }: Props) {
+export function FieldRow({ meta, value, confidence, edited, issues, linked, wasResolved, onChange, onClear, onResolve, locked }: Props) {
   const all = [...issues, ...linked.map((l) => l.issue)]
   const flagged = all.length > 0
   const hasValue = value !== null && value !== undefined && value !== ''
@@ -35,6 +36,7 @@ export function FieldRow({ meta, value, confidence, edited, issues, linked, wasR
         onChange={(v) => onChange(v === '' ? null : Number(v))}
         placeholder="nije pronađeno"
         data-field={meta.key}
+        readOnly={locked}
       />
     ) : (
       <TextInput
@@ -46,6 +48,7 @@ export function FieldRow({ meta, value, confidence, edited, issues, linked, wasR
         }}
         placeholder={meta.kind === 'date' ? 'GGGG-MM-DD' : 'nije pronađeno'}
         data-field={meta.key}
+        readOnly={locked}
       />
     )
 
@@ -65,8 +68,15 @@ export function FieldRow({ meta, value, confidence, edited, issues, linked, wasR
         </Text>
         <Group gap={4}>
           {edited && (
-            <Badge size="xs" variant="light" color="blue" style={{ cursor: 'pointer' }} onClick={onClear} title="Vrati izvučenu vrijednost">
-              izmijenjeno ✕
+            <Badge
+              size="xs"
+              variant="light"
+              color="blue"
+              style={{ cursor: locked ? undefined : 'pointer' }}
+              onClick={locked ? undefined : onClear}
+              title={locked ? undefined : 'Vrati izvučenu vrijednost'}
+            >
+              {locked ? 'izmijenjeno' : 'izmijenjeno ✕'}
             </Badge>
           )}
           {!edited && hasValue && (
@@ -114,7 +124,7 @@ export function FieldRow({ meta, value, confidence, edited, issues, linked, wasR
           ↑ Vidi upozorenje uz polje „{l.label}”.
         </Text>
       ))}
-      {issues.length > 0 && (
+      {issues.length > 0 && !locked && (
         <Button size="compact-xs" variant="light" color={color} onClick={onResolve} style={{ alignSelf: 'flex-start' }}>
           Provjereno, u redu je
         </Button>

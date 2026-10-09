@@ -32,6 +32,8 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
   const open = issues.filter((i) => !entry.resolved.includes(i.key))
   const confirmed = entry.status === 'confirmed'
   const rejected = entry.status === 'rejected'
+  // A confirmed or rejected invoice is a decision already made: read-only until "Vrati na pregled".
+  const locked = entry.status !== 'pending'
   const docIssues = issues.filter((i) => i.fields.length === 0)
   const total = valueOf(invoice, entry.edits, 'totalAmount')
   const openFor = (k: string) => open.filter((i) => (i.fields as string[]).includes(k))
@@ -65,6 +67,7 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
         issues={own}
         linked={linked}
         wasResolved={touching.some((i) => entry.resolved.includes(i.key))}
+        locked={locked}
         onChange={(v) => onEdit(m.key, v, touching.map((i) => i.key))}
         onClear={() => onClearEdit(m.key)}
         onResolve={() => onResolve(own.map((i) => i.key))}
@@ -96,6 +99,15 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
       <ScrollArea style={{ flex: 1 }} p="sm">
         <Stack gap="sm" p="sm">
           {/* Nothing left to check: instead of an empty panel, show what is being confirmed. */}
+          {locked && (
+            <Alert color="gray" variant="light" p="xs">
+              <Text size="xs">
+                {confirmed ? 'Račun je potvrđen' : 'Račun je odbačen'} i zaključan. Za izmjene klikni „Vrati na
+                pregled”.
+              </Text>
+            </Alert>
+          )}
+
           {open.length === 0 && (
             <>
               {entry.status === 'pending' && (
@@ -165,7 +177,7 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
                     <Text size="xs" c="green">
                       ✓
                     </Text>
-                  ) : i.relatedId && entry.status === 'pending' ? (
+                  ) : locked ? null : i.relatedId ? (
                     // For duplicates "checked" means nothing: the accountant must say whether it is one or not.
                     <Stack gap={4} style={{ flexShrink: 0 }}>
                       <Button size="compact-xs" variant="white" color="dark" onClick={() => onResolve([i.key])}>
