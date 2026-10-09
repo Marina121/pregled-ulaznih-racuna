@@ -2,7 +2,7 @@ import type { Invoice, LineItem } from '../types/invoice'
 import { FIELD_META, type FieldKey } from './fields'
 import { isValidAccount } from './bankAccounts'
 import { isValidTaxId, isValidVatId, sameCompany } from './taxIds'
-import { asNumber, asText, isEmpty, normalize } from '../utils/values'
+import { asNumber, asText, isEmpty, normalize, sameValue } from '../utils/values'
 import { isIsoDate } from '../utils/dates'
 import { AMOUNT_TOLERANCE, LOW_CONFIDENCE, SAME_AMOUNT_TOLERANCE } from '../config'
 
@@ -27,7 +27,12 @@ export type Issue = {
    * export. None: a reading error that must be corrected.
    */
   dismiss?: 'checked' | 'original'
+  /** The invoice may belong to another client: it can be rejected instead of corrected. */
+  reject?: 'otherClient'
 }
+
+export const openIssues = (issues: Issue[], resolved: string[]) =>
+  issues.filter((issue) => !resolved.includes(issue.key))
 
 // Line item numbers can be verified by arithmetic: quantity × price gives the total, with or
 // without VAT. If they match, they were read correctly, however unsure the system was.
@@ -103,10 +108,11 @@ function checkInvoice(
   }
 
   // 1. Missing required field / low confidence.
-  // A manually corrected field is no longer considered uncertain.
+  // A manually corrected field is no longer considered uncertain. Typing a character and deleting
+  // it again isn't a correction, so the warning stays until it's checked.
   for (const field of FIELD_META) {
     const read = invoice.fields[field.key]
-    const edited = edits?.[field.key] !== undefined
+    const edited = edits?.[field.key] !== undefined && !sameValue(edits[field.key], read.value)
     if (isEmpty(current(field.key))) {
       if (field.required)
         issues.push({
@@ -235,15 +241,16 @@ function checkInvoice(
   }
 
   // 5. The buyer must be the client whose invoices the accountant is handling.
-  // Spaces don't matter ("4272 0804 50006" is the same number).
+  // Spaces don't matter ("4272 0804 50006" is the same number). If it really is another company's
+  // invoice, it must not be booked here, so it can't be waved through, only corrected or rejected.
   const buyerTaxId = asText(current('buyerTaxId'))
   if (buyerTaxId && buyerTaxId.replace(/\s/g, '') !== invoice.client.taxId) {
     issues.push({
       key: `buyer:${buyerTaxId}`,
-      dismiss: 'original',
+      reject: 'otherClient',
       severity: 'error',
       fields: ['buyerTaxId', 'buyerName'],
-      message: `ID broj kupca se razlikuje od klijenta (${invoice.client.name}). Je li račun u pravoj mapi?`,
+      message: `ID broj kupca se razlikuje od klijenta (${invoice.client.name}). Ispravi ga ako je krivo pročitan, ili odbaci račun ako je za drugu firmu.`,
     })
   }
 
@@ -291,7 +298,9 @@ function checkInvoice(
     })
   }
 
-  // 8. Possible duplicates: they don't block, but require a deliberate decision.
+  // 8. Possible duplicates: they don't block, but require a deliberate decision. The key includes
+  // the kind and the values compared, so "Nije duplikat" given on a weak match doesn't also cover
+  // a stronger one that appears after an edit.
   const myNumber = normalize(asText(current('invoiceNumber')))
   for (const other of allInvoices) {
     const otherEdits = allEdits[other.id]
@@ -306,7 +315,7 @@ function checkInvoice(
     const otherTotal = asNumber(valueOf(other, otherEdits, 'totalAmount'))
     if (myNumber && myNumber === otherNumber) {
       issues.push({
-        key: `dup:${other.id}`,
+        key: `dup:number:${other.id}:${myNumber}`,
         severity: 'error',
         fields: [],
         message: `Mogući duplikat: isti dobavljač i broj računa kao ${other.id}.`,
@@ -323,7 +332,7 @@ function checkInvoice(
       issueDate === asText(valueOf(other, otherEdits, 'issueDate'))
     ) {
       issues.push({
-        key: `dup:${other.id}`,
+        key: `dup:amount:${other.id}:${total}:${issueDate}`,
         severity: 'warn',
         fields: [],
         message: `Isti dobavljač, iznos i datum kao ${other.id}, ali drugi broj računa. Duplikat ili dvije isporuke isti dan?`,

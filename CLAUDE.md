@@ -53,9 +53,12 @@ data is deliberately messy.
 - A warning (yellow) can be marked "Provjereno". A reading error (red: date or currency format,
   check digit, bank account) must be corrected. So must a missing vendor, issue date, currency or
   amount: it can't be booked without them. A red issue where the invoice itself can be like
-  that (missing invoice number or buyer, doesn't add up, other buyer) needs an explicit "Takvo je na originalu",
+  that (missing invoice number or buyer, doesn't add up) needs an explicit "Takvo je na originalu",
   which is listed in the CSV export.
-- Nothing is deleted. A duplicate is rejected, kept and reversible.
+- Nothing is deleted. A duplicate, or an invoice for another company (buyer ≠ client), is
+  rejected, kept and reversible. It is never booked as "Takvo je na originalu".
+- A confirmed invoice that gets a new issue later (another invoice was corrected into its
+  duplicate) shows "provjeri ponovno" and is left out of the export until it's checked again.
 - No "are you sure?" dialogs. Everything can be undone instead, and confirmation is locked until
   every issue has been reviewed.
 - A branch office has its own tax ID but the company's VAT number. That is not an error.

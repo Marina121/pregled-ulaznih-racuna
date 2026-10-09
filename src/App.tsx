@@ -3,8 +3,8 @@ import { Alert, AppShell, Box, Flex, Loader, Text } from '@mantine/core'
 import { useHotkeys } from '@mantine/hooks'
 import type { Invoice } from './types/invoice'
 import { computeIssues, valueOf } from './lib/checks'
-import { confirmedCsv } from './lib/export'
-import { useReview } from './hooks/useReview'
+import { confirmedCsv, isExportable } from './lib/export'
+import { useReview, type RejectReason } from './hooks/useReview'
 import { InvoiceList } from './components/InvoiceList'
 import { OriginalViewer } from './components/OriginalViewer'
 import { FieldsPanel } from './components/FieldsPanel'
@@ -119,9 +119,9 @@ const App: FC = () => {
     goToNextPending(selected.id)
   }
 
-  const rejectAndNext = (duplicateOf: string) => {
+  const rejectAndNext = (reason: RejectReason) => {
     if (!selected) return
-    review.reject(selected.id, duplicateOf)
+    review.reject(selected.id, reason)
     goToNextPending(selected.id)
   }
 
@@ -190,8 +190,9 @@ const App: FC = () => {
           doneCount={
             invoices.filter((invoice) => review.get(invoice.id).status !== 'pending').length
           }
-          confirmedCount={
-            invoices.filter((invoice) => review.get(invoice.id).status === 'confirmed').length
+          exportableCount={
+            invoices.filter((invoice) => isExportable(review.state[invoice.id], issues[invoice.id]))
+              .length
           }
           onExport={exportConfirmed}
         />

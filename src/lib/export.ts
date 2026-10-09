@@ -1,7 +1,7 @@
 import type { Invoice } from '../types/invoice'
-import { computeIssues, valueOf, type Edits } from './checks'
+import { computeIssues, openIssues, valueOf, type Edits, type Issue } from './checks'
 import { FIELD_META, type FieldKey } from './fields'
-import type { ReviewState } from '../hooks/useReview'
+import type { ReviewEntry, ReviewState } from '../hooks/useReview'
 import { isEmpty } from '../utils/values'
 import { toLocalDateTime } from '../utils/dates'
 
@@ -57,6 +57,13 @@ const cell = (value: unknown) => {
 }
 
 /**
+ * Confirmed invoices that are still fine: a confirmed invoice can get a new issue later (another
+ * invoice was corrected into its duplicate), and then it must be checked again before booking.
+ */
+export const isExportable = (entry: ReviewEntry | undefined, issues: Issue[]) =>
+  entry?.status === 'confirmed' && openIssues(issues, entry.resolved).length === 0
+
+/**
  * Confirmed invoices as CSV, with the accountant's corrections, when each was confirmed and what
  * was changed. Separated by ";" and starting with a UTF-8 BOM, so Excel set to Croatian/Bosnian
  * opens it in columns and shows č, ć, đ, š, ž correctly.
@@ -80,7 +87,7 @@ export function confirmedCsv(invoices: Invoice[], state: ReviewState): string {
     'Takvo na originalu',
   ]
   const rows = invoices
-    .filter((invoice) => state[invoice.id]?.status === 'confirmed')
+    .filter((invoice) => isExportable(state[invoice.id], issues[invoice.id]))
     .map((invoice) => {
       const entry = state[invoice.id]
       const changes = changesOf(invoice, entry.edits).map(

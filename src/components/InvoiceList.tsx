@@ -15,7 +15,7 @@ import {
   UnstyledButton,
 } from '@mantine/core'
 import type { Invoice } from '../types/invoice'
-import { valueOf, type Issue } from '../lib/checks'
+import { openIssues, valueOf, type Issue } from '../lib/checks'
 import type { FieldKey } from '../lib/fields'
 import type { ReviewEntry } from '../hooks/useReview'
 
@@ -34,7 +34,7 @@ export type Props = {
   onSearch: (v: string) => void
   total: number
   doneCount: number
-  confirmedCount: number
+  exportableCount: number
   onExport: () => void
 }
 
@@ -60,7 +60,7 @@ export const InvoiceList: FC<Props> = ({
   onSearch,
   total,
   doneCount,
-  confirmedCount,
+  exportableCount,
   onExport,
 }) => {
   const [clientSearch, setClientSearch] = useState<string | null>(null)
@@ -128,12 +128,12 @@ export const InvoiceList: FC<Props> = ({
       <ScrollArea style={{ flex: 1 }} bg="var(--mantine-color-gray-0)">
         {invoices.map((invoice) => {
           const entry = review(invoice.id)
-          const open = (issues[invoice.id] ?? []).filter(
-            (issue) => !entry.resolved.includes(issue.key),
-          )
+          const open = openIssues(issues[invoice.id] ?? [], entry.resolved)
           const hasError = open.some((issue) => issue.severity === 'error')
-          const confirmed = entry.status === 'confirmed'
           const rejected = entry.status === 'rejected'
+          // Confirmed, but a new issue appeared afterwards: shown as needing review again.
+          const confirmed = entry.status === 'confirmed' && open.length === 0
+          const recheck = entry.status === 'confirmed' && open.length > 0
           const valueFor = (key: FieldKey) => valueOf(invoice, entry.edits, key)
           const amount = valueFor('totalAmount')
 
@@ -168,7 +168,11 @@ export const InvoiceList: FC<Props> = ({
                 </Text>
                 {rejected ? (
                   <Badge color="gray" variant="light" size="sm" style={{ flexShrink: 0 }}>
-                    duplikat
+                    {entry.otherClient ? 'drugi kupac' : 'duplikat'}
+                  </Badge>
+                ) : recheck ? (
+                  <Badge color="red" variant="filled" size="sm" style={{ flexShrink: 0 }}>
+                    provjeri ponovno
                   </Badge>
                 ) : confirmed ? (
                   <Badge color="green" variant="light" size="sm" style={{ flexShrink: 0 }}>
@@ -217,10 +221,10 @@ export const InvoiceList: FC<Props> = ({
           size="compact-sm"
           variant="light"
           fullWidth
-          disabled={confirmedCount === 0}
+          disabled={exportableCount === 0}
           onClick={onExport}
         >
-          Izvezi potvrđene ({confirmedCount}) u CSV
+          Izvezi potvrđene ({exportableCount}) u CSV
         </Button>
       </Box>
     </Stack>

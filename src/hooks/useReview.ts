@@ -5,12 +5,16 @@ import { STORAGE_KEY } from '../config'
 export type ReviewEntry = {
   status: 'pending' | 'confirmed' | 'rejected'
   duplicateOf?: string
+  // Rejected because the buyer is another company: it belongs in another client's folder.
+  otherClient?: boolean
   decidedAt?: string
   edits: Edits
   resolved: string[]
 }
 
 export type ReviewState = Record<string, ReviewEntry>
+
+export type RejectReason = { duplicateOf: string } | { otherClient: true }
 
 const EMPTY: ReviewEntry = { status: 'pending', edits: {}, resolved: [] }
 
@@ -51,11 +55,11 @@ export const useReview = () => {
         status: 'confirmed',
         decidedAt: new Date().toISOString(),
       })),
-    reject: (id: string, duplicateOf: string) =>
+    reject: (id: string, reason: RejectReason) =>
       update(id, (entry) => ({
         ...entry,
+        ...reason,
         status: 'rejected',
-        duplicateOf,
         decidedAt: new Date().toISOString(),
       })),
     reopen: (id: string) =>
@@ -63,6 +67,7 @@ export const useReview = () => {
         ...entry,
         status: 'pending',
         duplicateOf: undefined,
+        otherClient: undefined,
         decidedAt: undefined,
       })),
     resetOne: (id: string) =>

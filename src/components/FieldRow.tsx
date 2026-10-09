@@ -17,6 +17,7 @@ export type Props = {
   onChange: (v: unknown) => void
   onClear: () => void
   onResolve: () => void
+  onRejectOtherClient: () => void
   locked: boolean
 }
 
@@ -37,6 +38,7 @@ export const FieldRow: FC<Props> = ({
   onChange,
   onClear,
   onResolve,
+  onRejectOtherClient,
   locked,
 }) => {
   // Keeps the typed text, or the comma would be swallowed.
@@ -50,6 +52,7 @@ export const FieldRow: FC<Props> = ({
   const color = allIssues.some((issue) => issue.severity === 'error') ? 'red' : 'yellow'
   const dismissable = issues.filter((issue) => issue.dismiss)
   const mustFix = issues.some((issue) => !issue.dismiss)
+  const otherClient = issues.some((issue) => issue.reject === 'otherClient')
 
   const input =
     meta.kind === 'select' ? (
@@ -171,10 +174,21 @@ export const FieldRow: FC<Props> = ({
           Vidi upozorenje uz polje „{link.label}”.
         </Text>
       ))}
-      {mustFix && !locked && (
+      {mustFix && !otherClient && !locked && (
         <Text size="xs" c="dimmed">
           Ispravi vrijednost u polju.
         </Text>
+      )}
+      {otherClient && !locked && (
+        <Button
+          size="compact-xs"
+          variant="light"
+          color="red"
+          onClick={onRejectOtherClient}
+          style={{ alignSelf: 'flex-start' }}
+        >
+          Račun je za drugu firmu, odbaci
+        </Button>
       )}
       {dismissable.length > 0 && !locked && (
         <Button

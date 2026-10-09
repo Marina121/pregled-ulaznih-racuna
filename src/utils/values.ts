@@ -13,5 +13,9 @@ export const isEmpty = (value: unknown) =>
   (typeof value === 'string' && value.trim() === '') ||
   (Array.isArray(value) && value.length === 0)
 
+/** Same value, whatever its type: "abc" and "abc", 12 and 12, ["a"] and ["a"]. */
+export const sameValue = (first: unknown, second: unknown) =>
+  JSON.stringify(first ?? null) === JSON.stringify(second ?? null)
+
 /** For comparing: lower case, no spaces ("1-41 / 22" and "1-41/22" become the same). */
 export const normalize = (text: string | null) => (text ?? '').toLowerCase().replace(/\s+/g, '')

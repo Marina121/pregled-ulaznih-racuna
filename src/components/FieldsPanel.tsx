@@ -14,13 +14,14 @@ import {
   Text,
   Tooltip,
 } from '@mantine/core'
+import { useOs } from '@mantine/hooks'
 import type { Invoice } from '../types/invoice'
 import { FIELD_META } from '../lib/fields'
 import { lineCellUncertain, valueOf, type Issue } from '../lib/checks'
 import { changesOf } from '../lib/export'
 import { formatDate, formatDateTime } from '../utils/dates'
 import { RESET_SECOND_CLICK_MS } from '../config'
-import type { ReviewEntry } from '../hooks/useReview'
+import type { RejectReason, ReviewEntry } from '../hooks/useReview'
 import { FieldRow } from './FieldRow'
 
 export type Props = {
@@ -33,7 +34,7 @@ export type Props = {
   onConfirm: () => void
   onReopen: () => void
   onOpenInvoice: (id: string) => void
-  onReject: (duplicateOf: string) => void
+  onReject: (reason: RejectReason) => void
   onResetInvoice: () => void
 }
 
@@ -59,6 +60,8 @@ export const FieldsPanel: FC<Props> = ({
 }) => {
   const [showRest, setShowRest] = useState(false)
   const [resetArmed, setResetArmed] = useState(false)
+  // The hotkey is mod+Enter: Cmd on a Mac, Ctrl elsewhere.
+  const os = useOs()
 
   const open = issues.filter((issue) => !entry.resolved.includes(issue.key))
   const confirmed = entry.status === 'confirmed'
@@ -66,6 +69,7 @@ export const FieldsPanel: FC<Props> = ({
   const locked = entry.status !== 'pending'
   const hasChanges = Object.keys(entry.edits).length > 0 || entry.resolved.length > 0
   const docIssues = issues.filter((issue) => issue.fields.length === 0)
+  const hotkey = os === 'macos' ? '⌘+Enter' : 'Ctrl+Enter'
   const total = valueOf(invoice, entry.edits, 'totalAmount')
   const changes = changesOf(invoice, entry.edits)
   const summaryRows = [
@@ -108,6 +112,7 @@ export const FieldsPanel: FC<Props> = ({
         onChange={(value) => onEdit(field.key, value)}
         onClear={() => onClearEdit(field.key)}
         onResolve={() => onResolve(own.filter((issue) => issue.dismiss).map((issue) => issue.key))}
+        onRejectOtherClient={() => onReject({ otherClient: true })}
       />
     )
   }
@@ -152,7 +157,7 @@ export const FieldsPanel: FC<Props> = ({
         )}
         {rejected && (
           <Badge color="gray" variant="filled">
-            Odbačeno · duplikat {entry.duplicateOf}
+            Odbačeno · {entry.otherClient ? 'drugi kupac' : `duplikat ${entry.duplicateOf}`}
           </Badge>
         )}
       </Group>
@@ -165,6 +170,14 @@ export const FieldsPanel: FC<Props> = ({
                 {confirmed ? 'Račun je potvrđen' : 'Račun je odbačen'}
                 {entry.decidedAt ? ` ${formatDateTime(entry.decidedAt)}` : ''} i zaključan. Za
                 izmjene klikni „Vrati na pregled”.
+              </Text>
+            </Alert>
+          )}
+          {confirmed && open.length > 0 && (
+            <Alert color="red" variant="light" p="xs">
+              <Text size="xs">
+                Nakon potvrde pojavio se novi problem. Vrati račun na pregled i provjeri ga. Do tada
+                se ne izvozi u CSV.
               </Text>
             </Alert>
           )}
@@ -276,7 +289,7 @@ export const FieldsPanel: FC<Props> = ({
                         size="compact-xs"
                         variant="white"
                         color="red"
-                        onClick={() => onReject(issue.relatedId!)}
+                        onClick={() => onReject({ duplicateOf: issue.relatedId! })}
                       >
                         Duplikat je, odbaci
                       </Button>
@@ -389,7 +402,7 @@ export const FieldsPanel: FC<Props> = ({
         ) : (
           <Tooltip label={`Još ${open.length} stavki za provjeru`} disabled={open.length === 0}>
             <Button size="xs" disabled={open.length > 0} onClick={onConfirm}>
-              Potvrdi i idi na sljedeći (Ctrl+Enter)
+              Potvrdi i idi na sljedeći ({hotkey})
             </Button>
           </Tooltip>
         )}
