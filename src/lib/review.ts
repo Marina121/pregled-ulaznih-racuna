@@ -6,6 +6,9 @@ export interface ReviewEntry {
   status: 'pending' | 'confirmed' | 'rejected'
   /** For a rejected invoice: which invoice is the original. */
   duplicateOf?: string
+  /** When the invoice was confirmed or rejected (ISO time). With a backend this would also
+   * record who; without one, a login would only be for show. */
+  decidedAt?: string
   edits: Edits
   /** Keys of the issues the accountant has reviewed. */
   resolved: string[]
@@ -41,9 +44,11 @@ export function useReview() {
       }),
     resolve: (id: string, keys: string[]) =>
       update(id, (e) => ({ ...e, resolved: Array.from(new Set([...e.resolved, ...keys])) })),
-    confirm: (id: string) => update(id, (e) => ({ ...e, status: 'confirmed' })),
-    reject: (id: string, duplicateOf: string) => update(id, (e) => ({ ...e, status: 'rejected', duplicateOf })),
-    reopen: (id: string) => update(id, (e) => ({ ...e, status: 'pending', duplicateOf: undefined })),
+    confirm: (id: string) => update(id, (e) => ({ ...e, status: 'confirmed', decidedAt: new Date().toISOString() })),
+    reject: (id: string, duplicateOf: string) =>
+      update(id, (e) => ({ ...e, status: 'rejected', duplicateOf, decidedAt: new Date().toISOString() })),
+    reopen: (id: string) =>
+      update(id, (e) => ({ ...e, status: 'pending', duplicateOf: undefined, decidedAt: undefined })),
     // Back to how the system read it: no edits, nothing checked, pending.
     resetOne: (id: string) =>
       setState((s) => {

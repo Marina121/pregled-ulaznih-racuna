@@ -26,6 +26,13 @@ const fmtDate = (v: unknown) => {
   return m ? `${Number(m[3])}. ${Number(m[2])}. ${m[1]}.` : v ? String(v) : '—'
 }
 
+// 9. 10. 2026. u 14:32
+const fmtDateTime = (iso: string) => {
+  const d = new Date(iso)
+  const hm = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
+  return `${d.getDate()}. ${d.getMonth() + 1}. ${d.getFullYear()}. u ${hm}`
+}
+
 const fmt = (v: unknown) => (v === null || v === undefined ? '—' : typeof v === 'number' ? v.toFixed(2).replace(/\.00$/, '') : String(v))
 
 export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onResolve, onConfirm, onReopen, onOpenInvoice, onReject, onResetInvoice }: Props) {
@@ -125,8 +132,9 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
           {locked && (
             <Alert color="gray" variant="light" p="xs">
               <Text size="xs">
-                {confirmed ? 'Račun je potvrđen' : 'Račun je odbačen'} i zaključan. Za izmjene klikni „Vrati na
-                pregled”.
+                {confirmed ? 'Račun je potvrđen' : 'Račun je odbačen'}
+                {entry.decidedAt ? ` ${fmtDateTime(entry.decidedAt)}` : ''} i zaključan. Za izmjene klikni „Vrati
+                na pregled”.
               </Text>
             </Alert>
           )}
