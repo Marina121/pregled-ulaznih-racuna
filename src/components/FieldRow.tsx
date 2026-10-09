@@ -11,16 +11,15 @@ export type Props = {
   value: unknown
   confidence: number
   edited: boolean
-  issues: Issue[] // unreviewed issues whose message is shown on this field
-  linked: { issue: Issue; label: string }[] // issues whose message is shown on another field
+  issues: Issue[]
+  linked: { issue: Issue; label: string }[]
   wasResolved: boolean
   onChange: (v: unknown) => void
   onClear: () => void
   onResolve: () => void
-  locked: boolean // invoice confirmed or rejected: show values, allow no changes
+  locked: boolean
 }
 
-// "111, 222, " -> ["111", "222"]
 const toList = (text: string) =>
   text
     .split(',')
