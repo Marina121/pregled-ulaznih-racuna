@@ -55,10 +55,18 @@ export function valueOf(invoice: Invoice, edits: Edits | undefined, key: FieldKe
   return edited !== undefined ? edited : invoice.fields[key].value
 }
 
-function vendorKey(invoice: Invoice, edits: Edits | undefined) {
-  return normalize(
-    asText(valueOf(invoice, edits, 'vendorTaxId')) ?? asText(valueOf(invoice, edits, 'vendorName')),
-  )
+// Same vendor if the tax ID, the VAT number or the name match. One of them is often unread
+// (inv-002 has no tax ID), so comparing only one would let a duplicate through.
+function sameVendor(
+  invoice: Invoice,
+  edits: Edits | undefined,
+  other: Invoice,
+  otherEdits: Edits | undefined,
+) {
+  return (['vendorTaxId', 'vendorVatId', 'vendorName'] as const).some((key) => {
+    const mine = normalize(asText(valueOf(invoice, edits, key)))
+    return mine !== '' && mine === normalize(asText(valueOf(other, otherEdits, key)))
+  })
 }
 
 function checkInvoice(
@@ -269,7 +277,6 @@ function checkInvoice(
   }
 
   // 8. Possible duplicates: they don't block, but require a deliberate decision.
-  const myVendor = vendorKey(invoice, edits)
   const myNumber = normalize(asText(current('invoiceNumber')))
   for (const other of allInvoices) {
     const otherEdits = allEdits[other.id]
@@ -277,8 +284,7 @@ function checkInvoice(
     if (
       other.id === invoice.id ||
       rejected.has(other.id) ||
-      vendorKey(other, otherEdits) !== myVendor ||
-      !myVendor
+      !sameVendor(invoice, edits, other, otherEdits)
     )
       continue
     const otherNumber = normalize(asText(valueOf(other, otherEdits, 'invoiceNumber')))

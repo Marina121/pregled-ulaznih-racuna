@@ -10,7 +10,6 @@ import { OriginalViewer } from './components/OriginalViewer'
 import { FieldsPanel } from './components/FieldsPanel'
 
 const App: FC = () => {
-  // --- State ---
   const [invoices, setInvoices] = useState<Invoice[]>([])
   // 'loading' until invoices.json arrives; an error message if it can't be read.
   const [load, setLoad] = useState<'loading' | 'ok' | string>('loading')
@@ -20,7 +19,6 @@ const App: FC = () => {
   const [search, setSearch] = useState('')
   const review = useReview()
 
-  // --- Derived values ---
   const edits = useMemo(
     () => Object.fromEntries(Object.entries(review.state).map(([id, entry]) => [id, entry.edits])),
     [review.state],
@@ -88,7 +86,6 @@ const App: FC = () => {
     selectedEntry!.status === 'pending' &&
     selectedIssues.every((issue) => selectedEntry!.resolved.includes(issue.key))
 
-  // --- Functions ---
   const move = (delta: number) => {
     const index = visible.findIndex((invoice) => invoice.id === selectedId)
     const next = visible[index + delta]
@@ -128,7 +125,6 @@ const App: FC = () => {
     goToNextPending(selected.id)
   }
 
-  // --- Effects (they run after rendering) ---
   // Load the invoices once, when the app opens.
   useEffect(() => {
     fetch('/invoices.json')

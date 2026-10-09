@@ -68,7 +68,9 @@ export const FieldRow: FC<Props> = ({
         decimalScale={2}
         decimalSeparator="."
         hideControls
-        onChange={(number) => onChange(number === '' ? null : Number(number))}
+        onChange={(number) =>
+          onChange(Number.isFinite(Number(number)) && number !== '' ? Number(number) : null)
+        }
         placeholder="nije pronađeno"
         data-field={meta.key}
         readOnly={locked}
@@ -83,7 +85,7 @@ export const FieldRow: FC<Props> = ({
             setDraft(typed)
             onChange(toList(typed))
           } else {
-            onChange(typed === '' ? null : typed)
+            onChange(typed.trim() === '' ? null : typed)
           }
         }}
         placeholder={meta.kind === 'date' ? 'GGGG-MM-DD' : 'nije pronađeno'}
@@ -164,7 +166,7 @@ export const FieldRow: FC<Props> = ({
       ))}
       {linked.map((link) => (
         <Text key={link.issue.key} size="xs" c="dimmed">
-          ↑ Vidi upozorenje uz polje „{link.label}”.
+          Vidi upozorenje uz polje „{link.label}”.
         </Text>
       ))}
       {issues.length > 0 && !locked && (

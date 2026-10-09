@@ -19,7 +19,7 @@ import { FIELD_META } from '../lib/fields'
 import { lineCellUncertain, valueOf, type Issue } from '../lib/checks'
 import { changesOf } from '../lib/export'
 import { formatDate, formatDateTime } from '../utils/dates'
-import { CONFIRM_SECOND_CLICK_MS } from '../config'
+import { RESET_SECOND_CLICK_MS } from '../config'
 import type { ReviewEntry } from '../hooks/useReview'
 import { FieldRow } from './FieldRow'
 
@@ -85,8 +85,8 @@ export const FieldsPanel: FC<Props> = ({
   const flaggedMeta = FIELD_META.filter((field) => flaggedKeys.has(field.key))
   const restMeta = FIELD_META.filter((field) => !flaggedKeys.has(field.key))
 
-  const firstFieldOf = (issue: Issue) =>
-    FIELD_META.find((field) => issue.fields.includes(field.key))
+  // The message goes with the field it is about: the first one the check lists.
+  const firstFieldOf = (issue: Issue) => FIELD_META.find((field) => field.key === issue.fields[0])
 
   const row = (field: (typeof FIELD_META)[number]) => {
     const touching = issues.filter((issue) => (issue.fields as string[]).includes(field.key))
@@ -114,7 +114,7 @@ export const FieldsPanel: FC<Props> = ({
 
   useEffect(() => {
     if (!resetArmed) return
-    const timer = setTimeout(() => setResetArmed(false), CONFIRM_SECOND_CLICK_MS)
+    const timer = setTimeout(() => setResetArmed(false), RESET_SECOND_CLICK_MS)
     return () => clearTimeout(timer)
   }, [resetArmed])
 

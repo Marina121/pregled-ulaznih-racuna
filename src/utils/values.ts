@@ -10,7 +10,7 @@ export const asNumber = (value: unknown): number | null =>
 export const isEmpty = (value: unknown) =>
   value === null ||
   value === undefined ||
-  value === '' ||
+  (typeof value === 'string' && value.trim() === '') ||
   (Array.isArray(value) && value.length === 0)
 
 /** For comparing: lower case, no spaces ("1-41 / 22" and "1-41/22" become the same). */
