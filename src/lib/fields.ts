@@ -1,7 +1,7 @@
-import type { InvoiceFields } from '../types/invoice'
+import type { FieldKey } from '../types/review'
 import { CURRENCIES } from '../config'
 
-export type FieldKey = keyof InvoiceFields
+export type { FieldKey }
 export type FieldKind = 'text' | 'date' | 'number' | 'list' | 'select'
 
 export type FieldMeta = {

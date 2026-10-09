@@ -34,7 +34,7 @@ export type Invoice = {
   id: string
   client: { id: string; name: string; taxId: string }
   receivedAt: string
-  channel: 'mobile' | 'email' | string
+  channel: 'mobile' | 'email'
   originalFilename: string
   // Five invoices have no original (arrived by email), so the UI must work without an image.
   original?: { path: string; mimeType: string; pages: number; width?: number; height?: number }

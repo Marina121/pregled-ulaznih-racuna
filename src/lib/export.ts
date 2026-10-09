@@ -1,7 +1,7 @@
 import type { Invoice } from '../types/invoice'
-import { computeIssues, openIssues, valueOf, type Edits, type Issue } from './checks'
+import { issuesFor, openIssues, valueOf, type Issue } from './checks'
 import { FIELD_META, type FieldKey } from './fields'
-import type { ReviewEntry, ReviewState } from '../hooks/useReview'
+import type { Edits, ReviewEntry, ReviewState } from '../types/review'
 import { isEmpty } from '../utils/values'
 import { toLocalDateTime } from '../utils/dates'
 
@@ -70,13 +70,7 @@ export const isExportable = (entry: ReviewEntry | undefined, issues: Issue[]) =>
  */
 export function confirmedCsv(invoices: Invoice[], state: ReviewState): string {
   const label = (key: FieldKey) => FIELD_META.find((field) => field.key === key)?.label ?? key
-  const edits = Object.fromEntries(Object.entries(state).map(([id, entry]) => [id, entry.edits]))
-  const rejected = new Set(
-    Object.entries(state)
-      .filter(([, entry]) => entry.status === 'rejected')
-      .map(([id]) => id),
-  )
-  const issues = computeIssues(invoices, edits, rejected)
+  const issues = issuesFor(invoices, state)
   const header = [
     'Račun',
     'Klijent',

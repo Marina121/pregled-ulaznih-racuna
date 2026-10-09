@@ -30,3 +30,20 @@ export const toLocalDateTime = (iso: string) => {
   const pad = (part: number) => String(part).padStart(2, '0')
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`
 }
+
+/**
+ * A date as the accountant types it, "11.1.2022." or "11. 1. 2022", to YYYY-MM-DD. YYYY-MM-DD is
+ * accepted too. Null if it isn't a real date (yet: it's called while typing).
+ */
+export const parseDate = (text: string): string | null => {
+  const trimmed = text.trim()
+  if (isIsoDate(trimmed)) return trimmed
+  const match = /^(\d{1,2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{4})\s*\.?$/.exec(trimmed)
+  if (!match) return null
+  const iso = `${match[3]}-${match[2].padStart(2, '0')}-${match[1].padStart(2, '0')}`
+  return isIsoDate(iso) ? iso : null
+}
+
+/** A stored date as it's shown in the input: 2022-01-11 → 11. 1. 2022., anything else as is. */
+export const dateInputText = (value: string | null) =>
+  value === null ? '' : isIsoDate(value) ? formatDate(value) : value

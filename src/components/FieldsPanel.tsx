@@ -14,28 +14,29 @@ import {
   Text,
   Tooltip,
 } from '@mantine/core'
-import { useOs } from '@mantine/hooks'
 import type { Invoice } from '../types/invoice'
+import type { FieldKey, FieldValue, RejectReason, ReviewEntry } from '../types/review'
 import { FIELD_META } from '../lib/fields'
-import { lineCellUncertain, valueOf, type Issue } from '../lib/checks'
+import { canConfirm, lineCellUncertain, openIssues, valueOf, type Issue } from '../lib/checks'
 import { changesOf } from '../lib/export'
 import { formatDate, formatDateTime } from '../utils/dates'
-import { RESET_SECOND_CLICK_MS } from '../config'
-import type { RejectReason, ReviewEntry } from '../hooks/useReview'
+import { UNDO_RESET_MS } from '../config'
+import { useConfirmHotkeyLabel } from '../hooks/useConfirmHotkeyLabel'
 import { FieldRow } from './FieldRow'
 
 export type Props = {
   invoice: Invoice
   issues: Issue[]
   entry: ReviewEntry
-  onEdit: (key: string, value: unknown) => void
-  onClearEdit: (key: string) => void
+  onEdit: (key: FieldKey, value: FieldValue) => void
+  onClearEdit: (key: FieldKey) => void
   onResolve: (keys: string[]) => void
   onConfirm: () => void
   onReopen: () => void
   onOpenInvoice: (id: string) => void
   onReject: (reason: RejectReason) => void
   onResetInvoice: () => void
+  onRestoreInvoice: (entry: ReviewEntry) => void
 }
 
 const formatCell = (value: unknown) =>
@@ -57,19 +58,19 @@ export const FieldsPanel: FC<Props> = ({
   onOpenInvoice,
   onReject,
   onResetInvoice,
+  onRestoreInvoice,
 }) => {
   const [showRest, setShowRest] = useState(false)
-  const [resetArmed, setResetArmed] = useState(false)
-  // The hotkey is mod+Enter: Cmd on a Mac, Ctrl elsewhere.
-  const os = useOs()
+  // The entry as it was before "Poništi izmjene", kept for a few seconds so it can be undone.
+  const [beforeReset, setBeforeReset] = useState<ReviewEntry | null>(null)
+  const hotkey = useConfirmHotkeyLabel()
 
-  const open = issues.filter((issue) => !entry.resolved.includes(issue.key))
+  const open = openIssues(issues, entry.resolved)
   const confirmed = entry.status === 'confirmed'
   const rejected = entry.status === 'rejected'
   const locked = entry.status !== 'pending'
   const hasChanges = Object.keys(entry.edits).length > 0 || entry.resolved.length > 0
   const docIssues = issues.filter((issue) => issue.fields.length === 0)
-  const hotkey = os === 'macos' ? '⌘+Enter' : 'Ctrl+Enter'
   const total = valueOf(invoice, entry.edits, 'totalAmount')
   const changes = changesOf(invoice, entry.edits)
   const summaryRows = [
@@ -78,10 +79,10 @@ export const FieldsPanel: FC<Props> = ({
     { label: 'Datum računa', value: formatDate(valueOf(invoice, entry.edits, 'issueDate')) },
     { label: 'Dospijeće', value: formatDate(valueOf(invoice, entry.edits, 'dueDate')) },
   ]
-  const openFor = (key: string) => open.filter((issue) => (issue.fields as string[]).includes(key))
+  const openFor = (key: FieldKey) => open.filter((issue) => issue.fields.includes(key))
 
   // A visible field never moves, or typing in it would lose focus.
-  const openKeys: string[] = open.flatMap((issue) => issue.fields)
+  const openKeys = open.flatMap((issue) => issue.fields)
   const [flaggedKeys, setFlaggedKeys] = useState(() => new Set(openKeys))
   if (!showRest && openKeys.some((key) => !flaggedKeys.has(key))) {
     setFlaggedKeys(new Set([...flaggedKeys, ...openKeys]))
@@ -93,7 +94,7 @@ export const FieldsPanel: FC<Props> = ({
   const firstFieldOf = (issue: Issue) => FIELD_META.find((field) => field.key === issue.fields[0])
 
   const row = (field: (typeof FIELD_META)[number]) => {
-    const touching = issues.filter((issue) => (issue.fields as string[]).includes(field.key))
+    const touching = issues.filter((issue) => issue.fields.includes(field.key))
     const own = openFor(field.key).filter((issue) => firstFieldOf(issue)?.key === field.key)
     const linked = openFor(field.key)
       .filter((issue) => firstFieldOf(issue)?.key !== field.key)
@@ -117,11 +118,21 @@ export const FieldsPanel: FC<Props> = ({
     )
   }
 
+  const resetInvoice = () => {
+    setBeforeReset(entry)
+    onResetInvoice()
+  }
+
+  const undoReset = () => {
+    if (beforeReset) onRestoreInvoice(beforeReset)
+    setBeforeReset(null)
+  }
+
   useEffect(() => {
-    if (!resetArmed) return
-    const timer = setTimeout(() => setResetArmed(false), RESET_SECOND_CLICK_MS)
+    if (!beforeReset) return
+    const timer = setTimeout(() => setBeforeReset(null), UNDO_RESET_MS)
     return () => clearTimeout(timer)
-  }, [resetArmed])
+  }, [beforeReset])
 
   return (
     <Box h="100%" style={{ display: 'flex', flexDirection: 'column' }}>
@@ -131,7 +142,7 @@ export const FieldsPanel: FC<Props> = ({
         style={{ borderBottom: '1px solid var(--mantine-color-gray-3)' }}
       >
         <Box>
-          <Text fw={600}>{String(valueOf(invoice, entry.edits, 'vendorName') ?? '')}</Text>
+          <Text fw={600}>{valueOf(invoice, entry.edits, 'vendorName') ?? ''}</Text>
           <Text size="xs" c="dimmed">
             {invoice.id} · klijent {invoice.client.name}
           </Text>
@@ -142,17 +153,14 @@ export const FieldsPanel: FC<Props> = ({
           </Badge>
         )}
         {!locked && hasChanges && (
-          <Button
-            size="compact-xs"
-            variant={resetArmed ? 'filled' : 'subtle'}
-            color={resetArmed ? 'red' : 'gray'}
-            onClick={() => {
-              if (!resetArmed) return setResetArmed(true)
-              onResetInvoice()
-              setResetArmed(false)
-            }}
-          >
-            {resetArmed ? 'Sigurno? Klikni opet' : 'Poništi izmjene'}
+          <Button size="compact-xs" variant="subtle" color="gray" onClick={resetInvoice}>
+            Poništi izmjene
+          </Button>
+        )}
+        {/* Shown until something new is done, so the undo can't overwrite newer changes. */}
+        {!locked && !hasChanges && beforeReset && (
+          <Button size="compact-xs" variant="light" onClick={undoReset}>
+            Izmjene poništene · Vrati
           </Button>
         )}
         {rejected && (
@@ -203,7 +211,7 @@ export const FieldsPanel: FC<Props> = ({
                         {row.label}
                       </Text>
                       <Text size="sm" ta="right">
-                        {row.value ? String(row.value) : '—'}
+                        {row.value || '—'}
                       </Text>
                     </Group>
                   ))}
@@ -219,7 +227,7 @@ export const FieldsPanel: FC<Props> = ({
                     </Text>
                     <Text size="lg" fw={700}>
                       {typeof total === 'number' ? total.toFixed(2) : '—'}{' '}
-                      {String(valueOf(invoice, entry.edits, 'currency') ?? '')}
+                      {valueOf(invoice, entry.edits, 'currency') ?? ''}
                     </Text>
                   </Group>
                   {changes.length > 0 && (
@@ -401,7 +409,7 @@ export const FieldsPanel: FC<Props> = ({
           </Button>
         ) : (
           <Tooltip label={`Još ${open.length} stavki za provjeru`} disabled={open.length === 0}>
-            <Button size="xs" disabled={open.length > 0} onClick={onConfirm}>
+            <Button size="xs" disabled={!canConfirm(entry, issues)} onClick={onConfirm}>
               Potvrdi i idi na sljedeći ({hotkey})
             </Button>
           </Tooltip>

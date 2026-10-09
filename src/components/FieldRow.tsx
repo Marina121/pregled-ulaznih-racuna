@@ -1,20 +1,23 @@
 import { useState, type FC } from 'react'
 import { Badge, Button, Group, NumberInput, Select, Stack, Text, TextInput } from '@mantine/core'
+import type { FieldValue } from '../types/review'
 import type { FieldMeta } from '../lib/fields'
 import type { Issue } from '../lib/checks'
-import { LOW_CONFIDENCE } from '../config'
 import { bankName, formatAccount, isValidAccount } from '../lib/bankAccounts'
 import { isBranch } from '../lib/taxIds'
+import { isEmpty, sameValue } from '../utils/values'
+import { dateInputText, parseDate } from '../utils/dates'
+import { LOW_CONFIDENCE } from '../config'
 
 export type Props = {
   meta: FieldMeta
-  value: unknown
+  value: FieldValue
   confidence: number
   edited: boolean
   issues: Issue[]
   linked: { issue: Issue; label: string }[]
   wasResolved: boolean
-  onChange: (v: unknown) => void
+  onChange: (value: FieldValue) => void
   onClear: () => void
   onResolve: () => void
   onRejectOtherClient: () => void
@@ -26,6 +29,21 @@ const toList = (text: string) =>
     .split(',')
     .map((part) => part.trim())
     .filter(Boolean)
+
+// What a typed text is stored as. A date typed as "11.1.2022." is stored as 2022-01-11; text that
+// isn't a date (yet) is stored as typed, so the check can say what's wrong with it.
+const fromText = (kind: FieldMeta['kind'], text: string): FieldValue => {
+  if (kind === 'list') return toList(text)
+  if (text.trim() === '') return null
+  return kind === 'date' ? (parseDate(text) ?? text) : text
+}
+
+// What a stored value is shown as in a text input.
+const toText = (kind: FieldMeta['kind'], value: FieldValue) => {
+  if (Array.isArray(value)) return value.join(', ')
+  if (typeof value !== 'string') return ''
+  return kind === 'date' ? dateInputText(value) : value
+}
 
 export const FieldRow: FC<Props> = ({
   meta,
@@ -41,14 +59,18 @@ export const FieldRow: FC<Props> = ({
   onRejectOtherClient,
   locked,
 }) => {
-  // Keeps the typed text, or the comma would be swallowed.
-  const listText = Array.isArray(value) ? value.join(', ') : ''
-  const [draft, setDraft] = useState(listText)
-  if (meta.kind === 'list' && toList(draft).join(', ') !== listText) setDraft(listText)
+  // Keeps the typed text: otherwise a list would swallow the comma, and a date typed as 11.1.2022.
+  // would turn into 2022-01-11 halfway through typing. It follows the value when that changes from
+  // outside (e.g. "Poništi izmjene").
+  const [draft, setDraft] = useState(() => toText(meta.kind, value))
+  const typedIn = meta.kind === 'text' || meta.kind === 'date' || meta.kind === 'list'
+  if (typedIn && !sameValue(fromText(meta.kind, draft), value)) {
+    setDraft(toText(meta.kind, value))
+  }
 
   const allIssues = [...issues, ...linked.map((link) => link.issue)]
   const flagged = allIssues.length > 0
-  const hasValue = value !== null && value !== undefined && value !== ''
+  const hasValue = !isEmpty(value)
   const color = allIssues.some((issue) => issue.severity === 'error') ? 'red' : 'yellow'
   const dismissable = issues.filter((issue) => issue.dismiss)
   const mustFix = issues.some((issue) => !issue.dismiss)
@@ -59,7 +81,11 @@ export const FieldRow: FC<Props> = ({
       <Select
         size="xs"
         data={meta.options}
-        value={meta.options?.some((option) => option.value === value) ? (value as string) : null}
+        value={
+          typeof value === 'string' && meta.options?.some((option) => option.value === value)
+            ? value
+            : null
+        }
         onChange={(selected) => onChange(selected)}
         allowDeselect={false}
         placeholder="odaberi"
@@ -83,17 +109,12 @@ export const FieldRow: FC<Props> = ({
     ) : (
       <TextInput
         size="xs"
-        value={meta.kind === 'list' ? draft : ((value as string | null) ?? '')}
+        value={draft}
         onChange={(event) => {
-          const typed = event.currentTarget.value
-          if (meta.kind === 'list') {
-            setDraft(typed)
-            onChange(toList(typed))
-          } else {
-            onChange(typed.trim() === '' ? null : typed)
-          }
+          setDraft(event.currentTarget.value)
+          onChange(fromText(meta.kind, event.currentTarget.value))
         }}
-        placeholder={meta.kind === 'date' ? 'GGGG-MM-DD' : 'nije pronađeno'}
+        placeholder={meta.kind === 'date' ? 'npr. 11. 1. 2022.' : 'nije pronađeno'}
         data-field={meta.key}
         readOnly={locked}
       />
@@ -150,7 +171,7 @@ export const FieldRow: FC<Props> = ({
       )}
       {meta.key === 'bankAccounts' && Array.isArray(value) && value.length > 0 && (
         <Stack gap={2}>
-          {(value as string[]).map((account, index) => {
+          {value.map((account, index) => {
             const valid = isValidAccount(account)
             return (
               <Text key={index} size="xs" c={valid ? 'dimmed' : 'red.8'} ff="monospace">

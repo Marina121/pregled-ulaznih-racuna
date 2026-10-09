@@ -1,20 +1,6 @@
 import { useLocalStorage } from '@mantine/hooks'
-import type { Edits } from '../lib/checks'
+import type { FieldKey, FieldValue, RejectReason, ReviewEntry, ReviewState } from '../types/review'
 import { STORAGE_KEY } from '../config'
-
-export type ReviewEntry = {
-  status: 'pending' | 'confirmed' | 'rejected'
-  duplicateOf?: string
-  // Rejected because the buyer is another company: it belongs in another client's folder.
-  otherClient?: boolean
-  decidedAt?: string
-  edits: Edits
-  resolved: string[]
-}
-
-export type ReviewState = Record<string, ReviewEntry>
-
-export type RejectReason = { duplicateOf: string } | { otherClient: true }
 
 const EMPTY: ReviewEntry = { status: 'pending', edits: {}, resolved: [] }
 
@@ -31,10 +17,10 @@ export const useReview = () => {
     state,
     get: (id: string): ReviewEntry => state[id] ?? EMPTY,
     // Doesn't mark as checked: otherwise a mistyped amount would hide its own warning.
-    setEdit: (id: string, key: string, value: unknown) =>
+    setEdit: (id: string, key: FieldKey, value: FieldValue) =>
       update(id, (entry) => ({ ...entry, edits: { ...entry.edits, [key]: value } })),
     // Reopens the field's issues, or an emptied field would stay checked.
-    clearEdit: (id: string, key: string, reopenKeys: string[]) =>
+    clearEdit: (id: string, key: FieldKey, reopenKeys: string[]) =>
       update(id, (entry) => {
         const edits = { ...entry.edits }
         delete edits[key]
@@ -70,6 +56,8 @@ export const useReview = () => {
         otherClient: undefined,
         decidedAt: undefined,
       })),
+    // Puts back an entry as it was, to undo "Poništi izmjene".
+    restore: (id: string, entry: ReviewEntry) => update(id, () => entry),
     resetOne: (id: string) =>
       setState((all) => {
         const next = { ...all }

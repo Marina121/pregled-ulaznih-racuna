@@ -25,5 +25,5 @@ export const MIN_ZOOM = 100
 export const MAX_ZOOM = 400
 export const ZOOM_STEP = 50
 
-/** "Poništi izmjene": how long "Sigurno? Klikni opet" waits for the second click. */
-export const RESET_SECOND_CLICK_MS = 4000
+/** "Poništi izmjene": how long "Vrati" stays, to undo it. */
+export const UNDO_RESET_MS = 8000

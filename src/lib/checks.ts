@@ -1,4 +1,5 @@
-import type { Invoice, LineItem } from '../types/invoice'
+import type { Invoice, InvoiceFields, LineItem } from '../types/invoice'
+import type { Edits, ReviewEntry, ReviewState } from '../types/review'
 import { FIELD_META, type FieldKey } from './fields'
 import { isValidAccount } from './bankAccounts'
 import { isValidTaxId, isValidVatId, sameCompany } from './taxIds'
@@ -7,7 +8,7 @@ import { isIsoDate } from '../utils/dates'
 import { AMOUNT_TOLERANCE, LOW_CONFIDENCE, SAME_AMOUNT_TOLERANCE } from '../config'
 
 export type Severity = 'error' | 'warn'
-export type Edits = Record<string, unknown>
+export type { Edits }
 
 export type Issue = {
   /**
@@ -33,6 +34,10 @@ export type Issue = {
 
 export const openIssues = (issues: Issue[], resolved: string[]) =>
   issues.filter((issue) => !resolved.includes(issue.key))
+
+/** Every issue has been corrected or checked, so the invoice can be confirmed. */
+export const canConfirm = (entry: ReviewEntry, issues: Issue[]) =>
+  entry.status === 'pending' && openIssues(issues, entry.resolved).length === 0
 
 // Line item numbers can be verified by arithmetic: quantity × price gives the total, with or
 // without VAT. If they match, they were read correctly, however unsure the system was.
@@ -61,7 +66,11 @@ export function lineCellUncertain(line: LineItem, key: keyof LineItem): boolean 
   return cell.value !== null && cell.confidence < LOW_CONFIDENCE && !lineMathOk(line)
 }
 
-export function valueOf(invoice: Invoice, edits: Edits | undefined, key: FieldKey): unknown {
+export function valueOf<K extends FieldKey>(
+  invoice: Invoice,
+  edits: Edits | undefined,
+  key: K,
+): InvoiceFields[K]['value'] {
   const edited = edits?.[key]
   return edited !== undefined ? edited : invoice.fields[key].value
 }
@@ -88,12 +97,12 @@ function checkInvoice(
 ): Issue[] {
   const edits = allEdits[invoice.id]
   // The field's current value: the accountant's correction if there is one, else what was read.
-  const current = (key: FieldKey) => valueOf(invoice, edits, key)
+  const current = <K extends FieldKey>(key: K) => valueOf(invoice, edits, key)
   const issues: Issue[] = []
 
   // Bank account numbers have check digits, so the check decides, not the read confidence:
   // a misread digit would almost certainly break the check.
-  const accounts = (current('bankAccounts') as string[] | null) ?? []
+  const accounts = current('bankAccounts') ?? []
   const badAccounts = accounts.filter((account) => !isValidAccount(account))
   // Same for tax IDs and VAT numbers: a valid check digit is better evidence than confidence.
   const checkDigitOk = (key: FieldKey): boolean => {
@@ -212,7 +221,7 @@ function checkInvoice(
         key: `invalid:${key}:${text}`,
         severity: 'error',
         fields: [key],
-        message: 'Datum mora biti u obliku GGGG-MM-DD, npr. 2022-01-11.',
+        message: 'Datum nije ispravan. Upiši ga kao 11. 1. 2022.',
       })
       return null
     }
@@ -355,4 +364,32 @@ export function computeIssues(
   return Object.fromEntries(
     invoices.map((invoice) => [invoice.id, checkInvoice(invoice, invoices, edits, rejected)]),
   )
+}
+
+/** Issues for every invoice, from the saved review state. */
+export function issuesFor(invoices: Invoice[], state: ReviewState): Record<string, Issue[]> {
+  const edits = Object.fromEntries(Object.entries(state).map(([id, entry]) => [id, entry.edits]))
+  const rejected = new Set(
+    Object.entries(state)
+      .filter(([, entry]) => entry.status === 'rejected')
+      .map(([id]) => id),
+  )
+  return computeIssues(invoices, edits, rejected)
+}
+
+/**
+ * Issues a field will have once its edit is undone. They open again, or an emptied field would
+ * stay checked.
+ */
+export function issuesAfterClearing(
+  invoices: Invoice[],
+  state: ReviewState,
+  invoiceId: string,
+  key: FieldKey,
+): string[] {
+  const entry = state[invoiceId]
+  if (!entry) return []
+  const { [key]: _removed, ...edits } = entry.edits
+  const after = issuesFor(invoices, { ...state, [invoiceId]: { ...entry, edits } })
+  return after[invoiceId].filter((issue) => issue.fields.includes(key)).map((issue) => issue.key)
 }

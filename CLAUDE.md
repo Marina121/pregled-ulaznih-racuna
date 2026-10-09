@@ -16,15 +16,20 @@ data is deliberately messy.
 
 - `src/lib/`: the business rules. Plain functions, no React.
   - `checks.ts`: all automatic checks. Returns issues per invoice; each issue has a stable key
-    (including the values it is about) so "checked" survives recomputation.
+    (including the values it is about) so "checked" survives recomputation. Also when an
+    invoice can be confirmed (`canConfirm`) and which issues are still open (`openIssues`).
   - `bankAccounts.ts`, `taxIds.ts`: BiH bank account (mod 97) and tax ID / VAT number (mod 11)
     validation.
   - `fields.ts`: the invoice fields shown for review, with labels and whether they're required.
   - `export.ts`: what was corrected on an invoice, and the CSV export of confirmed ones.
-- `src/utils/`: general helpers that know nothing about invoices (`values.ts`, `dates.ts`). Reuse
-  them instead of writing another local copy.
+  - `filters.ts`: the list filters (client, status, search) and the client picker summary.
+- `src/types/`: `invoice.ts` is the shape of invoices.json, `review.ts` the review state. `Edits`
+  has the same type per field as the value that was read, so no `as` casts are needed.
+- `src/utils/`: general helpers that know nothing about invoices (`values.ts`, `dates.ts`,
+  `download.ts`). Reuse them instead of writing another local copy.
 - `src/hooks/`: React hooks, one per file, named after the hook. `useReview.ts` holds the review
-  state (pending / confirmed / rejected, edits, reviewed issues).
+  state (pending / confirmed / rejected, edits, reviewed issues), `useInvoices.ts` loads the
+  invoices.
 - `src/components/`: invoice list, original viewer, fields panel, one field row.
 - `src/config.ts`: settings someone might change (confidence threshold, amount tolerance,
   currencies, zoom limits, storage key, timings). No unnamed numbers in the code: give them a name
@@ -59,7 +64,10 @@ data is deliberately messy.
   rejected, kept and reversible. It is never booked as "Takvo je na originalu".
 - A confirmed invoice that gets a new issue later (another invoice was corrected into its
   duplicate) shows "provjeri ponovno" and is left out of the export until it's checked again.
-- No "are you sure?" dialogs. Everything can be undone instead, and confirmation is locked until
+- Dates are typed the way they're written here (11. 1. 2022.) and stored as YYYY-MM-DD.
+- Changing a filter never leaves an invoice open that the list doesn't show.
+- No "are you sure?" dialogs. Everything can be undone instead ("Poništi izmjene" offers "Vrati"
+  for a few seconds), and confirmation is locked until
   every issue has been reviewed.
 - A branch office has its own tax ID but the company's VAT number. That is not an error.
 - Before changing a check, look at the original invoice images, not only the JSON.
