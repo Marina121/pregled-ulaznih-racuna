@@ -16,10 +16,7 @@ preglednika `localStorage.clear(); location.reload()`.
 ## Za koga
 
 Za računovođu koji vodi 40 malih firmi. Početkom mjeseca stigne stotine računa odjednom,
-većinom fotografije s mobitela, često nakrivo ili s odrezanim rubom. On knjigovodstvo zna bolje
-od bilo kojeg programa, ali nema vremena svaki račun čitati polje po polje. Najviše se boji da
-mu prođe duplikat ili krivi iznos. Radi za stolom, na velikom ekranu, i često ga netko prekine.
-
+većinom fotografije s mobitela, često nakrivo ili s odrezanim rubom. Oduzima mu previše vremena da svaki račun čita polje po polje te najčešće greške koje se događaju jesu da prođe dupli račun za knjiženje ili krivi iznos.
 Zato aplikacija prvo pokaže ono što je sumnjivo, čisti račun se potvrdi u par sekundi, a sve
 odluke ostaju spremljene, pa se može nastaviti tamo gdje se stalo.
 
@@ -37,33 +34,24 @@ odluke ostaju spremljene, pa se može nastaviti tamo gdje se stalo.
 ## Odluke
 
 **1. Na vrhu je samo ono sumnjivo, a potvrda je zaključana dok se to ne pogleda.**
-Na računu ima 15 polja, a obično su sumnjiva jedno ili dva. Ta su gore, ostala su skrivena.
+Na računu ima 15 polja, a obično su sumnjiva jedno ili dva. Radi veće preglednosti oni su pri vrhu dok su  ostala  skrivena.
 Gumb Potvrdi radi tek kad je svaki problem ispravljen ili označen kao provjeren. Na računu bez
-problema umjesto praznog panela stoji kratak sažetak (dobavljač, broj, datumi, iznos), da se
-vidi što se potvrđuje.
+problema umjesto praznog panela stoji kratak sažetak (dobavljač, broj, datumi, iznos), da se može vidjeti ono što se potvrđuje.
 
 **2. Ono što se može izračunati ima prednost pred postotkom pouzdanosti.**
 Žiro-računi, ID i PDV brojevi imaju kontrolne znamenke: zadnje znamenke izračunaju se iz ostalih.
 Ako se slažu, broj je dobro pročitan i upozorenja nema, čak i kad je sustav bio nesiguran. Ako se
 ne slažu, označen je baš taj broj. Stavke se provjeravaju istim načinom: količina × cijena mora
-dati iznos. Na računu IVA KOLAČI je tako od 40 žutih ćelija u stavkama ostala nula.
+dati iznos.
 Razlog: ako je upozorenja previše, računovođa ih počne preskakati bez čitanja i promakne mu ono
 koje je stvarno važno.
 
-**3. Nema prozora "Jeste li sigurni?", ali sve se može vratiti.**
-Kod stotina računa takav prozor se brzo klika bez čitanja, pa ništa ne štiti. Umjesto toga:
-ispravak se poništava jednim klikom, potvrđen račun se vraća na pregled, a duplikat se ne briše
-nego odbaci i ostaje vidljiv. Drugi klik traži se samo za jedinu radnju koja se ne može vratiti
-("Poništi izmjene" na računu).
 
-**4. Namjerno izostavljeno: uređivanje stavki.**
+**3. Namjerno izostavljeno: uređivanje stavki.**
 Knjiže se osnovica, PDV i ukupno, a ta polja se mogu ispraviti. Stavke služe za provjeru, i ta
 provjera je automatska. Tablica za uređivanje 8 redova po 6 ćelija bila bi velik posao za malu
 korist. To bi se promijenilo ako se pokaže da stavke trebaju, npr. firmi koja vodi zalihe.
 
-**5. Namjerno izostavljeno: login.**
-Bez backenda login bi bio samo za izgled, lozinku ne bi imao tko provjeriti. Umjesto toga
-bilježi se kada je račun potvrđen ili odbačen. U pravoj aplikaciji uz to bi išlo i ime korisnika.
 
 ## Tri pitanja za pravog računovođu
 
@@ -71,7 +59,7 @@ bilježi se kada je račun potvrđen ili odbačen. U pravoj aplikaciji uz to bi 
    to upozorenje samo smeta.
 2. Kako izgleda pravi duplikat: isti račun poslan dvaput, ili ponovno izdan s novim brojem? O tome
    ovisi koliko stroga treba biti provjera.
-3. Je li ti naziv artikla bitan za knjiženje, ili gledaš samo iznose i PDV? Zato sam maknula
+3. Je li naziv artikla bitan za knjiženje, ili  se gledaju samo iznosi i PDV? Zato sam maknula
    upozorenja za opise stavki.
 
 ## Kako bih znala da radi
@@ -80,7 +68,7 @@ Isti računovođa i isti paket računa, jednom na stari način, jednom u aplikac
 
 - **Vrijeme** pregleda jednog računa.
 - **Koliko grešaka prođe.** U paket bih namjerno ubacila poznate greške (duplikat, krivi iznos,
-  odrezan broj računa) i gledala koliko ih se uhvati. To mi je važnije od brzine.
+  odrezan broj računa) i gledala koliko ih se uhvati. To je važnije od brzine.
 - **Koliko puta se klikne "Provjereno" bez ispravka.** Ako se to događa stalno, upozorenja su
   preosjetljiva.
 - **Koliko se potvrđenih računa kasnije mora ispravljati.**
