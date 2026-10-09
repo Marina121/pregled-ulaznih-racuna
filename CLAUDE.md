@@ -18,14 +18,20 @@ data is deliberately messy.
   key so "checked" survives recomputation.
 - `src/lib/bankAccounts.ts`, `src/lib/taxIds.ts`: BiH bank account (mod 97) and tax ID / VAT
   number (mod 11) validation.
-- `src/lib/review.ts`: review state (pending / confirmed / rejected, edits, reviewed issues).
+- `src/lib/export.ts`: what was corrected on an invoice, and the CSV export of confirmed ones.
+- `src/hooks/useReview.ts`: review state (pending / confirmed / rejected, edits, reviewed issues).
 - `src/components/`: list, original viewer, fields panel.
+
+`src/lib/` holds plain functions with no React, so they can be used anywhere. React hooks go in
+`src/hooks/`, one per file, named after the hook.
 
 ## Conventions
 
 - UI text is Croatian (the user is an accountant in BiH). Code comments and commit messages are
   English.
 - Comments explain why, not what.
+- Components: `export type Props = { ... }` and `export const Name: FC<Props> = ({ a, b }) => {`,
+  with props destructured in the parameter. Local state must not reuse a prop's name.
 - Small commits with clear messages. Never squash or rewrite pushed history.
 - Don't add libraries without asking.
 - The README is written by the developer in her own words. Don't write or rewrite it.
