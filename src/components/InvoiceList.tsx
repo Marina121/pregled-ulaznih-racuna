@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Badge, Box, Group, Progress, ScrollArea, SegmentedControl, Select, Stack, Text, UnstyledButton } from '@mantine/core'
 import type { Invoice } from '../types/invoice'
-import type { Issue } from '../lib/checks'
+import { valueOf, type Issue } from '../lib/checks'
+import type { FieldKey } from '../lib/fields'
 import type { ReviewEntry } from '../lib/review'
 
 interface Props {
@@ -78,6 +79,9 @@ export function InvoiceList(p: Props) {
           const hasError = open.some((i) => i.severity === 'error')
           const confirmed = e.status === 'confirmed'
           const rejected = e.status === 'rejected'
+          // Show the accountant's corrections, not what the reader originally returned.
+          const val = (k: FieldKey) => valueOf(inv, e.edits, k)
+          const total = val('totalAmount')
           return (
             <UnstyledButton
               key={inv.id}
@@ -89,7 +93,7 @@ export function InvoiceList(p: Props) {
             >
               <Group justify="space-between" wrap="nowrap" gap="xs">
                 <Text size="sm" truncate>
-                  {inv.fields.vendorName.value}
+                  {String(val('vendorName') ?? '')}
                 </Text>
                 {rejected ? (
                   <Badge color="gray" variant="light" size="sm" style={{ flexShrink: 0 }}>
@@ -111,8 +115,8 @@ export function InvoiceList(p: Props) {
               </Group>
               <Group justify="space-between" mt={2} wrap="nowrap" gap="xs">
                 <Text size="xs" c="dimmed" truncate>
-                  {inv.fields.invoiceNumber.value ?? 'bez broja'} · {inv.fields.totalAmount.value?.toFixed(2)}{' '}
-                  {inv.fields.currency.value ?? ''}
+                  {String(val('invoiceNumber') ?? 'bez broja')} ·{' '}
+                  {typeof total === 'number' ? total.toFixed(2) : '—'} {String(val('currency') ?? '')}
                 </Text>
                 {p.clientFilter === 'all' && (
                   <Text size="xs" c="dimmed" style={{ flexShrink: 0 }}>

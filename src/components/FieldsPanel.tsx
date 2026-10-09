@@ -98,7 +98,7 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
     <Box h="100%" style={{ display: 'flex', flexDirection: 'column' }}>
       <Group justify="space-between" p="sm" style={{ borderBottom: '1px solid var(--mantine-color-gray-3)' }}>
         <Box>
-          <Text fw={600}>{invoice.fields.vendorName.value}</Text>
+          <Text fw={600}>{String(valueOf(invoice, entry.edits, 'vendorName') ?? '')}</Text>
           <Text size="xs" c="dimmed">
             {invoice.id} · klijent {invoice.client.name}
           </Text>
