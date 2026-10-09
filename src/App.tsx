@@ -111,6 +111,7 @@ export default function App() {
           }}
           statusFilter={statusFilter}
           onStatusFilter={setStatusFilter}
+          onReset={review.resetAll}
           total={invoices.length}
           doneCount={invoices.filter((i) => review.get(i.id).status !== 'pending').length}
         />
@@ -128,7 +129,13 @@ export default function App() {
                 issues={selectedIssues}
                 entry={selectedEntry}
                 onEdit={(k, v, rk) => review.setEdit(selected.id, k, v, rk)}
-                onClearEdit={(k) => review.clearEdit(selected.id, k)}
+                onClearEdit={(k) => {
+                  // Which issues will this field have once the edit is gone? Those become open again.
+                  const { [k]: _removed, ...withoutEdit } = selectedEntry.edits
+                  const after = computeIssues(invoices, { ...edits, [selected.id]: withoutEdit }, rejected)
+                  const reopen = after[selected.id].filter((i) => (i.fields as string[]).includes(k))
+                  review.clearEdit(selected.id, k, reopen.map((i) => i.key))
+                }}
                 onResolve={(keys) => review.resolve(selected.id, keys)}
                 onConfirm={confirmAndNext}
                 onReopen={() => review.reopen(selected.id)}

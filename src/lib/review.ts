@@ -31,11 +31,13 @@ export function useReview() {
         edits: { ...e.edits, [key]: value },
         resolved: Array.from(new Set([...e.resolved, ...resolveKeys])),
       })),
-    clearEdit: (id: string, key: string) =>
+    // Undoing an edit also reopens the issues on that field. Otherwise a field reverted to empty
+    // would stay marked as checked, and the invoice could be confirmed without it.
+    clearEdit: (id: string, key: string, reopenKeys: string[]) =>
       update(id, (e) => {
         const edits = { ...e.edits }
         delete edits[key]
-        return { ...e, edits }
+        return { ...e, edits, resolved: e.resolved.filter((k) => !reopenKeys.includes(k)) }
       }),
     resolve: (id: string, keys: string[]) =>
       update(id, (e) => ({ ...e, resolved: Array.from(new Set([...e.resolved, ...keys])) })),
