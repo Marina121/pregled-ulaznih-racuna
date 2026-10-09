@@ -28,12 +28,11 @@ export function useReview() {
   return {
     state,
     get: (id: string): ReviewEntry => state[id] ?? EMPTY,
-    setEdit: (id: string, key: string, value: unknown, resolveKeys: string[]) =>
-      update(id, (e) => ({
-        ...e,
-        edits: { ...e.edits, [key]: value },
-        resolved: Array.from(new Set([...e.resolved, ...resolveKeys])),
-      })),
+    // An edit doesn't mark anything as checked. Issues are recomputed from the new value: a good
+    // correction makes them disappear, a bad one keeps (or creates) them. Marking them checked
+    // here used to hide the warning a mistyped amount had just caused.
+    setEdit: (id: string, key: string, value: unknown) =>
+      update(id, (e) => ({ ...e, edits: { ...e.edits, [key]: value } })),
     // Undoing an edit also reopens the issues on that field. Otherwise a field reverted to empty
     // would stay marked as checked, and the invoice could be confirmed without it.
     clearEdit: (id: string, key: string, reopenKeys: string[]) =>

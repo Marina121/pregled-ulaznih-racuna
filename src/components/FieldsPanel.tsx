@@ -10,7 +10,7 @@ interface Props {
   invoice: Invoice
   issues: Issue[]
   entry: ReviewEntry
-  onEdit: (key: string, value: unknown, resolveKeys: string[]) => void
+  onEdit: (key: string, value: unknown) => void
   onClearEdit: (key: string) => void
   onResolve: (keys: string[]) => void
   onConfirm: () => void
@@ -54,12 +54,14 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
   const docIssues = issues.filter((i) => i.fields.length === 0)
   const total = valueOf(invoice, entry.edits, 'totalAmount')
   const openFor = (k: string) => open.filter((i) => (i.fields as string[]).includes(k))
-  // A field that was flagged once stays at the top while the invoice is open.
-  // Otherwise it would disappear as soon as an edit fixes the issue, mid-typing.
-  // The panel has key={invoice.id}, so the list starts fresh for each invoice.
+  // A field never moves while it is on screen, or typing in it would lose focus:
+  // - a flagged field stays at the top even after an edit fixes it;
+  // - a newly flagged field moves up only while "ostala polja" are hidden (otherwise it is
+  //   already visible, highlighted where it is). Collapsing the rest catches up.
+  // The panel has key={invoice.id}, so this starts fresh for each invoice.
   const openKeys: string[] = open.flatMap((i) => i.fields)
   const [flaggedKeys, setFlaggedKeys] = useState(() => new Set(openKeys))
-  if (openKeys.some((k) => !flaggedKeys.has(k))) {
+  if (!showRest && openKeys.some((k) => !flaggedKeys.has(k))) {
     setFlaggedKeys(new Set([...flaggedKeys, ...openKeys]))
   }
   const flaggedMeta = FIELD_META.filter((m) => flaggedKeys.has(m.key))
@@ -85,7 +87,7 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
         linked={linked}
         wasResolved={touching.some((i) => entry.resolved.includes(i.key))}
         locked={locked}
-        onChange={(v) => onEdit(m.key, v, touching.map((i) => i.key))}
+        onChange={(v) => onEdit(m.key, v)}
         onClear={() => onClearEdit(m.key)}
         onResolve={() => onResolve(own.map((i) => i.key))}
       />

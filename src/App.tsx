@@ -127,7 +127,7 @@ export default function App() {
                 invoice={selected}
                 issues={selectedIssues}
                 entry={selectedEntry}
-                onEdit={(k, v, rk) => review.setEdit(selected.id, k, v, rk)}
+                onEdit={(k, v) => review.setEdit(selected.id, k, v)}
                 onClearEdit={(k) => {
                   // Which issues will this field have once the edit is gone? Those become open again.
                   const { [k]: _removed, ...withoutEdit } = selectedEntry.edits
