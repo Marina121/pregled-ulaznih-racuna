@@ -7,9 +7,9 @@ export interface FieldMeta {
   key: FieldKey
   label: string
   kind: FieldKind
-  // Obavezno polje: ako ga nema, računovođa to mora riješiti prije potvrde.
-  // Neobavezna polja (npr. poziv na broj) koja nedostaju NISU upozorenje:
-  // pouzdanost 0 uz null znači "na računu toga nema", ne "sustav je nesiguran".
+  // Required field: if it's missing, the accountant must resolve it before confirming.
+  // Missing optional fields (e.g. payment reference) are NOT a warning:
+  // confidence 0 with null means "not on the invoice", not "the system is unsure".
   required: boolean
 }
 
@@ -28,5 +28,5 @@ export const FIELD_META: FieldMeta[] = [
   { key: 'buyerName', label: 'Kupac', kind: 'text', required: true },
   { key: 'buyerTaxId', label: 'ID broj kupca', kind: 'text', required: true },
   { key: 'paymentReference', label: 'Poziv na broj', kind: 'text', required: false },
-  { key: 'bankAccounts', label: 'Računi (IBAN)', kind: 'list', required: false },
+  { key: 'bankAccounts', label: 'Žiro-računi dobavljača', kind: 'list', required: false },
 ]

@@ -1,6 +1,6 @@
 export interface Extracted<T> {
   value: T | null
-  confidence: number // 0..1; 0 uz value=null znači "polja nema", ne "nesigurno"
+  confidence: number // 0..1; 0 with value=null means "field not on the invoice", not "unsure"
 }
 
 export interface InvoiceFields {
@@ -36,7 +36,7 @@ export interface Invoice {
   receivedAt: string
   channel: 'mobile' | 'email' | string
   originalFilename: string
-  // Pet računa nema original (stigli e-poštom), UI mora raditi i bez slike.
+  // Five invoices have no original (arrived by email), so the UI must work without an image.
   original?: { path: string; mimeType: string; pages: number; width?: number; height?: number }
   fields: InvoiceFields
   lineItems: LineItem[]
