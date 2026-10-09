@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Interview task: an interface where an accountant reviews and confirms incoming invoices that a
+An interface where an accountant reviews and confirms incoming invoices that a
 system has already read automatically. The accountant handles ~40 small companies and several
 hundred invoices a month. Every extracted field has a value and a confidence (0 to 1), and the
 data is deliberately messy.
@@ -14,18 +14,18 @@ data is deliberately messy.
 
 ## Where things are
 
-- `src/lib/checks.ts`: all automatic checks. Returns issues per invoice; each issue has a stable
-  key so "checked" survives recomputation.
-- `src/lib/bankAccounts.ts`, `src/lib/taxIds.ts`: BiH bank account (mod 97) and tax ID / VAT
-  number (mod 11) validation.
-- `src/lib/export.ts`: what was corrected on an invoice, and the CSV export of confirmed ones.
-- `src/hooks/useReview.ts`: review state (pending / confirmed / rejected, edits, reviewed issues).
-- `src/components/`: list, original viewer, fields panel.
-
-- `src/lib/`: the business rules (checks, check digits, fields, export). Plain functions, no React.
+- `src/lib/`: the business rules. Plain functions, no React.
+  - `checks.ts`: all automatic checks. Returns issues per invoice; each issue has a stable key
+    (including the values it is about) so "checked" survives recomputation.
+  - `bankAccounts.ts`, `taxIds.ts`: BiH bank account (mod 97) and tax ID / VAT number (mod 11)
+    validation.
+  - `fields.ts`: the invoice fields shown for review, with labels and whether they're required.
+  - `export.ts`: what was corrected on an invoice, and the CSV export of confirmed ones.
 - `src/utils/`: general helpers that know nothing about invoices (`values.ts`, `dates.ts`). Reuse
   them instead of writing another local copy.
-- `src/hooks/`: React hooks, one per file, named after the hook.
+- `src/hooks/`: React hooks, one per file, named after the hook. `useReview.ts` holds the review
+  state (pending / confirmed / rejected, edits, reviewed issues).
+- `src/components/`: invoice list, original viewer, fields panel, one field row.
 - `src/config.ts`: settings someone might change (confidence threshold, amount tolerance,
   currencies, zoom limits, storage key, timings). No unnamed numbers in the code: give them a name
   here, or next to the logic if they belong only to it (bank codes, check digit weights).
@@ -44,7 +44,8 @@ data is deliberately messy.
   above any early return. No section-marker comments.
 - Small commits with clear messages. Never squash or rewrite pushed history.
 - Don't add libraries without asking.
-- The README is written by the developer in her own words. Don't write or rewrite it.
+- The README was drafted with AI and edited by the developer. Change it only when she asks, and
+  keep it plain and addressed to the reader.
 
 ## Product decisions to keep
 
