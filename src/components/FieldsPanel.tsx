@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Accordion, Alert, Anchor, Badge, Box, Button, Group, Paper, ScrollArea, Stack, Table, Text, Tooltip } from '@mantine/core'
 import type { Invoice } from '../types/invoice'
 import { FIELD_META } from '../lib/fields'
@@ -17,6 +17,7 @@ interface Props {
   onReopen: () => void
   onOpenInvoice: (id: string) => void
   onReject: (duplicateOf: string) => void
+  onResetInvoice: () => void
 }
 
 // 2022-01-04 → 4. 1. 2022., as dates are written on Croatian/Bosnian invoices.
@@ -27,13 +28,22 @@ const fmtDate = (v: unknown) => {
 
 const fmt = (v: unknown) => (v === null || v === undefined ? '—' : typeof v === 'number' ? v.toFixed(2).replace(/\.00$/, '') : String(v))
 
-export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onResolve, onConfirm, onReopen, onOpenInvoice, onReject }: Props) {
+export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onResolve, onConfirm, onReopen, onOpenInvoice, onReject, onResetInvoice }: Props) {
   const [showRest, setShowRest] = useState(false)
   const open = issues.filter((i) => !entry.resolved.includes(i.key))
   const confirmed = entry.status === 'confirmed'
   const rejected = entry.status === 'rejected'
   // A confirmed or rejected invoice is a decision already made: read-only until "Vrati na pregled".
   const locked = entry.status !== 'pending'
+  const hasChanges = Object.keys(entry.edits).length > 0 || entry.resolved.length > 0
+  // Undoing all changes on an invoice can't itself be undone, so it asks for a second click:
+  // the first click arms it, and it disarms by itself after a few seconds.
+  const [resetArmed, setResetArmed] = useState(false)
+  useEffect(() => {
+    if (!resetArmed) return
+    const t = setTimeout(() => setResetArmed(false), 4000)
+    return () => clearTimeout(t)
+  }, [resetArmed])
   const docIssues = issues.filter((i) => i.fields.length === 0)
   const total = valueOf(invoice, entry.edits, 'totalAmount')
   const openFor = (k: string) => open.filter((i) => (i.fields as string[]).includes(k))
@@ -88,6 +98,20 @@ export function FieldsPanel({ invoice, issues, entry, onEdit, onClearEdit, onRes
           <Badge color="green" variant="filled">
             Potvrđeno
           </Badge>
+        )}
+        {!locked && hasChanges && (
+          <Button
+            size="compact-xs"
+            variant={resetArmed ? 'filled' : 'subtle'}
+            color={resetArmed ? 'red' : 'gray'}
+            onClick={() => {
+              if (!resetArmed) return setResetArmed(true)
+              onResetInvoice()
+              setResetArmed(false)
+            }}
+          >
+            {resetArmed ? 'Sigurno? Klikni opet' : 'Poništi izmjene'}
+          </Button>
         )}
         {rejected && (
           <Badge color="gray" variant="filled">

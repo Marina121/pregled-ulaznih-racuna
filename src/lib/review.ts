@@ -44,6 +44,12 @@ export function useReview() {
     confirm: (id: string) => update(id, (e) => ({ ...e, status: 'confirmed' })),
     reject: (id: string, duplicateOf: string) => update(id, (e) => ({ ...e, status: 'rejected', duplicateOf })),
     reopen: (id: string) => update(id, (e) => ({ ...e, status: 'pending', duplicateOf: undefined })),
-    resetAll: () => setState({}),
+    // Back to how the system read it: no edits, nothing checked, pending.
+    resetOne: (id: string) =>
+      setState((s) => {
+        const next = { ...s }
+        delete next[id]
+        return next
+      }),
   }
 }

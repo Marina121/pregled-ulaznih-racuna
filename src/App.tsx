@@ -111,7 +111,6 @@ export default function App() {
           }}
           statusFilter={statusFilter}
           onStatusFilter={setStatusFilter}
-          onReset={review.resetAll}
           total={invoices.length}
           doneCount={invoices.filter((i) => review.get(i.id).status !== 'pending').length}
         />
@@ -140,6 +139,7 @@ export default function App() {
                 onConfirm={confirmAndNext}
                 onReopen={() => review.reopen(selected.id)}
                 onReject={rejectAndNext}
+                onResetInvoice={() => review.resetOne(selected.id)}
                 onOpenInvoice={(id) => {
                   // If the filters hide that invoice, clear them so it also shows up in the list.
                   if (!visible.some((i) => i.id === id)) {
