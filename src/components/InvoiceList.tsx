@@ -20,7 +20,7 @@ import type { FieldKey } from '../lib/fields'
 import type { ReviewEntry } from '../hooks/useReview'
 
 export type Props = {
-  invoices: Invoice[] // already filtered
+  invoices: Invoice[]
   issues: Record<string, Issue[]>
   review: (id: string) => ReviewEntry
   selectedId: string | null
@@ -37,6 +37,13 @@ export type Props = {
   confirmedCount: number
   onExport: () => void
 }
+
+const STATUS_OPTIONS = [
+  { label: 'Sve', value: 'all' },
+  { label: 'Za pregled', value: 'pending' },
+  { label: 'Potvrđeni', value: 'confirmed' },
+  { label: 'Odbačeni', value: 'rejected' },
+]
 
 export const InvoiceList: FC<Props> = ({
   invoices,
@@ -115,12 +122,7 @@ export const InvoiceList: FC<Props> = ({
           fullWidth
           value={statusFilter}
           onChange={onStatusFilter}
-          data={[
-            { label: 'Sve', value: 'all' },
-            { label: 'Za pregled', value: 'pending' },
-            { label: 'Potvrđeni', value: 'confirmed' },
-            { label: 'Odbačeni', value: 'rejected' },
-          ]}
+          data={STATUS_OPTIONS}
         />
       </Stack>
       <ScrollArea style={{ flex: 1 }} bg="var(--mantine-color-gray-0)">
