@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Badge, Box, Group, ScrollArea, SegmentedControl, Select, Stack, Text, UnstyledButton } from '@mantine/core'
+import { useEffect, useState } from 'react'
+import { Badge, Box, Button, Group, ScrollArea, SegmentedControl, Select, Stack, Text, UnstyledButton } from '@mantine/core'
 import type { Invoice } from '../types/invoice'
 import type { Issue } from '../lib/checks'
 import type { ReviewEntry } from '../lib/review'
@@ -17,11 +17,20 @@ interface Props {
   onStatusFilter: (v: string) => void
   total: number
   doneCount: number
+  onReset: () => void
 }
 
 export function InvoiceList(p: Props) {
   // null = dropdown closed, the input shows the selected client.
   const [search, setSearch] = useState<string | null>(null)
+  // Reset is the one action that can't be undone, so it asks twice: the first click arms it,
+  // the second within a few seconds wipes all review decisions.
+  const [resetArmed, setResetArmed] = useState(false)
+  useEffect(() => {
+    if (!resetArmed) return
+    const t = setTimeout(() => setResetArmed(false), 4000)
+    return () => clearTimeout(t)
+  }, [resetArmed])
   const clientOptions = [
     { label: 'Svi klijenti', value: 'all' },
     ...p.clients.map((c) => ({
@@ -130,6 +139,20 @@ export function InvoiceList(p: Props) {
           </Box>
         )}
       </ScrollArea>
+      <Box p="xs" style={{ borderTop: '1px solid var(--mantine-color-gray-3)' }}>
+        <Button
+          size="compact-xs"
+          variant={resetArmed ? 'filled' : 'subtle'}
+          color={resetArmed ? 'red' : 'gray'}
+          onClick={() => {
+            if (!resetArmed) return setResetArmed(true)
+            p.onReset()
+            setResetArmed(false)
+          }}
+        >
+          {resetArmed ? 'Sigurno? Klikni opet za brisanje svih odluka' : 'Počni ispočetka'}
+        </Button>
+      </Box>
     </Stack>
   )
 }
