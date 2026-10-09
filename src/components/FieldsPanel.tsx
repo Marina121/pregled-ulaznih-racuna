@@ -68,6 +68,12 @@ export const FieldsPanel: FC<Props> = ({
   const docIssues = issues.filter((issue) => issue.fields.length === 0)
   const total = valueOf(invoice, entry.edits, 'totalAmount')
   const changes = changesOf(invoice, entry.edits)
+  const summaryRows = [
+    { label: 'Dobavljač', value: valueOf(invoice, entry.edits, 'vendorName') },
+    { label: 'Broj računa', value: valueOf(invoice, entry.edits, 'invoiceNumber') },
+    { label: 'Datum računa', value: formatDate(valueOf(invoice, entry.edits, 'issueDate')) },
+    { label: 'Dospijeće', value: formatDate(valueOf(invoice, entry.edits, 'dueDate')) },
+  ]
   const openFor = (key: string) => open.filter((issue) => (issue.fields as string[]).includes(key))
 
   // A visible field never moves, or typing in it would lose focus.
@@ -178,18 +184,13 @@ export const FieldsPanel: FC<Props> = ({
               )}
               <Paper withBorder p="sm">
                 <Stack gap={6}>
-                  {[
-                    ['Dobavljač', valueOf(invoice, entry.edits, 'vendorName')],
-                    ['Broj računa', valueOf(invoice, entry.edits, 'invoiceNumber')],
-                    ['Datum računa', formatDate(valueOf(invoice, entry.edits, 'issueDate'))],
-                    ['Dospijeće', formatDate(valueOf(invoice, entry.edits, 'dueDate'))],
-                  ].map(([label, val]) => (
-                    <Group key={String(label)} justify="space-between" wrap="nowrap">
+                  {summaryRows.map((row) => (
+                    <Group key={row.label} justify="space-between" wrap="nowrap">
                       <Text size="xs" c="dimmed">
-                        {String(label)}
+                        {row.label}
                       </Text>
                       <Text size="sm" ta="right">
-                        {val ? String(val) : '—'}
+                        {row.value ? String(row.value) : '—'}
                       </Text>
                     </Group>
                   ))}
